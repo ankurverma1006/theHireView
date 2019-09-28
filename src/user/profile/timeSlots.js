@@ -69,22 +69,43 @@ class TimeSlots extends Component {
   }
 
   componentWillMount() {
-    //let userId = this.props.user.userId;
-   this.bookedTimeSlot(this.props.user.userId);
-    document.body.classList.add('light-theme');
-    document.body.classList.add('absoluteHeader');
-    document.body.classList.remove('home');
-    document.body.classList.remove('fixedHeader');
-  }
-
-  componentWillReceiveProps(res) {
-    // this.setProfileData(res.user);
-    // this.setAchievementData(res.student.achievementData);
-    // this.renderRecommendationsByUserId();
+    let userId = this.props.user.userId;
+    this.setState({userId:userId});
+   this.bookedTimeSlot(userId);   
+   this.getUserProfileData(userId);
   }
 
   componentDidMount() {  
-    
+    this.setTimeSlotForWeek();
+  }
+
+  getUserProfileData(userId){
+    spikeViewApiService('getUserSkillsById',{userId})
+    .then(response => {     
+      if (response.data.status === 'Success') {
+        console.log(response.data);       
+         let userProfile = response.data.result[0];     
+        this.setState({userProfile:userProfile                  
+         }); 
+         this.setUserProfileData(userProfile);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  } 
+
+  setTimeSlotForWeek(){  
+    let timeSlotForWeek=[];
+    for(var i=0;i<7;i++){
+      let date = new Date();
+      date.setDate(date.getDate() + i);    
+     
+      let finalDate = date.getDate()+'/'+ (date.getMonth()+1) +'/'+date.getFullYear();
+      
+      timeSlotForWeek.push({showDate:finalDate,date : new Date(moment().add('days', i).format("DD-MMM-YYYY")).valueOf() })
+    }
+    this.setState({timeSlotForWeek});
   }
  
   bookedTimeSlot(userId,date){
@@ -113,7 +134,7 @@ class TimeSlots extends Component {
     .then(response => {    
       console.log(response); 
       if (response.data.status === 'Success') {
-        this.bookedTimeSlot(this.props.user.userId,date)
+        this.bookedTimeSlot(this.state.userId,date)
       }
     })
     .catch(err => {
@@ -122,11 +143,11 @@ class TimeSlots extends Component {
 
   }
 
-  dateChange(event){
-    console.log(new Date(moment(event.value).format("DD-MMM-YYYY")).valueOf() );
-    let date= parseInt(new Date(moment(event.value).format("DD-MMM-YYYY")).valueOf());
+  dateChange(date){
+   // console.log(new Date(moment(event.value).format("DD-MMM-YYYY")).valueOf() );
+ //   let date= parseInt(new Date(moment(event.value).format("DD-MMM-YYYY")).valueOf());
   //  this.setState({newData:});
-   this.bookedTimeSlot(this.props.user.userId,date);
+   this.bookedTimeSlot(this.state.userId,date);
    this.setState({selectedDate:date })
   }
 
@@ -138,23 +159,40 @@ class TimeSlots extends Component {
       <div className="wrapper">
       <Header {...this.props} />     
       <div className="main-panel">   
-         
-         
-           
-         
-         
- 
+      <div className="">
+      
+      {this.state.userProfile ?   
+      <div className="w3-row-padding">
+      <div className="w3-third" style={{width: "fit-content","margin-left": "122px","padding-top": "15px"}}>
+     <div className="w3-white w3-text-grey w3-card-4">
+      <div className="w3-display-container " style={{overflow:"hidden"}}> 
+      <div className="w3-container">
+        {this.state.timeSlotForWeek && this.state.timeSlotForWeek.map((data) => (    
+                     <p>    
+                         <Button
+                                      bsStyle="primary no-bold no-round mr-1"
+                                        onClick={_this.dateChange.bind(
+                                          _this,
+                                          data.date                      
+                                        )}
+                                       >
+                                       <span className="icon-share2" />
+                                       {data.showDate}
+                            </Button></p>
+        ))}                               
+        </div>
+        </div>
+        </div> </div>
+        <div className="w3-twothird" style={{"padding-top": "15px"}}>
+          <div className="w3-container w3-card w3-white w3-margin-bottom">    
+            
+               {/* <DatePickerComponent id="datepicker" onChange={this.dateChange.bind(this)} format='yyyy-MM-dd' placeholder='Enter date' />  */}
 
-  <DatePickerComponent id="datepicker" onChange={this.dateChange.bind(this)} format='yyyy-MM-dd' placeholder='Enter date' />
-
-       
-       
-       
        
        <div className="time_slot_card">
         <div className="header">
-          <h4 className="title">Table with Links</h4>
-          <p className="category">Here is a subtitle for this table</p>
+          <h4 className="title">Avalilable TimeSlot</h4>
+          <p className="category">Kindly select date then get the date</p>
         </div>
         <div className="content table-responsive table-full-width">
           <table className="table table-hover table-striped">
@@ -185,13 +223,21 @@ class TimeSlots extends Component {
         </div>
       </div>
        
+       </div>
+       </div>
+       </div>:<div className="w3-content main-panel1">
+                <div className="container main">
+                  Kindly complete profile first
+                  </div>
+              </div>
+
+            }
+       </div>
+      </div>
        
        
        
        
-       
-       
-        </div>
  
       </div>
     );

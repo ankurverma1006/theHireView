@@ -90,7 +90,7 @@ class addEducation extends Component {
 
   componentWillMount() {
    // this.listOragnization();
-    this.generateSASToken();
+  
   }
 
   componentDidMount() {
@@ -150,7 +150,7 @@ class addEducation extends Component {
     const fileName = file.name;
     const fileType = file.type;
     if (file) {
-      this.generateSASToken();
+      //this.generateSASToken();
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = event => {
@@ -166,18 +166,18 @@ class addEducation extends Component {
     }
   };
 
-  generateSASToken() {
-    spikeViewApiService('getSASToken')
-      .then(response => {
-        if (response.data.status === 'Success') {
-          let sasToken = response.data.result.sasToken;
-          this.setState({ sasToken });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  // generateSASToken() {
+  //   spikeViewApiService('getSASToken')
+  //     .then(response => {
+  //       if (response.data.status === 'Success') {
+  //         let sasToken = response.data.result.sasToken;
+  //         this.setState({ sasToken });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });

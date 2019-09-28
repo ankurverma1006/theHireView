@@ -7239,8 +7239,10 @@ input:-webkit-autofill {
     transform: rotate(135deg); }
   .video-control .btn-action:not(.hangup), .call-modal .btn-action:not(.hangup) {
     background-color: #00AFF0; }
-    .video-control .btn-action:not(.hangup).disable, .call-modal .btn-action:not(.hangup).disable {
-      background-color: #E81123; }
+  .video-control .btn-action:not(.hangup).disable, .call-modal .btn-action:not(.hangup).disable {
+    background-color: #E81123; }
+  .video-control .btn-action.startup, .call-modal .btn-action.startup {
+    background-color: rgb(232, 228, 17);  }  
 
 .call-modal {
   position: absolute;
@@ -13751,8 +13753,7 @@ body {
 .time_slot_card {
     border: 1px solid #dbdbdb;
     padding: 2rem;
-    width: 1000px;
-    margin-left: 450px;
+    width: 1000px;   
 }
 
 .usersidebar {

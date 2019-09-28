@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'proptypes';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -43,6 +44,8 @@ class CallWindow extends Component {
     const { peerSrc, localSrc } = this.props;
     if (this.peerVideo && peerSrc) this.peerVideo.srcObject = peerSrc;
     if (this.localVideo && localSrc) this.localVideo.srcObject = localSrc;
+
+ 
   }
 
   /**
@@ -72,11 +75,11 @@ class CallWindow extends Component {
   }
 
   render() {
-    const { status, endCall } = this.props;
+    const { status, endCall,startCallInterviewer } = this.props;
     return (
       <div className={classnames('call-window', status)}>
-        <video id="peerVideo" ref={el => this.peerVideo = el} autoPlay />
-        <video id="localVideo" ref={el => this.localVideo = el} autoPlay muted />
+        <video  muted id="peerVideo" ref={el => this.peerVideo = el} autoPlay />
+        <video muted id="localVideo" ref={el => this.localVideo = el} autoPlay muted />
         <div className="video-control">
           {this.renderControlButtons()}
           <button
@@ -84,7 +87,13 @@ class CallWindow extends Component {
             className="btn-action hangup fa fa-phone"
             onClick={() => endCall(true)}
           />
-        </div>
+    {this.props.user && this.props.user.roleId == 2 ?
+           <button
+            type="button"
+            className="btn-action startup fa fa-phone"
+            onClick={() => startCallInterviewer(true)}
+          ></button>: null}
+        </div> 
       </div>
     );
   }
@@ -96,7 +105,19 @@ CallWindow.propTypes = {
   peerSrc: PropTypes.object, // eslint-disable-line
   config: PropTypes.object, // eslint-disable-line
   mediaDevice: PropTypes.object, // eslint-disable-line
-  endCall: PropTypes.func.isRequired
+  endCall: PropTypes.func.isRequired,
+  startCallInterviewer: PropTypes.func.isRequired
 };
 
-export default CallWindow;
+// export default CallWindow;
+
+const mapStateToProps = state => {
+  return {
+    user: state.User.userData    
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(CallWindow);

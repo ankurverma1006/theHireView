@@ -339,7 +339,7 @@ startRecording(id) {
     */
     //this.recorder.start(1800000);
     
-    this.recorder.start(50000);
+    this.recorder.start(1800000);
     console.log('recprdomg');
     this.setState({showVideo:true});
 }

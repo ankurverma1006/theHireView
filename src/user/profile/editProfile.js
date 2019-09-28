@@ -288,7 +288,18 @@ class EditProfile extends Component {
       if (response.data.status === 'Success') {
         console.log(response.data);       
          let userProfile = response.data.result[0];       
-         this.setState({userProfile:userProfile}); 
+         let profileRole= userProfile.profileRole[0].profileRole;
+         let experience= userProfile.experienceInYear;
+         let mobileNo= userProfile.mobileNo;
+         let currentLocation= userProfile.currentLocation;
+         let videoLink = userProfile.videoLink;
+         this.setState({userProfile:userProfile,
+                    profileRole,
+                    experience,
+                    mobileNo,
+                    currentLocation,
+                    videoLink
+         }); 
          this.setUserProfileData(userProfile);
       }
     })
@@ -718,12 +729,46 @@ class EditProfile extends Component {
       </div>      
       <div className="w3-container">
       <p><i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.firstName} {this.state.lastName}</p>
-        <p><i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
+        <p><i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.profileRole}</p>
         <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
         <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.email}</p>
-        <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-        <p><i className="fa fa-video-camera fa-fw w3-margin-right w3-large w3-text-teal"></i><Link target="_blank" style={{color:"blue"}} to="/video">Add Video Introduction </Link></p>
-  
+        <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.mobileNo}</p>
+        <p><i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                    {this.state.profileRole ?         
+                                      <Button
+                                      bsStyle="primary no-bold no-round mr-1"
+                                        onClick={this.showPersonalProfileComponent.bind(
+                                          this                            
+                                        )}
+                                       >
+                                       <span className="icon-share2" />
+                                        Add Information
+                                       </Button>
+                                       :
+                                        <Button onClick={this.showPersonalProfileComponent.bind(
+                                           this                            
+                                              )}
+                                                className="btn btn-white with-icon">
+                                          <span className="icon-share2" />
+                                          Add Information
+                                        </Button>}
+
+                          {this.state.showPersonalProfileComponent ==
+                            true ? (
+                              <AddPersonalProfile
+                                closePersonalProfileComponent={
+                                  this.showPersonalProfileComponent
+                                }           
+                                user={
+                                  this.state.user
+                                }                    
+                                userProfile={
+                                  this.state.userProfile
+                                }
+                              />
+                            ) : (
+                              '')}    
+        </p>
         {/* <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
         <p>Adobe Photoshop</p>
         <div className="w3-light-grey w3-round-xlarge w3-small">
@@ -764,106 +809,56 @@ class EditProfile extends Component {
     </div>  
   </div>
 
-
-  
-  <div className="w3-twothird">
-
-    <div className="w3-container w3-card w3-white w3-margin-bottom">
-     
+<div className="w3-twothird">
+ {this.state.videoLink ? null : 
     
-      <div ><span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Add Information</span>
-                                      <span class="edit icon" tabindex="0">  {this.state.userProfile && this.state.userProfile.profileRole && this.state.userProfile.profileRole[0] && 
-                  this.state.userProfile.profileRole[0].profileRole?   <span
-                  className="pe-7s-pen"
-                  onClick={this.showPersonalProfileComponent.bind(
-                    this                            
-                  )}
-                />: 
-          ""}     
-                                   
-                            </span>
+      <div className="w3-container w3-card w3-white w3-margin-bottom">    
+        <div className="centerButton">
+            <Link target="_blank" style={{color:"blue"}} to="/video">Add Video Introduction </Link>                     
         </div>
-     
-    
-       <div className="centerButton">
-        {this.state.userProfile && this.state.userProfile.profileRole && this.state.userProfile.profileRole[0] && 
-            this.state.userProfile.profileRole[0].profileRole?this.state.userProfile.profileRole[0].profileRole:                
-          (
-            <Button onClick={this.showPersonalProfileComponent.bind(
-              this                            
-            )}
-              className="btn btn-white with-icon"
-          //   onClick={this.shareProfile.bind(this)}
-            >
-              <span className="icon-share2" />
-              Add Information
-            </Button>
-        )} 
-                     
-      </div>     
-      <div className="w3-container">
+        <div className="w3-container">
         <h5 className="w3"><b>           
-               
-           </b></h5>
-           {this.state.showPersonalProfileComponent ==
-                                true ? (
-                                  <AddPersonalProfile
-                                    closePersonalProfileComponent={
-                                      this.showPersonalProfileComponent
-                                    }           
-                                    user={
-                                      this.state.user
-                                    }                    
-                                    userProfile={
-                                      this.state.userProfile
-                                    }
-                                  />
-                                ) : (
-                                  '')}       
-        <p></p>    
+            </b></h5>
+         <p></p>    
       </div>     
     </div>
-
+  }
 
 
   <div className="w3-container w3-card w3-white w3-margin-bottom">
              
-      <h2 className="w3-text-grey w3-padding-16">
-      <input type="file" onChange={this.uploadFiles.bind(this)} />Attach Resume
-         <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>      
+      <h2 className="w3-text-grey">
+               Resume        
       </h2>
-       <div className="centerButton">                      
-                
-                          {/* <Button
-                            bsStyle="primary"
-                            className="animated animated-top"
-                            onClick={this.contentEditable}
-                          >
-                            Add Headline
-                          </Button> */}
+       <div className="centerButton">   
+        <ul style={{"list-style": "none"}}><li>
+       <p>   <div style={{"padding-left": "150px"}}> <input type="file" onChange={this.uploadFiles.bind(this)} />
+         <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></div> </p></li>
+         <li>
+            <p><a>{this.state.resumeName}</a></p> </li>  </ul>                    
       </div> 
       {/* <div className="centerButton">
       <input type="file" onChange={this.uploadFiles.bind(this)} /> </div> */}
       <div className="w3-container">
-        <h5 className="w3-opacity"><b> { this.state.resumeURL ?  <DownloadLink
+        <h5 className="w3-opacity"><b>
+        { this.state.resumeURL ?  <DownloadLink
                           filename={this.state.resumeURL}
                           exportFile={() => "My cached data"}
                       >
                               Link to download
-                      </DownloadLink> : null}</b></h5>    
+                      </DownloadLink> : null}       </b></h5>    
                       <p>             
          { this.state.resumeURL ? 
                         <a onClick={this.DeleteFile.bind(this)}>Delete Resume</a>: null}
-                        <br></br>
-                                              { this.state.resumeURL ? 
-                                             
-                        <a >{this.state.resumeName}</a>: null}   Lorem ipsum dolor sit amet.</p>       
+                        <br></br>         
+                       </p>       
        
       </div>     
     </div>
 
     {/* Education */}
     <div className="w3-container w3-card w3-white w3-margin-bottom">
+    <h2 className="w3-text-grey">Education</h2>
               <div className="centerButton">                        
                 <Button
                   bsStyle="primary no-bold no-round mr-1"
@@ -888,7 +883,7 @@ class EditProfile extends Component {
                               ) : (
               '')}
               </div>
-      <h2 className="w3-text-grey w3-padding-16"><i className="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Education</h2>
+     
          {this.state.employmentListDeducationListDataata && this.state.educationListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b></b>
@@ -930,7 +925,7 @@ class EditProfile extends Component {
                               ) : (
               '')}
               </div>
-      <h2 className="w3-text-grey w3-padding-16"><i className="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Work Experience</h2>
+      <h2 className="w3-text-grey">Work Experience</h2>
          {this.state.employmentListData && this.state.employmentListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.designation} / {data.organisation}</b>
@@ -942,7 +937,7 @@ class EditProfile extends Component {
                               {moment(parseInt(data.startDate,10)).format("DD-MMM-YYYY")+' ' } to 
                                         {data.endDate ?' '+moment(parseInt(data.endDate,10)).format("DD-MMM-YYYY"):<span className="w3-tag w3-teal w3-round">Present</span>}
                             </h6>
-                            <p>Lorem ipsum dolor sit amet.</p>                          
+                            <p></p>                          
               </div>))}                 
   </div>
 
@@ -972,7 +967,7 @@ class EditProfile extends Component {
                           '')}
               </div>                      
 
-      <h2 className="w3-text-grey w3-padding-16"><i className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2>
+      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2>
          {this.state.skillsListData && this.state.skillsListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.skillName} / {data.rating}</b>
@@ -1012,7 +1007,7 @@ class EditProfile extends Component {
                         '')}
               </div>                      
 
-      <h2 className="w3-text-grey w3-padding-16"><i className="fa fa-project fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2>
+      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2>
          {this.state.projectListData && this.state.projectListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.projectName} / {data.associatedWith}</b>
@@ -1059,7 +1054,7 @@ class EditProfile extends Component {
               </div>                    
 
       
-            <div ><span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span>
+            <div ><span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span>
                                       <span class="edit icon" tabindex="0"><a onClick={this.editCareerProfileComponent.bind(this,this.state.careerProfileListData)}>
                                       <span className="pe-7s-pen" />
                                           </a></span>

@@ -10,16 +10,19 @@ import { captureUserMedia, S3Upload } from './AppUtils';
 import RecordRTC from 'recordrtc';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import MultiStreamsMixer from 'multistreamsmixer';
 import $ from 'jquery'; 
 import Header from '../header/header';
 import spikeViewApiService from '../../common/core/api/apiService';
+//import {MediaStreamRecorder} from '/MediaStreamRecorder.js';
+import MediaStreamRecorder from '../../../node_modules/msr/MediaStreamRecorder.js';
 const hasGetUserMedia = !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
                         navigator.mozGetUserMedia || navigator.msGetUserMedia);
                        
                         //loadScript('https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js')
                       
 var AWS = require('aws-sdk');
-                      
+//var multiStreamRecorder;
 const config = {
   bucketName: 'ankurself',
   dirName: 'photos', /* optional */
@@ -62,6 +65,7 @@ class App extends Component {
     this.filename = this.timestampData.toString() + ".webm"; //unique filename
     this.uploadId = ""; // upload id is required in multipart
     this.recorder; //initializing recorder variable
+    this.multiStreamRecorder;
     this.player;
     //To use microphone it shud be {audio: true}
     this.audioConstraints = {
@@ -71,31 +75,26 @@ class App extends Component {
     this.pc = {};
     this.config = null;
     this.startCallHandler = this.startCall.bind(this);
+    this.startCallByInterviewer = this.startCallInterviewer.bind(this);
+    
     this.endCallHandler = this.endCall.bind(this);
     this.rejectCallHandler = this.rejectCall.bind(this);
     this.requestUserMedia = this.requestUserMedia.bind(this);
   }
 
   componentDidMount() {
-    const script = document.createElement("script");
+    var script = document.createElement("script");
 
     script.src = "../dist/js/app.min.js";
     script.async = true;
 
     document.body.appendChild(script);
 
-
-
+ 
     if(!hasGetUserMedia) {
       alert("Your browser cannot stream from your webcam. Please switch to Chrome or Firefox.");
       return;
-    }
-   // const script = document.createElement("script");
-
-    script.src = "https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js";
-    script.async = true;
-
-    document.body.appendChild(script);
+    }   
     
     console.log(this.props.location.state);
 
@@ -119,7 +118,7 @@ class App extends Component {
     }
 
     componentWillMount(){
-    //  this.requestUserMedia();
+      this.requestUserMedia();
       this.audioStreamInitialize();
     }
   
@@ -166,56 +165,110 @@ class App extends Component {
           The parameter to getUserMedia() is an object specifying the details and requirements for each type of media you want to access.
           To use microphone it shud be {audio: true}
       */
-      navigator.mediaDevices.getUserMedia(self.audioConstraints)
-          .then(function(stream) {
+    //   navigator.mediaDevices.getUserMedia(self.audioConstraints)
+    //       .then(function(stream) {
               
-              /*
-                  once we accept the prompt for the audio stream from user's mic we enable the record button.
-              */
-            //  $("#record_q1").removeAttr("disabled");
-              /*
-                  Creates a new MediaRecorder object, given a MediaStream to record.
-              */
-              self.recorder = new MediaRecorder(stream);
-                              self.setState({videosrc:stream});                               
+    //           /*
+    //               once we accept the prompt for the audio stream from user's mic we enable the record button.
+    //           */
+    //         //  $("#record_q1").removeAttr("disabled");
+    //           /*
+    //               Creates a new MediaRecorder object, given a MediaStream to record.
+    //           */
+    //           self.recorder = new MediaRecorder(stream);
+    //                           self.setState({videosrc:stream});                               
             
-              self.recorder.addEventListener('dataavailable', function(e) {
-                  var normalArr = [];
-                  /*
-                      Here we push the stream data to an array for future use.
-                  */
-                  self.recordedChunks.push(e.data);
-                  normalArr.push(e.data);
+    //           self.recorder.addEventListener('dataavailable', function(e) {
+    //               var normalArr = [];
+    //               /*
+    //                   Here we push the stream data to an array for future use.
+    //               */
+    //               self.recordedChunks.push(e.data);
+    //               normalArr.push(e.data);
   
-                  /*
-                      here we create a blob from the stream data that we have received.
-                  */
-                  var blob = new Blob(normalArr, {
-                      type: 'video/webm'
-                  });
+    //               /*
+    //                   here we create a blob from the stream data that we have received.
+    //               */
+    //               var blob = new Blob(normalArr, {
+    //                   type: 'video/webm'
+    //               });
                            
-                  /*
-                      if the length of recordedChunks is 1 then it means its the 1st part of our data.
-                      So we createMultipartUpload which will return an upload id.
-                      Upload id is used to upload the other parts of the stream
-                      else.
-                      It Uploads a part in a multipart upload.
-                  */
-                  if (self.recordedChunks.length == 1) {
-                           console.log(blob.size);
+    //               /*
+    //                   if the length of recordedChunks is 1 then it means its the 1st part of our data.
+    //                   So we createMultipartUpload which will return an upload id.
+    //                   Upload id is used to upload the other parts of the stream
+    //                   else.
+    //                   It Uploads a part in a multipart upload.
+    //               */
+    //               if (self.recordedChunks.length == 1) {
+    //                        console.log(blob.size);
   
   
-                      self.startMultiUpload(blob, self.filename)
-                  } else {
-                      /*
-                          self.incr is basically a part number.
-                          Part number of part being uploaded. This is a positive integer between 1 and 10,000.
-                      */
-                      self.incr = self.incr + 1
-                      self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
-                  }
-              })
-          });
+    //                   self.startMultiUpload(blob, self.filename)
+    //               } else {
+    //                   /*
+    //                       self.incr is basically a part number.
+    //                       Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+    //                   */
+    //                   self.incr = self.incr + 1
+    //                   self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
+    //               }
+    //           })
+    //       });
+
+     //  this.startRecording(isCaller);
+   navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+}).then(async function(stream) {
+   
+    self.state.recordVideo = RecordRTC(stream, {     
+  
+
+    // disable logs
+    disableLogs: true,
+   
+    // disable logs
+    disableLogs: true,
+ 
+    // get intervals based blobs
+    // value in milliseconds
+    timeSlice: 150000,
+    ondataavailable: function(e) {
+    console.log('ondataavailable -- ');
+
+      var normalArr = [];
+      /*
+          Here we push the stream data to an array for future use.
+      */
+      self.recordedChunks.push(e.data);
+      normalArr.push(e.data);
+
+      /*
+          here we create a blob from the stream data that we have received.
+      */
+      var blob = new Blob(normalArr, {
+          type: 'video/webm'
+      });                   
+  //    let size = bytesToSize(recorder.getBlob().size);
+
+      if (self.recordedChunks.length == 1) {
+               console.log(blob.size);
+
+
+          self.startMultiUpload(blob, self.filename)
+      } else {
+          /*
+              self.incr is basically a part number.
+              Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+          */
+          self.incr = self.incr + 1
+          self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
+      }}
+  });      
+
+  
+});
   }
 
   startRecording(id) {
@@ -373,73 +426,123 @@ saveVideoURL(videoLink){
   });
 }
 
+startCallInterviewer(){
+    console.log('cllaldjflsadjf');
+    this.multiStreamRecorder.start(18000);
+}
+
   startCall(isCaller, friendID, config) {
     this.config = config;let self=this;
+// try array format to record parallely ---    
+   let local,remote;
+ 
+   if(this.props.user.roleId == 2){
     this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
       .on('localStream', (src) => {
-        const newState = { callWindow: 'active', localSrc: src };
+        const newState = { callWindow: 'active', localSrc: src };        
         if (!isCaller) newState.callModal = '';
+        this.multiStreamRecorder = new MediaStreamRecorder.MultiStreamRecorder([src]);
+       
+        this.multiStreamRecorder.stream = src;
+    //    multiStreamRecorder.mimeType = 'audio/webm';
+    this.multiStreamRecorder.mimeType = 'video/webm';
+    this.multiStreamRecorder.previewStream = function(stream) {
+      //    video.srcObject = stream;
+        //  video.play();
+      };
+      this.multiStreamRecorder.ondataavailable = function(e) {
+         //   appendLink(blob);
+  
+         var normalArr = [];
+         /*
+             Here we push the stream data to an array for future use.
+         */
+         self.recordedChunks.push(e);
+         normalArr.push(e);
+   
+
+
+                // //   appendLink(blob);
+                // let MB = 5 * 1024 * 1024
+                // let size = self.bytesToSize(e.size);
+                // console.log(e.size >= MB);
+
+                // /*
+                //     Here we push the stream data to an array for future use.
+                // */
+                // vardata.push(e);
+                // // normalArr.push(e);
+                // let checkSize=0;
+                // vardata.forEach(function(data){
+                //     checkSize = checkSize + data.size;
+                // })
+                // console.log('checkSize -- ',checkSize);
+                // if(checkSize <= MB )
+                // return false;
+                // self.recordedChunks.push = [];
+
+
+
+
+
+         /*
+             here we create a blob from the stream data that we have received.
+         */
+         var blob = new Blob(normalArr, {
+             type: 'video/webm'
+         });                   
+         let size = self.bytesToSize(e.size);
+         console.log('size ',size);
+        console.log('recordedChunks -- ',self.recordedChunks);
+        
+         if (self.recordedChunks.length == 1) {
+                  console.log(blob.size);
+                  console.log('startMultiUpload -- ',);
+   
+             self.startMultiUpload(e, self.filename)
+         } else {
+             /*
+                 self.incr is basically a part number.
+                 Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+             */
+            console.log('continueMultiUpload -- ',);
+   
+             self.incr = self.incr + 1
+             self.continueMultiUpload(e, self.incr, self.uploadId, self.filename, self.bucketName);
+         }
+        }; 
+       
+        local= src;
         this.setState(newState);
+        
       })
-      .on('peerStream', src => this.setState({ peerSrc: src }))
-      .start(isCaller, config);
-
-      this.startRecording(1);
-     
-    //  this.startRecording(isCaller);
-  //  navigator.mediaDevices.getUserMedia({
-    //     video: true,
-    //     audio: true
-    // }).then(async function(stream) {
-       
-    //     self.state.recordVideo = RecordRTC(stream, {     
+      .on('peerStream', src =>{
+        this.multiStreamRecorder.addStream( src );
+        this.setState({ peerSrc: src });
       
- 
-    //     // disable logs
-    //     disableLogs: true,
-       
-    //     // disable logs
-    //     disableLogs: true,
-     
-    //     // get intervals based blobs
-    //     // value in milliseconds
-    //     timeSlice: 150000,
-    //     ondataavailable: function(e) {
-    //     console.log('ondataavailable -- ');
+      })
+      .start(isCaller, config);
+    // }else{
+    //     this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
+    //     .on('localStream', (src) => {
+    //       const newState = { callWindow: 'active', localSrc: src };        
+    //       if (!isCaller) newState.callModal = '';        
+    //       this.setState(newState);        
+    //     })
+    //     .on('peerStream', src =>{       
+    //       this.setState({ peerSrc: src });        
+    //     })
+    //     .start(isCaller, config);
+    // }
+}}
 
-    //       var normalArr = [];
-    //       /*
-    //           Here we push the stream data to an array for future use.
-    //       */
-    //       self.recordedChunks.push(e.data);
-    //       normalArr.push(e.data);
-
-    //       /*
-    //           here we create a blob from the stream data that we have received.
-    //       */
-    //       var blob = new Blob(normalArr, {
-    //           type: 'video/webm'
-    //       });                   
-    //       let size = bytesToSize(recorder.getBlob().size);
-
-    //       if (self.recordedChunks.length == 1) {
-    //                console.log(blob.size);
-
-
-    //           self.startMultiUpload(blob, self.filename)
-    //       } else {
-    //           /*
-    //               self.incr is basically a part number.
-    //               Part number of part being uploaded. This is a positive integer between 1 and 10,000.
-    //           */
-    //           self.incr = self.incr + 1
-    //           self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
-    //       }}
-    //   });      
-
-    //   self.state.recordVideo.startRecording();
-    // });
-  }
+  bytesToSize(bytes) {
+    var k = 1000;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+}
 
   rejectCall() {
     const { callFrom } = this.state;
@@ -448,6 +551,8 @@ saveVideoURL(videoLink){
   }
 
   endCall(isStarter) {
+ //   if(this.props.user.roleId == 2)
+ this.multiStreamRecorder.stop();
     if (_.isFunction(this.pc.stop)) this.pc.stop(isStarter);
     this.pc = {};
     this.config = null;
@@ -458,8 +563,8 @@ saveVideoURL(videoLink){
     });
 
   
-    this.stopRecording(1);
- //   this.state.recordVideo.stopRecording();
+   // this.stopRecording(1);
+    this.state.recordVideo.stopRecording();
     this.booleanStop = true;
 //     this.state.recordVideo.stopRecording(() => {
 //       let params = {
@@ -488,11 +593,12 @@ saveVideoURL(videoLink){
     const { clientId, callFrom, callModal, callWindow, localSrc, peerSrc } = this.state;
     return (
       <div>
-         <Header {...this.props} />      
+        <Header {...this.props} />      
         <MainWindow
           clientId={clientId}
           startCall={this.startCallHandler}
         />
+
         <CallWindow
           status={callWindow}
           localSrc={localSrc}
@@ -500,6 +606,8 @@ saveVideoURL(videoLink){
           config={this.config}
           mediaDevice={this.pc.mediaDevice}
           endCall={this.endCallHandler}
+          user={this.props.user}
+          startCallInterviewer={this.startCallByInterviewer}
         />
         <CallModal
           status={callModal}

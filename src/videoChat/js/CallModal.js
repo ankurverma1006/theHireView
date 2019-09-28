@@ -26,7 +26,7 @@ function CallModal({ status, callFrom, startCall, rejectCall }) {
       /> */}
       <button
         type="button"
-        className="btn-action hangup fa fa-phone"
+        className="btn-action startup fa fa-phone"
         onClick={rejectCall}
       />
     </div>

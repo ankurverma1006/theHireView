@@ -118,7 +118,7 @@ class UserMapping extends Component {
     let user= this.props.otherUser? this.props.otherUser: this.props.user;
     if(user){
       let userId =user.userId;       
-      this.setState({userId: userId,user:user});
+      this.setState({userId: userId,user:user,roleId:user.roleId});
     }
     
     let jobDetail= this.props.location.state.jobDetail;
@@ -269,9 +269,12 @@ class UserMapping extends Component {
   };  
 
  
-  showVideoComponent = event => {    
+  showVideoComponent = index => {   
+    let jobDescriptionListData= this.state.jobDescriptionListData;
+    if(jobDescriptionListData[index])
+     jobDescriptionListData[index]['showVideoComponent']= jobDescriptionListData[index]['showVideoComponent'] ? !jobDescriptionListData[index]['showVideoComponent']: true;
     this.setState({
-      showVideoComponent: !this.state.showVideoComponent   
+      jobDescriptionListData: this.state.jobDescriptionListData   
     }); 
   };
 
@@ -526,20 +529,13 @@ class UserMapping extends Component {
           <div className="container main">
            
 
-            <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
+            {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
               <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
               >
                 View Sample Profile
-              </button>
-              {/* <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.addParentModel}
-              >
-                <span className="icon-plus" />
-                add parent
-              </button> */}
+              </button>              
               <button
                 className="btn btn-with-border with-icon smallBtn"
                 onClick={this.addStudentModel}
@@ -547,7 +543,7 @@ class UserMapping extends Component {
                 <span className="icon-plus" />
                 add student
               </button>
-            </div>
+            </div> */}
             {this.state.jobDescriptionListData && this.state.jobDescriptionListData.map(function(data, index) {
                 return (
                   <div
@@ -591,24 +587,37 @@ class UserMapping extends Component {
                         </div>
 
                         <div className="btn-group flex align-center">                 
-                        
+                        {self.props.user.roleId == 4 ?
+                            <button onClick={self.handleSubmit.bind(
+                                    self,
+                                    data,
+                                    null                          
+                                  )} 
+                              className="btn btn-primary no-round"
+                            //  onClick={self.handleClickProfile.bind(self, data)}
+                            >
+                              Map
+                            </button>                       
+                          :
                           <button onClick={self.showVideoComponent.bind(
-                            self                            
+                            self,
+                            index                            
                           )} 
                             className="btn btn-primary no-round"
                           //  onClick={self.handleClickProfile.bind(self, data)}
                           >
                            Watch
-                          </button>
-                          {self.state.showVideoComponent ==
+                          </button>}
+                          {data.showVideoComponent ==
                               true ? (
                                 <ShowVideo
                                   closeShowVideoComponent={
                                     self.showVideoComponent
                                   }                                 
-                                  videoLink={
-                                    data.videoLink
+                                  chatLink={
+                                    data.chatLink
                                   }
+                                  userId={data.userId}
                                 />
                               ) : (
                                 '')}

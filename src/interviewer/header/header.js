@@ -28,31 +28,67 @@ import userDefaultImage from '../../assets/img/default-img.PNG';
 let AsyncTypeahead = asyncContainer(Typeahead);
 var keyCheck=false,renderChangeMenu=false;
 class Header extends Component { 
+  constructor(props, context) {
+    super(props);
+    this.state={
+      userProfile:{}
+
+    }    
+  }
+
+  getUserProfileData(userId){
+    spikeViewApiService('getUserSkillsById',{userId})
+    .then(response => {     
+      if (response.data.status === 'Success') {
+        console.log(response.data);       
+         let userProfile = response.data.result[0];       
+         let profileRole= userProfile.profileRole[0].profileRole;
+         let experience= userProfile.experienceInYear;
+         let mobileNo= userProfile.mobileNo;
+         let currentLocation= userProfile.currentLocation;
+         let videoLink = userProfile.videoLink;
+         this.setState({userProfile:userProfile,
+                    profileRole,
+                    experience,
+                    mobileNo,
+                    currentLocation,
+                    videoLink
+         });        
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  } 
+
+  componentWillMount() {
+    let user= this.props.otherUser? this.props.otherUser: this.props.user;    
+    if(user){
+      let userId =user.userId; 
+      this.getUserProfileData(userId);
+    }
+  } 
 
   logout = () => {
     this.props.actionUserLogout();
     this.props.history.push('/');
   };
 
-  showVideoChat = () => {    
-    this.props.history.push('/js/app');
-  };
-  
   render() {
     return (
     <Navbar fluid={true}>
-      <Navbar.Header>
+      {/* <Navbar.Header>
         <button type="button" className="navbar-toggle" data-toggle="collapse">
           <span className="sr-only">Toggle navigation</span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
         </button>
-      </Navbar.Header>
+      </Navbar.Header> */}
 
       <Navbar.Collapse>
 
-        <Nav>
+        {/* <Nav>
           <NavItem><i className="fa fa-dashboard"></i></NavItem>
           <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
             <MenuItem>Action</MenuItem>
@@ -61,25 +97,25 @@ class Header extends Component {
             <MenuItem divider />
             <MenuItem>Separated link</MenuItem>
           </NavDropdown>
-        </Nav>
+        </Nav> */}
         <div className="separator"></div>
-        <Navbar.Form pullLeft>
+        {/* <Navbar.Form pullLeft>
           <FormGroup>
             <span className="input-group-addon"><i className="fa fa-search"></i></span>
             <FormControl type="text" placeholder="Type to search" />
           </FormGroup>
-        </Navbar.Form>
+        </Navbar.Form> */}
         <Nav pullRight>
-        <NavItem> <Link to="/interviewer/dashboard">Dashboard </Link></NavItem>
-          <NavItem> <Link to="/interviewer/timeSlots">Time Slot </Link></NavItem>
-          <NavItem onClick={this.showVideoChat}> Video Chat</NavItem>
-          <NavDropdown title="Dropdown" id="right-nav-bar">
+        <NavItem> <Link to="/interviewer/interviewerProfile">Profile </Link></NavItem>
+        {this.state.userProfile ?     <NavItem> <Link to="/interviewer/dashboard">Dashboard </Link></NavItem>:null}
+        {this.state.userProfile ?      <NavItem> <Link to="/interviewer/timeSlots">Time Slot </Link></NavItem>  :null}       
+          {/* <NavDropdown title="Dropdown" id="right-nav-bar">
             <MenuItem>Action</MenuItem>
             <MenuItem>Another action</MenuItem>
             <MenuItem>Something else here</MenuItem>
             <MenuItem divider />
             <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
+          </NavDropdown> */}
           <NavItem onClick={this.logout}>Log out</NavItem>
         </Nav>
       </Navbar.Collapse>

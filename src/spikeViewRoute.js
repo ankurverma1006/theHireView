@@ -12,29 +12,28 @@ import HRSignup from './common/authorization/hrSignUp';
 import ChangePassword from './common/changePassword/changePassword';
 import ForgotPassword from './common/forgotPassword/resetPassword';
 
-/******************** Student Routing ****************************/
-
-/******************** Parent Routing ****************************/
-
-
+/******************** User Routing ****************************/
 import UserDashboard from './user/dashboard/dashboard';
 import UserEditProfile from './user/profile/editProfile';
 import TimeSlotUser from './user/profile/timeSlots';
 import SlotArrangement from './user/profile/slotArrangement';
 
 import Video from './video/video';
-import InterviewerEditProfile from './interviewer/profile/editInterviewerProfile';
+
 import App from './videoChat/js/app';
 
-
+/******************** Interviewer Routing ****************************/
 import TimeSlot from './interviewer/profile/timeSlots';
 import InterviewerDashboard from './interviewer/dashboard/dashboard';
+import InterviewerEditProfile from './interviewer/profile/editProfile';
 
+
+/******************** Recruiter Routing ****************************/
 import UserMapping from './recruiter/jobDescription/userMapping';
 import JobDescription from './recruiter/jobDescription/jobDescription';
 import VideoHistory from './recruiter/jobDescription/videoHistory';
 
-/******************** Parent Routing ****************************/
+/******************** Admin Routing ****************************/
 //import Dashboard from './admin/dashboard/dashboard';
 import Candidate from './admin/candidate/candidate';
 import Hruser from './admin/hruser/hruser';

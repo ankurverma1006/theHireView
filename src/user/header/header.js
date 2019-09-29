@@ -28,7 +28,21 @@ import userDefaultImage from '../../assets/img/default-img.PNG';
 let AsyncTypeahead = asyncContainer(Typeahead);
 var keyCheck=false,renderChangeMenu=false;
 class Header extends Component {
- 
+  constructor(props, context) {
+    super(props);
+    this.state={
+      userProfile:{}
+
+    }    
+  }
+
+  componentWillMount() {
+    let user= this.props.otherUser? this.props.otherUser: this.props.user;    
+    if(user){
+      let userId =user.userId; 
+      this.getUserProfileData(userId);
+    }
+  } 
 
   logout = () => {
     this.props.actionUserLogout();
@@ -39,49 +53,65 @@ class Header extends Component {
     this.props.history.push('/js/app');
   };
 
+  getUserProfileData(userId){
+    spikeViewApiService('getUserSkillsById',{userId})
+    .then(response => {     
+      if (response.data.status === 'Success') {
+        console.log(response.data);       
+         let userProfile = response.data.result[0];     
+         
+         this.setState({userProfile:userProfile});        
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  } 
+
   render() {
+    let _this= this;
     return (
     <Navbar fluid={true}>
       <Navbar.Header>
-        <button type="button" className="navbar-toggle" data-toggle="collapse">
+        {/* <button type="button" className="navbar-toggle" data-toggle="collapse">
           <span className="sr-only">Toggle navigation</span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
-        </button>
+        </button> */}
       </Navbar.Header>
 
       <Navbar.Collapse>
 
-        <Nav>
+        {/* <Nav>
           <NavItem><i className="fa fa-dashboard"></i></NavItem>
           <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
-            <MenuItem>Action</MenuItem>
+             <MenuItem>Action</MenuItem>
             <MenuItem>Another action</MenuItem>
             <MenuItem>Something else here</MenuItem>
             <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
+            <MenuItem>Separated link</MenuItem> 
           </NavDropdown>
-        </Nav>
+        </Nav> */}
         <div className="separator"></div>
-        <Navbar.Form pullLeft>
+        {this.props.user && this.props.user.roleId == 4 ? <Navbar.Form pullLeft>
           <FormGroup>
-            <span className="input-group-addon"><i className="fa fa-search"></i></span>
-            <FormControl type="text" placeholder="Type to search" />
-          </FormGroup>
-        </Navbar.Form>
+            <span className="input-group-addon"> <Link to="/admin/candidate">Admin</Link></span>
+           
+          </FormGroup> 
+        </Navbar.Form> :null}
         <Nav pullRight>
         <NavItem> <Link to="/user/profile">Profile </Link></NavItem>
-        <NavItem> <Link to="/user/dashboard">Dashboard </Link></NavItem>
-          <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>
-         <NavItem onClick={this.showVideoChat}> Video Chat</NavItem>
-          <NavDropdown title="Dropdown" id="right-nav-bar">
+        {_this.state.userProfile ?    <NavItem> <Link to="/user/dashboard">Dashboard </Link></NavItem>:null}
+       {_this.state.userProfile ? 
+        <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>:null}      
+          {/* <NavDropdown title="Dropdown" id="right-nav-bar">
             <MenuItem>Action</MenuItem>
             <MenuItem>Another action</MenuItem>
             <MenuItem>Something else here</MenuItem>
             <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
+            <MenuItem>Separated link</MenuItem> 
+          </NavDropdown> */}
           <NavItem onClick={this.logout}>Log out</NavItem>
         </Nav>
       </Navbar.Collapse>

@@ -15,7 +15,7 @@ import $ from 'jquery';
 import Header from '../header/header';
 import spikeViewApiService from '../../common/core/api/apiService';
 //import {MediaStreamRecorder} from '/MediaStreamRecorder.js';
-import MediaStreamRecorder from '../../../node_modules/msr/MediaStreamRecorder.js';
+//import MediaStreamRecorder from '../../../node_modules/msr/MediaStreamRecorder.js';
 const hasGetUserMedia = !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
                         navigator.mozGetUserMedia || navigator.msGetUserMedia);
                        
@@ -67,10 +67,12 @@ class App extends Component {
     this.recorder; //initializing recorder variable
     this.multiStreamRecorder;
     this.player;
+    this.localSource;
     //To use microphone it shud be {audio: true}
     this.audioConstraints = {
         audio: true,
-        video: true
+        video: true,
+        audio: {echoCancellation:true}
     };
     this.pc = {};
     this.config = null;
@@ -428,7 +430,7 @@ saveVideoURL(videoLink){
 
 startCallInterviewer(){
     console.log('cllaldjflsadjf');
-    this.multiStreamRecorder.start(18000);
+    this.multiStreamRecorder.startRecording();
 }
 
   startCall(isCaller, friendID, config) {
@@ -436,105 +438,235 @@ startCallInterviewer(){
 // try array format to record parallely ---    
    let local,remote;
  
-   if(this.props.user.roleId == 2){
-    this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
-      .on('localStream', (src) => {
-        const newState = { callWindow: 'active', localSrc: src };        
-        if (!isCaller) newState.callModal = '';
-        this.multiStreamRecorder = new MediaStreamRecorder.MultiStreamRecorder([src]);
+//    if(this.props.user.roleId == 2){
+//     this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
+//       .on('localStream', (src) => {
+//         const newState = { callWindow: 'active', localSrc: src };        
+//         if (!isCaller) newState.callModal = '';
+    
+//         this.multiStreamRecorder = new RecordRTC([src]);
        
-        this.multiStreamRecorder.stream = src;
-    //    multiStreamRecorder.mimeType = 'audio/webm';
-    this.multiStreamRecorder.mimeType = 'video/webm';
-    this.multiStreamRecorder.previewStream = function(stream) {
-      //    video.srcObject = stream;
-        //  video.play();
-      };
-      this.multiStreamRecorder.ondataavailable = function(e) {
-         //   appendLink(blob);
+//         this.multiStreamRecorder.stream = src;
+//     //    multiStreamRecorder.mimeType = 'audio/webm';
+//     this.multiStreamRecorder.mimeType = 'video/webm';
+//     this.multiStreamRecorder.previewStream = function(stream) {
+//       //    video.srcObject = stream;
+//         //  video.play();
+//       };
+//       this.multiStreamRecorder.ondataavailable = function(e) {
+//          //   appendLink(blob);
   
-         var normalArr = [];
-         /*
-             Here we push the stream data to an array for future use.
-         */
-         self.recordedChunks.push(e);
-         normalArr.push(e);
+//          var normalArr = [];
+//          /*
+//              Here we push the stream data to an array for future use.
+//          */
+//          self.recordedChunks.push(e);
+//          normalArr.push(e);
    
 
 
-                // //   appendLink(blob);
-                // let MB = 5 * 1024 * 1024
-                // let size = self.bytesToSize(e.size);
-                // console.log(e.size >= MB);
+//                 // //   appendLink(blob);
+//                 // let MB = 5 * 1024 * 1024
+//                 // let size = self.bytesToSize(e.size);
+//                 // console.log(e.size >= MB);
 
-                // /*
-                //     Here we push the stream data to an array for future use.
-                // */
-                // vardata.push(e);
-                // // normalArr.push(e);
-                // let checkSize=0;
-                // vardata.forEach(function(data){
-                //     checkSize = checkSize + data.size;
-                // })
-                // console.log('checkSize -- ',checkSize);
-                // if(checkSize <= MB )
-                // return false;
-                // self.recordedChunks.push = [];
-
-
+//                 // /*
+//                 //     Here we push the stream data to an array for future use.
+//                 // */
+//                 // vardata.push(e);
+//                 // // normalArr.push(e);
+//                 // let checkSize=0;
+//                 // vardata.forEach(function(data){
+//                 //     checkSize = checkSize + data.size;
+//                 // })
+//                 // console.log('checkSize -- ',checkSize);
+//                 // if(checkSize <= MB )
+//                 // return false;
+//                 // self.recordedChunks.push = [];
 
 
 
-         /*
-             here we create a blob from the stream data that we have received.
-         */
-         var blob = new Blob(normalArr, {
-             type: 'video/webm'
-         });                   
-         let size = self.bytesToSize(e.size);
-         console.log('size ',size);
-        console.log('recordedChunks -- ',self.recordedChunks);
+
+
+//          /*
+//              here we create a blob from the stream data that we have received.
+//          */
+//          var blob = new Blob(normalArr, {
+//              type: 'video/webm'
+//          });                   
+//          let size = self.bytesToSize(e.size);
+//          console.log('size ',size);
+//         console.log('recordedChunks -- ',self.recordedChunks);
         
-         if (self.recordedChunks.length == 1) {
-                  console.log(blob.size);
-                  console.log('startMultiUpload -- ',);
+//          if (self.recordedChunks.length == 1) {
+//                   console.log(blob.size);
+//                   console.log('startMultiUpload -- ',);
    
-             self.startMultiUpload(e, self.filename)
-         } else {
-             /*
-                 self.incr is basically a part number.
-                 Part number of part being uploaded. This is a positive integer between 1 and 10,000.
-             */
-            console.log('continueMultiUpload -- ',);
+//              self.startMultiUpload(e, self.filename)
+//          } else {
+//              /*
+//                  self.incr is basically a part number.
+//                  Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+//              */
+//             console.log('continueMultiUpload -- ',);
    
-             self.incr = self.incr + 1
-             self.continueMultiUpload(e, self.incr, self.uploadId, self.filename, self.bucketName);
-         }
-        }; 
+//              self.incr = self.incr + 1
+//              self.continueMultiUpload(e, self.incr, self.uploadId, self.filename, self.bucketName);
+//          }
+//         }; 
        
-        local= src;
-        this.setState(newState);
+//         local= src;
+//         this.setState(newState);
         
-      })
-      .on('peerStream', src =>{
-        this.multiStreamRecorder.addStream( src );
-        this.setState({ peerSrc: src });
+//       })
+//       .on('peerStream', src =>{
+//         this.multiStreamRecorder.addStream( src );
+//         this.setState({ peerSrc: src });
       
-      })
-      .start(isCaller, config);
-    // }else{
-    //     this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
-    //     .on('localStream', (src) => {
-    //       const newState = { callWindow: 'active', localSrc: src };        
-    //       if (!isCaller) newState.callModal = '';        
-    //       this.setState(newState);        
-    //     })
-    //     .on('peerStream', src =>{       
-    //       this.setState({ peerSrc: src });        
-    //     })
-    //     .start(isCaller, config);
-    // }
-}}
+//       })
+//       .start(isCaller, config);
+//     }else{
+//         this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
+//         .on('localStream', (src) => {
+//           const newState = { callWindow: 'active', localSrc: src };        
+//           if (!isCaller) newState.callModal = '';        
+//           this.setState(newState);        
+//         })
+//         .on('peerStream', src =>{       
+//           this.setState({ peerSrc: src });        
+//         })
+//         .start(isCaller, config);
+//     }
+
+if(this.props.user.roleId == 2){
+        this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
+        .on('localStream', (src) => {
+          const newState = { callWindow: 'active', localSrc: src }; 
+          console.log(src);
+          this.localSource= src;
+
+         
+          if (!isCaller) newState.callModal = '';        
+          this.setState(newState);   
+             
+        })
+        .on('peerStream', src =>{   
+           
+            this.multiStreamRecorder = RecordRTC([this.localSource,src], {
+                // audio, video, canvas, gif
+               type: 'video',   
+               mimeType: 'video/mp4', 
+             
+               recorderType: RecordRTC.MultiStreamRecorder,
+           
+               // disable logs
+               disableLogs: true,
+           
+               // get intervals based blobs
+               // value in milliseconds
+               timeSlice: 180000,
+           
+               // requires timeSlice above
+               // returns blob via callback function
+               ondataavailable: function(e) {
+    
+    
+             var normalArr = [];
+             /*
+                 Here we push the stream data to an array for future use.
+             */
+             self.recordedChunks.push(e);
+             normalArr.push(e);
+       
+    
+    
+                    // //   appendLink(blob);
+                    // let MB = 5 * 1024 * 1024
+                    // let size = self.bytesToSize(e.size);
+                    // console.log(e.size >= MB);
+    
+                    // /*
+                    //     Here we push the stream data to an array for future use.
+                    // */
+                    // vardata.push(e);
+                    // // normalArr.push(e);
+                    // let checkSize=0;
+                    // vardata.forEach(function(data){
+                    //     checkSize = checkSize + data.size;
+                    // })
+                    // console.log('checkSize -- ',checkSize);
+                    // if(checkSize <= MB )
+                    // return false;
+                    // self.recordedChunks.push = [];
+    
+    
+    
+    
+    
+             /*
+                 here we create a blob from the stream data that we have received.
+             */
+            //  var blob = new Blob(normalArr, {
+            //      type: 'video/webm'
+            //  });                   
+             let size = self.bytesToSize(e.size);
+             console.log('size ',size);
+            console.log('recordedChunks -- ',self.recordedChunks);
+            
+             if (self.recordedChunks.length == 1) {
+                 //     console.log(blob.size);
+                      console.log('startMultiUpload -- ',);
+       
+                 self.startMultiUpload(e, self.filename)
+             } else {
+                 /*
+                     self.incr is basically a part number.
+                     Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+                 */
+                console.log('continueMultiUpload -- ',);
+       
+                 self.incr = self.incr + 1
+                 self.continueMultiUpload(e, self.incr, self.uploadId, self.filename, self.bucketName);
+             }
+                 
+               },
+           
+               // auto stop recording if camera stops
+               checkForInactiveTracks: false,
+           
+               // requires timeSlice above
+               onTimeStamp: function(timestamp) {},
+           
+               // both for audio and video tracks
+               bitsPerSecond: 128000,       
+           
+               // if you are recording multiple streams into single file
+               // this helps you see what is being recorded
+               previewStream: function(stream) {
+                   console.log(stream);
+               },
+           
+               // used by MultiStreamRecorder - to access HTMLCanvasElement
+               elementClass: 'multi-streams-mixer'
+           });
+    
+          this.setState({ peerSrc: src });        
+        })
+        .start(isCaller, config);
+
+    }else{
+        this.pc = new PeerConnection(this.props.location.state.videoKeyClient)
+                .on('localStream', (src) => {
+                  const newState = { callWindow: 'active', localSrc: src };        
+                  if (!isCaller) newState.callModal = '';        
+                  this.setState(newState);        
+                })
+                .on('peerStream', src =>{       
+                  this.setState({ peerSrc: src });        
+                })
+                .start(isCaller, config);
+    }
+}
 
   bytesToSize(bytes) {
     var k = 1000;
@@ -551,8 +683,8 @@ startCallInterviewer(){
   }
 
   endCall(isStarter) {
- //   if(this.props.user.roleId == 2)
- this.multiStreamRecorder.stop();
+  if(this.props.user.roleId == 2)
+    this.multiStreamRecorder.stopRecording();
     if (_.isFunction(this.pc.stop)) this.pc.stop(isStarter);
     this.pc = {};
     this.config = null;

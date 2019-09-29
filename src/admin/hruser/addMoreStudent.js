@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionGetStudentList } from '../../common/core/redux/actions';
 import { actionSetStudentAsUser } from '../../common/core/redux/actions';
+import { ToastContainer } from 'react-toastify';
+import Select from 'react-select';
 import {
   Button,
   Modal,
@@ -21,7 +23,8 @@ import {
   renderMessage,
   setLocalStorage,
   showSuccessToast,
-  showErrorToast
+  showErrorToast,
+  ZoomInAndOut
 } from '../../common/commonFunctions';
 import CONSTANTS from '../../common/core/config/appConfig';
 
@@ -41,7 +44,8 @@ class AddMoreStudent extends Component {
       city: '',
       state: '',
       country: '',
-      zipcode: ''
+      zipcode: '',
+      companyDetail:[]
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   //  this.handleAddMail = this.handleAddMail.bind(this);
@@ -82,7 +86,43 @@ class AddMoreStudent extends Component {
         });
       }
     }
+    this.getCompanyList();
   }
+
+  getCompanyList(){
+    spikeViewApiService('getCompanyList')
+    .then(response => {     
+      if (response.data.status === 'Success') {
+         let companyDetail= this.state.companyDetail;
+         response.data.result.forEach(function(data){         
+         
+            companyDetail.push({label: data.companyName,value:data.companyId })
+        })     
+         this.setState({companyDetail: companyDetail});
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  handleCompanyChange = newValue => {
+    if(newValue.value == 1){
+       
+        // this.validatorTypes.rules['companyName'] = 'required|companyName';
+        // this.validatorTypes.messages['required.companyName'] =
+        //                                         'Please enter companyName';
+        this.setState({otherCompanyName: true});
+    }else{
+        // this.validatorTypes.rules['companyName'] = '';
+        // this.validatorTypes.messages['required.companyName'] =
+        //                                         'Please enter companyName';
+    }
+        this.setState({
+        company: newValue
+        });
+    
+  };
 
   getValidatorData = () => {
     return this.state;
@@ -142,11 +182,13 @@ class AddMoreStudent extends Component {
   handleSubmit() {
     let self = this;
     let createdBy = this.state.user.userId;
-    let roleId = 1;
+    let roleId = 3;
     let firstName = this.state.firstName;
     let lastName = this.state.lastName;
     let isActive = this.state.user.isActive;
     let email= this.state.email;    
+    let companyName = this.state.company && this.state.company.value !== 1? this.state.company.label: this.state.companyName;
+    let companyId= this.state.company && this.state.company.value !== 1 ? this.state.company.value: null
     console.log('state ', this.state);
     let data = {
       userId:'',
@@ -157,9 +199,10 @@ class AddMoreStudent extends Component {
       createdBy      
     };
 
-    spikeViewApiService('signupUser', data)
+    spikeViewApiService('signuphr', data)
       .then(response1 => {        
-            self.setState({ isLoading: false });                    
+            self.setState({ isLoading: false });   
+                        
       })
       .catch(err => {
         console.log(err);
@@ -214,6 +257,12 @@ class AddMoreStudent extends Component {
 
     return (
       <div>
+         <ToastContainer
+          autoClose={5000}
+          className="custom-toaster-main-cls"
+          toastClassName="custom-toaster-bg"
+          transition={ZoomInAndOut}
+        />
         <Modal
           //   bsSize="medium"
           show={this.state.addStudentModel}
@@ -229,6 +278,43 @@ class AddMoreStudent extends Component {
           <Modal.Body>
             <Form horizontal className="lightBgForm">
               <Col sm={12}>
+
+                <FormGroup className={`centeredRightLabel ${this.getClasses('company')}`}>
+              <label className="form-label">Add Company</label>
+              
+                    <div className="custom-select">
+                      <span className="icon-down_arrow selectIcon" />
+                      <Select
+                        className="form-control"                        
+                        name="company"
+                        value={this.state.company}
+                        onChange={this.handleCompanyChange}
+                        options={this.state.companyDetail}
+                        placeholder="Select company"
+                      />
+                    </div>                   
+                   
+                    {renderMessage(this.props.getValidationMessages('company'))}
+                </FormGroup>
+
+                {this.state.otherCompanyName === true ?
+
+                <FormGroup className={`centeredRightLabel ${this.getClasses('companyName')}`}>
+                    <label className="form-label">Company Name</label>
+                  
+                    <FormControl
+                        type="text"
+                        placeholder="Company Name"
+                        name="companyName"
+                        value={this.state.companyName}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="35"
+                    />
+                  
+                    {renderMessage(this.props.getValidationMessages('companyName'))}
+                </FormGroup> : null}
+
                 <FormGroup
                   className={`centeredRightLabel ${this.getClasses(
                     'firstName'

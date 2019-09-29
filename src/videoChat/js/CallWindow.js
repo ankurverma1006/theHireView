@@ -3,24 +3,31 @@ import PropTypes from 'proptypes';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
+import { Player } from 'video-react';
+import 'video-react/dist/video-react.css'; // import css
+
 
 class CallWindow extends Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       Video: true,
-      Audio: true
+      Audio: true,
+      Audio: {echoCancellation:true}      
     };
 
     this.btns = [
       { type: 'Video', icon: 'fa-video-camera' },
       { type: 'Audio', icon: 'fa-microphone' }
-    ];
+    ];  
   }
 
+
+
+
   componentDidMount() {
-    this.setMediaStream();
-  }
+    this.setMediaStream();   
+   }
 
   componentWillReceiveProps(nextProps) {
     const { config: currentConfig } = this.props;
@@ -39,13 +46,11 @@ class CallWindow extends Component {
   componentDidUpdate() {
     this.setMediaStream();
   }
-
+ 
   setMediaStream() {
     const { peerSrc, localSrc } = this.props;
     if (this.peerVideo && peerSrc) this.peerVideo.srcObject = peerSrc;
-    if (this.localVideo && localSrc) this.localVideo.srcObject = localSrc;
-
- 
+    if (this.localVideo && localSrc) this.localVideo.srcObject = localSrc; 
   }
 
   /**
@@ -78,8 +83,16 @@ class CallWindow extends Component {
     const { status, endCall,startCallInterviewer } = this.props;
     return (
       <div className={classnames('call-window', status)}>
-        <video  muted id="peerVideo" ref={el => this.peerVideo = el} autoPlay />
-        <video muted id="localVideo" ref={el => this.localVideo = el} autoPlay muted />
+        <video id="peerVideo" ref={el => this.peerVideo = el} autoPlay /> */}
+        {/* <Player
+          ref={player => {
+            this.player = player;
+          }}
+          autoPlay
+        >
+          <source src={this.state.source} /></Player> */}
+
+        <video id="localVideo" ref={el => this.localVideo = el} autoPlay muted />
         <div className="video-control">
           {this.renderControlButtons()}
           <button

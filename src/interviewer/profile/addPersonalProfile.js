@@ -82,8 +82,11 @@ class addPersonalProfile extends Component {
     this.getClasses = this.getClasses.bind(this);
     this.validatorTypes = strategy.createSchema(
       {
-        projectName: 'required'
-       
+        profileRole: 'required',
+        year:'required',
+        month:'required',
+        location:'required',
+        mobileNo: 'required'
         // level3Competency: 'required',
         // skills: 'required',
         // importance: 'required',
@@ -94,8 +97,11 @@ class addPersonalProfile extends Component {
         // email: 'email'
       },
       {
-        'required.designation': validationMessages.designation.required
-        
+        'required.profileRole': validationMessages.profileRole.required,
+        'required.year': validationMessages.year.required,
+        'required.month': validationMessages.month.required,
+        'required.location': validationMessages.location.required,
+        'required.mobileNo': validationMessages.mobileNo.required,
         // 'required.level3Competency': validationMessages.competency.required
         // 'required.skills': validationMessages.skills.required,
         // 'required.importance': validationMessages.importance.required,
@@ -164,17 +170,17 @@ class addPersonalProfile extends Component {
 
 
   setProjectData = data => {    
-    if(data){
-    this.setState({      
-        userId:data.userId,
-        userProfileId : data.userProfileId,
-        skills:data.skills,
-        year: data.experienceInYear,
-        month: data.experienceInMonth,
-        location: data.currentLocation,
-        mobileNo: data.mobileNo,
-        profileRole: data.profileRole[0].profileRoleId          
-      });    
+    if (data) {  
+      this.setState({      
+          userId:data.userId,
+          userProfileId : data.userProfileId,
+          skills:data.skills,
+          year: data.experienceInYear,
+          month: data.experienceInMonth,
+          location: data.currentLocation,
+          mobileNo: data.mobileNo,
+          profileRole: data.profileRole && data.profileRole[0] && data.profileRole[0].profileRoleId          
+        });    
     }
   };
  
@@ -197,12 +203,9 @@ class addPersonalProfile extends Component {
       let imageObject = {
         media: self.state.mediaImgArray || []
       };
-
       if (!error) {
         self.setState({ isLoading: true });       
             self.handleSubmit();        
-        } else {
-          self.handleSubmit();
         }      
     });
   };
@@ -325,9 +328,9 @@ class addPersonalProfile extends Component {
           />
           <Modal.Header closeButton>
             <Modal.Title className="subtitle text-center">
-              {!this.state.ProjectId || this.state.ProjectId === ''
-                ? 'Add Project'
-                : 'Edit Project'}
+              {!this.state.userProfileId || this.state.userProfileId === ''
+                ? 'Add Profile'
+                : 'Edit Profile'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -395,7 +398,7 @@ class addPersonalProfile extends Component {
                        <option value={12}>12 years</option>                                      
                       </FormControl>
                         {renderMessage(
-                          this.props.getValidationMessages('expectedSalaryInlakh')
+                          this.props.getValidationMessages('year')
                         )}
                       </div>
                       <div className="form-group">
@@ -424,7 +427,7 @@ class addPersonalProfile extends Component {
                       </FormControl>                 
                       </div>                     
                     </div>                   
-                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                     {renderMessage(this.props.getValidationMessages('month'))} 
                   </Col>
                 </FormGroup>
                 <div>               
@@ -532,7 +535,7 @@ addPersonalProfile = validation(strategy)(addPersonalProfile);
 
 const mapStateToProps = state => {
   return {
-    user: state.User.userData    
+  //  user: state.User.userData    
   };
 };
 

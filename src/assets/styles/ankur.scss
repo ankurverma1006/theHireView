@@ -12558,7 +12558,7 @@ html {
     border-right: 1px solid #ced8e2; }
 
 .forgotPasswordForm {
-  background-color: #fff;
+  background-color: #fafafa;
   box-shadow: 0 0 10px #ddd;
   padding-bottom: 40px; }
   @media (max-width: 40em) {
@@ -13622,7 +13622,22 @@ body {
   position: relative;
 }
 
-.login-card input[type=text], input[type=password] {
+.login-card input[type=text] {
+  height: 44px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.login-card input[type=email], input[type=password] {
   height: 44px;
   font-size: 16px;
   width: 100%;

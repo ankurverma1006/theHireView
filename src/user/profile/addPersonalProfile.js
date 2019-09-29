@@ -179,7 +179,7 @@ class addPersonalProfile extends Component {
           month: data.experienceInMonth,
           location: data.currentLocation,
           mobileNo: data.mobileNo,
-          profileRole: data.profileRole[0].profileRoleId          
+          profileRole: data.profileRole && data.profileRole[0] && data.profileRole[0].profileRoleId          
         });    
     }
   };

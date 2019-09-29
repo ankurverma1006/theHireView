@@ -58,18 +58,19 @@ class ShowVideo extends Component {
   constructor(props) {
     super(props);
     this.state = {   
-        video: {
-            src: "http://www.example.com/path/to/video.mp4",
-            poster: "http://www.example.com/path/to/video_poster.jpg"         
-        }, 
+        // video: {
+        //     src: this.props.chatLink,
+        //     poster: "http://www.example.com/path/to/video_poster.jpg"         
+        // }, 
         showVideoModal:true
     }; 
   }
 
   componentWillMount() {   
-      console.log(this.props.videoLink);
-     let videoLink = this.props.videoLink;   
-   
+      console.log(typeof(this.props.chatLink));
+      console.log(this.props.userId);
+     let videoLink = this.props.chatLink;   
+     this.setState({chatLink:this.props.chatLink });
   }
 
 
@@ -116,7 +117,7 @@ onVideoEnd(){
   render() {
     let self = this;
     const { isLoading } = this.state;  
-     console.log(this.state.showVideoModal);
+     console.log(self.props.chatLink);
   
     return (
       <Modal
@@ -138,9 +139,9 @@ onVideoEnd(){
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-              <VideoPlayer
+         {this.state.chatLink ?     <VideoPlayer
                         controls={true}
-                        src={this.props.videoLink}
+                        src={this.state.chatLink}
                        // poster={this.state.video.poster}
                         width="720"
                         height="420"
@@ -152,7 +153,7 @@ onVideoEnd(){
                         onSeeking={this.onVideoSeeking.bind(this)}
                         onSeeked={this.onVideoSeeked.bind(this)}
                         onEnd={this.onVideoEnd.bind(this)}
-                    />    
+                    /> : "Video is not available"}   
               </Modal.Body>
           <Modal.Footer>
        

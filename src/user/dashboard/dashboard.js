@@ -317,20 +317,13 @@ class Dashboard extends Component {
           <div className="container main">
            
 
-            <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
+            {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
               <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
               >
                 View Sample Profile
-              </button>
-              {/* <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.addParentModel}
-              >
-                <span className="icon-plus" />
-                add parent
-              </button> */}
+              </button>             
               <button
                 className="btn btn-with-border with-icon smallBtn"
                 onClick={this.addStudentModel}
@@ -338,8 +331,8 @@ class Dashboard extends Component {
                 <span className="icon-plus" />
                 add student
               </button>
-            </div>
-            {this.state.bookedSlotData && this.state.bookedSlotData.map(function(data, index) {
+            </div> */}
+            {this.state.bookedSlotData && this.state.bookedSlotData.length > 0 ? this.state.bookedSlotData.map(function(data, index) {
                 return (                 
                      
                   <div
@@ -381,19 +374,7 @@ class Dashboard extends Component {
                           //  onClick={self.handleClickProfile.bind(self, data)}
                           >
                            Join Video
-                          </button>
-                          {/* {self.state.showVideoComponent ==
-                              true ? (
-                                <ShowVideo
-                                  closeShowVideoComponent={
-                                    self.showVideoComponent
-                                  }                                 
-                                  videoLink={
-                                    data.videoLink
-                                  }
-                                />
-                              ) : (
-                                '')} */}
+                          </button>                       
                           &nbsp; &nbsp;
                       
                           <DropdownButton
@@ -410,26 +391,15 @@ class Dashboard extends Component {
                               <i className="m-ico icon-plus" />
                               Add Parent
                             </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/parent/list',
-                                  state: { studentData: data }
-                                })
-                              }
+                            <MenuItem                            
+                              
                             >
-                              <i className="m-ico icon-parent" /> Parent List
+                              <i className="m-ico icon-parent" /> Option List
                             </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/student/profilelog',
-                                  state: { profileOwner: data.userId }
-                                })
-                              }
+                            <MenuItem                             
                             >
                               <i className="m-ico icon-profile-sharing" />{' '}
-                              Profile Sharing Log
+                              Option List
                             </MenuItem>
 
                             <MenuItem
@@ -457,7 +427,8 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 );
-              })}
+              }):"No slot is booked "
+          }
           </div>         
           {/* {this.state.addStudentModel ? (
             <AddMoreStudent

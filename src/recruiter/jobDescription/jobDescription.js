@@ -115,7 +115,7 @@ class JobDescription extends Component {
     let user= this.props.otherUser? this.props.otherUser: this.props.user;
     if(user){
       let userId =user.userId;       
-      this.setState({userId: userId,user:user});
+      this.setState({userId: userId,user:user,roleId: user.roleId});
     }
     this.getJobDescriptionDetails(user.userId);   
     document.body.classList.add('light-theme');
@@ -298,7 +298,7 @@ class JobDescription extends Component {
 <div className="card">
         <div className="header">
           <h4 className="title">Job Description List</h4>
-          <p className="category">Here is a subtitle for this table</p>
+          <p className="category"></p>
         </div>
         <div className="content table-responsive table-full-width">
           <table className="table table-hover table-striped">
@@ -320,7 +320,7 @@ class JobDescription extends Component {
                   <td className="text-right">{data.maxExperience}</td>
                   <td className="text-right">
                   <Button onClick={this.tagUserForJob.bind(this,data)}>
-                                     Go For Map
+                          {this.state.roleId==4 ? "Go For Map" : "View Student"}
                    </Button>
                   </td>
                 </tr>

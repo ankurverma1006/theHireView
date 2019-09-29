@@ -389,12 +389,12 @@ class Candidate extends Component {
            
 
             <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
-              <button
+              {/* <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
               >
                 View Sample Profile
-              </button>
+              </button> */}
               {/* <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.addParentModel}
@@ -407,7 +407,7 @@ class Candidate extends Component {
                 onClick={this.addStudentModel}
               >
                 <span className="icon-plus" />
-                add student
+                add user
               </button>
             </div>
             {this.state.studentList &&

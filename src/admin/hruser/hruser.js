@@ -377,136 +377,20 @@ class Hruser extends Component {
   render() {
     let self = this;
     return (
-      <div className="innerWrapper">
-        <Header {...this.props} />
-        {this.state.imageSource ? (
-          <ImageCropper
-            imageSource={this.state.imageSource}
-            imageName={this.state.imageName}
-            imageType={this.state.imageType}
-            aspectRatio={this.state.action === 1 ? 1 / 1 : 16 / 9}
-            modalSize={this.state.action === 1 ? 'medium' : 'large'}
-            cropBoxWidth={this.state.action === 1 ? '200' : '700'}
-            cropBoxHeight={this.state.action === 1 ? '200' : '700'}
-            uploadImageToAzure={this.uploadImageToAzure}
-          />
-        ) : null}
-
-        <div className="profileBox">
-          <div className="banner">
-            <div className="loader">
-              <img
-                src="../assets/img/svg-loaders/three-dots.svg"
-                width="50"
-                alt="loader"
-                style={
-                  this.state.loader2 === true
-                    ? { visibility: 'visible' }
-                    : { visibility: 'hidden' }
-                }
-              />
-            </div>
-
-            {!this.state.coverImage ? (
-              <img className="bannerImg" src="" alt="" />
-            ) : (
-              <img className="bannerImg" src={this.state.coverImage} alt="" />
-            )}
-
-            <div className="container">
-              <div className="profile-pic--wrapper aboveBanner">
-                <div className="profile-pic">
-                  {this.state.profileImage ? (
-                    <img
-                      src={this.state.profileImage}
-                      alt=""
-                      className="img-responsive"
-                    />
-                  ) : (
-                    <div className="pp-default">
-                      <span className="icon-user_default2" />
-                    </div>
-                  )}
-
-                  <div
-                    className="loader"
-                    style={
-                      this.state.loader1 === true
-                        ? { visibility: 'visible' }
-                        : { visibility: 'hidden' }
-                    }
-                  >
-                    <img
-                      src="../assets/img/svg-loaders/three-dots.svg"
-                      width="50"
-                      alt="loader"
-                    />
-                  </div>
-
-                  <div className="editProfile--wrapper">
-                    <div className="editProfile">
-                      <input
-                        type="file"
-                        onChange={this.handleImageChange.bind(this, 1)}
-                        accept="image/*"
-                        value=""
-                      />
-                      <span className="icon-camera icon" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="profile-info--wrapper">
-                <p className="pName">
-                  {this.state.firstName} {this.state.lastName}
-                </p>
-                {/* <Button className="btn btn-white with-icon ">
-                  <span class="icon-connect" />Connect
-                </Button> */}
-              </div>
-
-              <div className="custom-upload">
-                <input
-                  type="file"
-                  onChange={this.handleImageChange.bind(this, 2)}
-                  accept="image/*"
-                  value=""
-                />
-                <span className="icon-camera icon icon" /> Add Cover Photo
-              </div>
-            </div>
-          </div>
-          <div className="container main">
-            <div className="flex align-center justify-between mb-1 fullWidth">
-              <h3 className="hero-head flex-1 dashTxt">
-                Please select child from the list below to add information to
-                your child's profile. We suggest you add as many relevant
-                pictures, and videos as possible to create a rich compelling
-                narrative.
-              </h3>
-            </div>
-
-            <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
-              <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.viewSampleProfile}
-              >
-                View Sample Profile
-              </button>
-              {/* <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.addParentModel}
-              >
-                <span className="icon-plus" />
-                add parent
-              </button> */}
+      <div className="wrapper">
+       <Header {...this.props} />     
+        <div className="main-panel">   
+          <div className="w3-content main-panel1">   
+        
+         
+           
+            <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">            
               <button
                 className="btn btn-with-border with-icon smallBtn"
                 onClick={this.addStudentModel}
               >
                 <span className="icon-plus" />
-                add student
+                add HR
               </button>
             </div>
             {this.state.studentList &&

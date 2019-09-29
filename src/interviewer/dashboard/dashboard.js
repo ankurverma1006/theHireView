@@ -4,7 +4,7 @@ import Header from '../header/header';
 import { Modal, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import Slider from 'react-slick';
 import _ from 'lodash';
 import S3FileUpload from 'react-s3';
@@ -20,7 +20,8 @@ import {
   limitCharacter,
   SampleNextArrow,
   SamplePrevArrow,
-  getThumbImage
+  getThumbImage,
+  ZoomInAndOut
 } from '../../common/commonFunctions';
 import spikeViewApiService from '../../common/core/api/apiService';
 import CONSTANTS from '../../common/core/config/appConfig';
@@ -309,6 +310,12 @@ class Dashboard extends Component {
     return ( 
     
     <div className="wrapper">
+     <ToastContainer
+          autoClose={5000}
+          className="custom-toaster-main-cls"
+          toastClassName="custom-toaster-bg"
+          transition={ZoomInAndOut}
+        /> 
         <Header {...this.props} />     
           <div className="main-panel">          
         
@@ -318,20 +325,13 @@ class Dashboard extends Component {
           <div className="container main">
            
 
-            <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
+            {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
               <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
               >
                 View Sample Profile
-              </button>
-              {/* <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.addParentModel}
-              >
-                <span className="icon-plus" />
-                add parent
-              </button> */}
+              </button>             
               <button
                 className="btn btn-with-border with-icon smallBtn"
                 onClick={this.addStudentModel}
@@ -339,7 +339,7 @@ class Dashboard extends Component {
                 <span className="icon-plus" />
                 add student
               </button>
-            </div>
+            </div> */}
             {this.state.bookedSlotData && this.state.bookedSlotData.map(function(data, index) {
                 return (                 
                      

@@ -60,42 +60,6 @@ const config = {
 }
 var settings=null;
 
-// var settings = {
-//   dots: false,
-//   infinite: false,
-//   speed: 500,
-//   slidesToShow: 3,
-//   swipeToSlide: true,
-//   nextArrow: <SampleNextArrow props={this.props} />,
-//   prevArrow: <SamplePrevArrow props={this.props} />,
-//   responsive: [
-//     {
-//       breakpoint: 1024,
-//       settings: {
-//         slidesToShow: 3,
-//         slidesToScroll: 3,
-//         infinite: true,
-//         dots: true
-//       }
-//     },
-//     {
-//       breakpoint: 600,
-//       settings: {
-//         slidesToShow: 2,
-//         slidesToScroll: 2,
-//         initialSlide: 2
-//       }
-//     },
-//     {
-//       breakpoint: 480,
-//       settings: {
-//         slidesToShow: 1,
-//         slidesToScroll: 1
-//       }
-//     }
-//   ]
-// };
-
 const skills1=[
   {label:'Developer',value:1 },
   {label:'React Developer',value:2 }
@@ -238,9 +202,8 @@ class EditProfile extends Component {
       if (response.data.status === 'Success') {
         console.log(response.data);
          let skillsListData= this.state.skillsListData;
-         let skillsDetail = response.data.result[0];
-         console.log('skillsDetail',skillsDetail);
-         skillsListData= skillsDetail.skills
+         let skillsDetail = response.data.result[0];        
+         skillsListData=skillsDetail ? skillsDetail.skills: []
          this.setState({skillsListData,skillsDetail});
       }
     })
@@ -286,21 +249,24 @@ class EditProfile extends Component {
     spikeViewApiService('getUserSkillsById',{userId})
     .then(response => {     
       if (response.data.status === 'Success') {
-        console.log(response.data);       
+            
          let userProfile = response.data.result[0];       
-         let profileRole= userProfile.profileRole[0].profileRole;
-         let experience= userProfile.experienceInYear;
-         let mobileNo= userProfile.mobileNo;
-         let currentLocation= userProfile.currentLocation;
-         let videoLink = userProfile.videoLink;
-         this.setState({userProfile:userProfile,
-                    profileRole,
-                    experience,
-                    mobileNo,
-                    currentLocation,
-                    videoLink
-         }); 
-         this.setUserProfileData(userProfile);
+        if(userProfile){
+          let profileRole= userProfile.profileRole && userProfile.profileRole[0] && userProfile.profileRole[0].profileRole ?
+                                                          userProfile.profileRole[0].profileRole : [] ;
+          let experience= userProfile.experienceInYear;
+          let mobileNo= userProfile.mobileNo;
+          let currentLocation= userProfile.currentLocation;
+          let videoLink = userProfile.videoLink;
+          this.setState({userProfile:userProfile,
+                      profileRole,
+                      experience,
+                      mobileNo,
+                      currentLocation,
+                      videoLink
+          }); 
+          this.setUserProfileData(userProfile);
+        }         
       }
     })
     .catch(err => {
@@ -858,7 +824,7 @@ class EditProfile extends Component {
 
     {/* Education */}
     <div className="w3-container w3-card w3-white w3-margin-bottom">
-    <h2 className="w3-text-grey">Education</h2>
+    {/* <h2 className="w3-text-grey">Education</h2> */}
               <div className="centerButton">                        
                 <Button
                   bsStyle="primary no-bold no-round mr-1"
@@ -925,7 +891,7 @@ class EditProfile extends Component {
                               ) : (
               '')}
               </div>
-      <h2 className="w3-text-grey">Work Experience</h2>
+      {/* <h2 className="w3-text-grey">Work Experience</h2> */}
          {this.state.employmentListData && this.state.employmentListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.designation} / {data.organisation}</b>
@@ -967,7 +933,7 @@ class EditProfile extends Component {
                           '')}
               </div>                      
 
-      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2>
+      {/* <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2> */}
          {this.state.skillsListData && this.state.skillsListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.skillName} / {data.rating}</b>
@@ -1007,7 +973,8 @@ class EditProfile extends Component {
                         '')}
               </div>                      
 
-      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2>
+      {/* <h2 className="w3-text-grey">
+      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2> */}
          {this.state.projectListData && this.state.projectListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.projectName} / {data.associatedWith}</b>
@@ -1054,7 +1021,9 @@ class EditProfile extends Component {
               </div>                    
 
       
-            <div ><span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span>
+            <div>
+              {/* <span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span> */}
+                                      
                                       <span class="edit icon" tabindex="0"><a onClick={this.editCareerProfileComponent.bind(this,this.state.careerProfileListData)}>
                                       <span className="pe-7s-pen" />
                                           </a></span>

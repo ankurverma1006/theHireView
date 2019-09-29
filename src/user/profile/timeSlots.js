@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import Slider from 'react-slick';
 import _ from 'lodash';
 
@@ -42,7 +42,7 @@ import {
   limitCharacter,
   SampleNextArrow,
   SamplePrevArrow,
-  getThumbImage
+  getThumbImage,ZoomInAndOut
 } from '../../common/commonFunctions';
 import spikeViewApiService from '../../common/core/api/apiService';
 import CONSTANTS from '../../common/core/config/appConfig';
@@ -157,6 +157,12 @@ class TimeSlots extends Component {
     let _this= this;
     return (
       <div className="wrapper">
+       <ToastContainer
+          autoClose={5000}
+          className="custom-toaster-main-cls"
+          toastClassName="custom-toaster-bg"
+          transition={ZoomInAndOut}
+        /> 
       <Header {...this.props} />     
       <div className="main-panel">   
       <div className="">

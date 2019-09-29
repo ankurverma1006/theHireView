@@ -37,18 +37,18 @@ class Header extends Component {
   render() {
     return (
     <Navbar fluid={true}>
-      <Navbar.Header>
+      {/* <Navbar.Header>
         <button type="button" className="navbar-toggle" data-toggle="collapse">
           <span className="sr-only">Toggle navigation</span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
           <span className="icon-bar"></span>
         </button>
-      </Navbar.Header>
+      </Navbar.Header> */}
 
       <Navbar.Collapse>
 
-        <Nav>
+        {/* <Nav>
           <NavItem><i className="fa fa-dashboard"></i></NavItem>
           <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
             <MenuItem>Action</MenuItem>
@@ -57,23 +57,22 @@ class Header extends Component {
             <MenuItem divider />
             <MenuItem>Separated link</MenuItem>
           </NavDropdown>
-        </Nav>
+        </Nav> */}
         <div className="separator"></div>
-        <Navbar.Form pullLeft>
+        {this.props.user && this.props.user.roleId == 4 ? <Navbar.Form pullLeft>
           <FormGroup>
-            <span className="input-group-addon"><i className="fa fa-search"></i></span>
-            <FormControl type="text" placeholder="Type to search" />
+            <span className="input-group-addon"> <Link to="/admin/candidate">Admin</Link></span>           
           </FormGroup>
-        </Navbar.Form>
+        </Navbar.Form> :null}
         <Nav pullRight>
-          <NavItem> <Link to="/interviewer/timeSlots">Time Slot </Link></NavItem>
+          {/* <NavItem> <Link to="/interviewer/timeSlots">Time Slot </Link></NavItem>
           <NavDropdown title="Dropdown" id="right-nav-bar">
             <MenuItem>Action</MenuItem>
             <MenuItem>Another action</MenuItem>
             <MenuItem>Something else here</MenuItem>
             <MenuItem divider />
             <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
+          </NavDropdown> */}
           <NavItem onClick={this.logout}>Log out</NavItem>
         </Nav>
       </Navbar.Collapse>

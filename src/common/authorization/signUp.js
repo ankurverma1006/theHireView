@@ -102,48 +102,10 @@ class Signup extends Component {
       'email.email': validationMessages.email.invalid
     };
 
-    if (parseInt(type, 10) === 3) {
-      //elementObject.parentFirstName = ['regex:' + regExpressions.alphaOnly];
-      // elementObject.year = 'required';
-      // elementObject.month = 'required';
-      // elementObject.day = 'required';
-
-      // // messageObject['regex.parentFirstName'] =
-      // //   validationMessages.parentName.alphaOnly;
-
-      // messageObject['required.year'] = validationMessages.DOBYear.required;
-
-      // messageObject['required.month'] = validationMessages.DOBMonth.required;
-
-      // messageObject['required.day'] = validationMessages.DOBDay.required;
+    if (parseInt(type, 10) === 3) {     
     }
 
-    if (parseInt(type, 10) === 2) {
-      elementObject.parentEmail = 'required|email';
-      // elementObject.parentFirstName = [
-      //   'required',
-      //   'regex:' + regExpressions.alphaOnly
-      // ];
-      // elementObject.parentLastName = [
-      //   'required',
-      //   'regex:' + regExpressions.alphaOnly
-      // ];
-      // messageObject['required.parentEmail'] =
-      //   validationMessages.parentEmail.required;
-
-      // messageObject['email.parentEmail'] = validationMessages.email.invalid;
-
-      // messageObject['required.parentFirstName'] =
-      //   validationMessages.parentFirstName.required;
-
-      // messageObject['regex.parentFirstName'] =
-      //   validationMessages.parentFirstName.alphaOnly;
-
-      // messageObject['required.parentLastName'] =
-      //   validationMessages.parentLastName.required;
-
-      // messageObject['regex.parentLastName'] =
-      //   validationMessages.parentLastName.alphaOnly;
+    if (parseInt(type, 10) === 2) {    
     }
     this.validatorTypes = strategy.createSchema(elementObject, messageObject);
   }
@@ -184,42 +146,6 @@ class Signup extends Component {
     } catch (error) {}
   }
 
-  // handleDate = birthDate => {
-  //   let bDate = moment(birthDate).format('MM-DD-YYYY');
-  //   console.log(bDate);
-  //   this.setState({ birthDate, isOpen: false }, () => {
-  //     this.setDatePickerPlaceHolder();
-  //   });
-  //   //Parent Email Blank In case of greater than 13
-  //   let role = this.state.roleId;
-  //   let age = this.calculateAgeWithDate(birthDate);
-  //   if (role === 1) {
-  //     if (age < 14) {
-  //       this.validatorTypes.rules['parentEmail'] = 'required|email';
-  //       this.validatorTypes.messages['required.parentEmail'] =
-  //         'Please enter parent email address';
-  //       this.validatorTypes.messages['email.parentEmail'] =
-  //         'Please enter a valid parent email address';
-
-  //       this.validatorTypes.rules['parentFirstName'] =
-  //         'required|regex:' + regExpressions.alphaOnly;
-  //       this.validatorTypes.messages['required.parentFirstName'] =
-  //         validationMessages.parentName.required;
-  //       this.validatorTypes.messages['regex.parentFirstName'] =
-  //         validationMessages.parentName.alphaOnly;
-  //     } else {
-  //       this.validatorTypes.rules['parentEmail'] = 'email';
-  //       this.validatorTypes.messages['required.parentEmail'] = '';
-  //       this.validatorTypes.messages['email.parentEmail'] =
-  //         'Please enter a valid parent email address';
-
-  //       this.validatorTypes.rules['parentFirstName'] =
-  //         'regex:' + regExpressions.alphaOnly;
-  //       this.validatorTypes.messages['required.parentFirstName'] = '';
-  //     }
-  //   }
-  // };
-
   submitData = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -228,34 +154,19 @@ class Signup extends Component {
   };
 
   validateData = () => {
-    let self = this;
-    console.log('validateData');
+    let self = this;   
     this.props.validate(function(error) {
       if (!error) {
         var email = self.state.email
           ? self.state.email.toLowerCase().trim()
-          : '';
-       
-        // if (email === parentEmail) {
-        //   showErrorToast("Parent and Student's email address should be unique");
-        // } else {
+          : '';       
+        
           self.setState({ isLoading: true });
           self.handleSubmit();
         }      
     });
   };
-
-  // //Age  calculate Function
-  // calculateAgeWithDate(value) {
-  //   let dob = moment(value).format('LLLL');
-  //   // let current = Math.floor(Date.now() / 1000);
-  //   var today = new Date();
-  //   var birthDate = new Date(dob);
-  //   var age = today.getFullYear() - birthDate.getFullYear();
-  //   console.log('age : ', age);
-  //   return age;
-  // }
-
+ 
   handleSelect = eventKey => {
     if (eventKey !== this.state.roleId) {
       this.setState({
@@ -289,24 +200,10 @@ class Signup extends Component {
     let firstName = this.state.firstName.trim();
     let lastName = this.state.lastName.trim();
     let email = this.state.email.toLowerCase().trim();
-    let roleId = this.state.roleId;
-    // let day = this.state.day !== '' ? this.state.day : '';
-    // let month = this.state.month !== '' ? Number(this.state.month) : '';
-    // let year = this.state.year !== '' ? this.state.year : '';
-    // let dob = '';
+    let roleId = this.state.roleId;   
 
-    // if (day && month >= 0 && year) {
-    //   dob = new Date(year, month, day);
-    //   dob = dob.valueOf();
-    // }
-
-    let self = this;
-    
-      // let parentEmail = self.state.parentEmail.toLowerCase().trim();
-      // let parentFirstName = this.state.parentFirstName.trim();
-      // let parentLastName = this.state.parentLastName
-      //   ? this.state.parentLastName.trim()
-      //   : '';
+    let self = this;    
+     
       let data = {
         firstName,
         lastName,
@@ -329,103 +226,12 @@ class Signup extends Component {
         .catch(err => {
           self.setState({ isLoading: false });
           console.log(err);
-        });
-    
+        });  
 
   }
+  
 
-  selectDate(type, value) {
-    if (type === 'year') {
-      this.setState({ year: value }, () => this.checkAge());
-    }
-    if (type === 'month') {
-      this.setState({ month: value }, () => this.checkAge());
-    }
-    if (type === 'day') {
-      this.setState({ day: value }, () => this.checkAge());
-      // console.log(value);
-      // console.log(this.state.year);
-      // console.log(moment().format('YYYY'));
-      // console.log(moment().format('D'));
-      // if (
-      //   value > moment().format('D') &&
-      //   this.state.year <= moment().format('YYYY')
-      // ) {
-      //   showErrorToast('Please select valid day');
-      //   this.setState({ day: '' });
-      // } else {
-      //   this.setState({ day: value }, () => this.checkAge());
-      // }
-    }
-  }
-
-  checkAge() {
-    if (this.state.year && this.state.month && this.state.day) {
-      let day = this.state.day;
-      let month = Number(this.state.month);
-      console.log(month);
-      let year = this.state.year;
-      let birthDate = new Date(year, month, day);
-      var today = new Date();
-
-      if (birthDate > today) {
-        showErrorToast('Date of birth should be less than future date');
-        this.setState({
-          day: '',
-          month: '',
-          year: ''
-        });
-      }
-
-      let age = today.getFullYear() - birthDate.getFullYear();
-      if (age <= 13) {
-        this.setState({
-          parentField: true
-        });
-        this.validatorTypes.rules['parentEmail'] = 'required|email';
-        this.validatorTypes.messages['required.parentEmail'] =
-          'Please enter parent email address';
-        this.validatorTypes.messages['email.parentEmail'] =
-          'Please enter a valid parent email address';
-
-        this.validatorTypes.rules['parentFirstName'] =
-          'required|regex:' + regExpressions.alphaOnly;
-        this.validatorTypes.messages['required.parentFirstName'] =
-          validationMessages.parentName.required;
-        this.validatorTypes.messages['regex.parentFirstName'] =
-          validationMessages.parentName.alphaOnly;
-
-        this.validatorTypes.rules['parentLastName'] =
-          'required|regex:' + regExpressions.alphaOnly;
-
-        this.validatorTypes.messages['required.parentLastName'] =
-          validationMessages.parentLName.required;
-
-        this.validatorTypes.messages['regex.parentLastName'] =
-          validationMessages.parentLName.alphaOnly;
-      } else {
-        this.setState({
-          parentField: false,
-          parentFirstName: '',
-          parentEmail: ''
-        });
-        this.validatorTypes.rules['parentEmail'] = 'email';
-        this.validatorTypes.messages['required.parentEmail'] = '';
-        this.validatorTypes.messages['email.parentEmail'] =
-          'Please enter a valid parent email address';
-
-        this.validatorTypes.rules['parentFirstName'] =
-          'regex:' + regExpressions.alphaOnly;
-        this.validatorTypes.messages['required.parentFirstName'] = '';
-        this.validatorTypes.messages['regex.parentFirstName'] = '';
-
-        this.validatorTypes.rules['parentLastName'] =
-          'regex:' + regExpressions.alphaOnly;
-        this.validatorTypes.messages['required.parentLastName'] = '';
-        this.validatorTypes.messages['regex.parentLastName'] = '';
-      }
-    }
-  }
+  
 
   render() {
     const { isLoading } = this.state;

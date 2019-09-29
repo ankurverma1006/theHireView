@@ -14,7 +14,7 @@ import {
   decrypt,
   getIPAddress,
   ZoomInAndOut,
-  renderMessage
+  renderMessage,showErrorToast
 } from '../../common/commonFunctions';
 import cube from '../../common/commonFunctions';
 import {
@@ -260,56 +260,7 @@ class Login extends Component {
       password,
       deviceId
     };
-
-    // this.props
-    //   .actionUserLogin(data)
-    //   .then(response => {
-    //     if (response.payload && response.payload.data.status === 'Success') {
-    //       if (
-    //         self.state.matchParam.recommendationId &&
-    //         response.payload.data.result.userId ===
-    //           parseInt(self.state.matchParam.userId, 10)
-    //       ) {
-    //         self.props.history.push({
-    //           pathname: '/student/recommendationrequest',
-    //           state: {
-    //             requestRecommendedId: self.state.matchParam.recommendationId,
-    //             userId: self.state.matchParam.userId
-    //           }
-    //         });
-    //       } else if (url.indexOf('/previewprofile/') >= 0) {
-    //         self.props.history.push({
-    //           pathname: '/student/previewprofile',
-    //           state: { sharedId: self.state.matchParam.id }
-    //         });
-    //       } else if (url.indexOf('/joingroup') >= 0) {
-    //         self.props.history.push({
-    //           pathname: '/student/groupListAll',
-    //           state: {
-    //             groupId: groupId,
-    //             link: 'joingroup'
-    //           }
-    //         });
-    //       } else {
-    //         self.setState({ isLoading: false });
-    //         const userResponse = response.payload.data.result;
-    //         if (userResponse && userResponse.token) {
-    //           if (userResponse.roleId === 1) {
-    //             self.props.history.push({
-    //               pathname: '/student/profile',
-    //               state: { pass: password }
-    //             });
-    //           } else if (userResponse.roleId === 2)
-    //             self.props.history.push({
-    //               pathname: '/parent/dashboard',
-    //               state: { pass: password }
-    //             });
-    //         }
-    //       }
-    //     } else {
-    //       self.setState({ isLoading: false, password: '' });
-    //     }
-    //   })
+ 
     this.props
     .actionUserLogin(data)
     .then(response => {
@@ -319,10 +270,9 @@ class Login extends Component {
           const userResponse = response.payload.data.result;
           if (userResponse && userResponse.token) {
             if (userResponse.roleId === 1)
-              self.props.history.push('/user/dashboard');
-            //&&                userResponse.students.length === 1
+              self.props.history.push('/user/profile');          
             else if (userResponse.roleId === 2)
-              self.props.history.push('/interviewer/dashboard');
+              self.props.history.push('/interviewer/interviewerProfile');
               else if (userResponse.roleId === 3)
               self.props.history.push('/recruiter/jobDesription');
               else if (userResponse.roleId === 4)
@@ -346,6 +296,12 @@ class Login extends Component {
     return (
 <div>   <div className="wrapper">
         
+<ToastContainer
+          autoClose={5000}
+          className="custom-toaster-main-cls"
+          toastClassName="custom-toaster-bg"
+          transition={ZoomInAndOut}
+        /> 
           <div className="main-panel">   
      
       <div className="login_card">
@@ -441,116 +397,7 @@ class Login extends Component {
       </div>
     </div>
     </div>
-    </div>
-       <div>
-          {/* <a href="https://testflight.apple.com/join/7xaw03JI" className="app-btn">
-            <img onerror="this.style.opacity='0'" src="../assets/img/App-Store.png" />
-          </a>
-          <a href="https://drive.google.com/file/d/15KFJVR8nIb5hSV7e-SGyXY_Od4GdRZYC/view?usp=sharing" className="app-btn">
-            <img onerror="this.style.opacity='0'" src="../assets/img/Play-Store.png" />
-          </a> */}
-        </div>
-        {/* <Sidebar /> */}
-        {/* <ToastContainer
-          autoClose={150000}
-          className="custom-toaster-main-cls"
-          toastClassName="custom-toaster-bg"
-          transition={ZoomInAndOut}
-        /> */}
-        {/* <div className="form-content">
-          <div className="centeredBox p-6">
-            <Nav bsStyle="tabs" activeKey={1}>
-              <NavItem eventKey={1}>LOGIN</NavItem>
-              <NavItem
-                eventKey={2}
-                onClick={() =>
-                  this.props.history.push({
-                    pathname: '/signup',
-                    state: {
-                      eventKey: 2
-                    }
-                  })
-                }
-              >
-                Interviewer SIGN UP
-              </NavItem>
-              <NavItem
-                eventKey={1}
-                onClick={() =>
-                  this.props.history.push({
-                    pathname: '/signup',
-                    state: {
-                      eventKey: 1
-                    }
-                  })
-                }
-              >
-                USER SIGN UP
-              </NavItem>
-              <NavItem
-                  eventKey={4}
-                  onClick={() => this.props.history.push('/hrsignup')}
-                >
-                  HR SIGN UP
-                </NavItem>
-            </Nav>
-
-            <form>
-              <FormGroup className={this.getClasses('email')}>
-                <InputGroup>
-                  <InputGroup.Addon>
-                    <span className="icon-email" />
-                  </InputGroup.Addon>
-                  <FormControl
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </InputGroup>
-                {renderMessage(this.props.getValidationMessages('email'))}
-              </FormGroup>
-
-              <FormGroup className={this.getClasses('password')}>
-                <InputGroup>
-                  <InputGroup.Addon>
-                    <span className="icon-password" />
-                  </InputGroup.Addon>
-                  <FormControl
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    onKeyPress={this.submitData}
-                    maxLength="20"
-                  />
-                </InputGroup>
-                {renderMessage(this.props.getValidationMessages('password'))}
-              </FormGroup>
-
-              <Link to="/forgot" className="forgotPass">
-                Forgot Password?
-              </Link>
-              <FormGroup>
-                <Button
-                  bsStyle="primary"
-                  className="centeredBtn btn-lg"
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.validateData : null}
-                >
-                  {isLoading ? 'Checking Credentials...' : 'Sign In'}
-                </Button>
-              </FormGroup>
-              <a style={{position :'absolute',right:'65px',bottom: '10px'}} href="https://spikeviewmediastorage.blob.core.windows.net/spikeview-media-production/sv_1/PrivacyPolicy.html" target="_blank">
-           Terms and Condition
-        </a>
-            </form>
-          </div>
-        </div>        */}
+    </div>      
       </div>
     );
   }

@@ -226,8 +226,7 @@ class AddJobDescription extends Component {
     .then(response => {     
       if (response.data.status === 'Success') {
          let jobDescriptionListData= this.state.jobDescriptionListData;
-         jobDescriptionListData= response.data.resourceData[0];
-         console.log(response.data.resourceData[0]);
+         jobDescriptionListData= response.data.result[0];         
          this.setState({jobDescriptionListData: jobDescriptionListData});
       }
     })

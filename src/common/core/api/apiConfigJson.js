@@ -11,6 +11,17 @@ export default {
     showErrorMessage: true
   },
 
+  updateUserStatus: {
+    url: '/ui/user/updateUserStatus',
+    method: 'PUT',
+    data: {
+      userId: '',
+      isActive: ''
+    },
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
   signupUser: {
     url: 'app/signup',
     method: 'POST',
@@ -537,8 +548,8 @@ export default {
   },
 
   deleteTimeSlotByInterviewer : {
-    url: '/ui/timeSlot?slotId=:slotId',
-    method: 'DELETE',
+    url: '/ui/deleteTimeSlot?slotId=:slotId',
+    method: 'GET',
     data: {     
     },
     showResultMessage: false,

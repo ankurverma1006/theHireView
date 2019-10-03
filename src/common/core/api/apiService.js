@@ -7,11 +7,12 @@ import {
   getAPIURL,
   getLocalStorage
 } from '../../commonFunctions';
+import { get } from 'http';
 
 let apiFailCounter = 0;
 
 axios.defaults.baseURL =
-  getAPIURL().httpServer + getAPIURL().APIURL + ':' + getAPIURL().APIPort;
+  getAPIURL().httpServer + getAPIURL().APIURL + ":" + getAPIURL().APIPort;
 
 axios.interceptors.request.use(
   function(config) {

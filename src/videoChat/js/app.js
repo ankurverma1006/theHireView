@@ -696,7 +696,7 @@ if(this.props.user.roleId == 2){
 
   
    // this.stopRecording(1);
-    this.state.recordVideo.stopRecording();
+  //  this.state.recordVideo.stopRecording();
     this.booleanStop = true;
 //     this.state.recordVideo.stopRecording(() => {
 //       let params = {

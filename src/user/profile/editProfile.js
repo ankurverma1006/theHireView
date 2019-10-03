@@ -824,8 +824,8 @@ class EditProfile extends Component {
 
     {/* Education */}
     <div className="w3-container w3-card w3-white w3-margin-bottom">
-    {/* <h2 className="w3-text-grey">Education</h2> */}
-              <div className="centerButton">                        
+
+    <div className="centerButton">                        
                 <Button
                   bsStyle="primary no-bold no-round mr-1"
                   className="no-bold no-round"
@@ -850,6 +850,8 @@ class EditProfile extends Component {
               '')}
               </div>
      
+              <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-text-teal"></i></h2> 
+              
          {this.state.employmentListDeducationListDataata && this.state.educationListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b></b>
@@ -890,8 +892,8 @@ class EditProfile extends Component {
                                 />
                               ) : (
               '')}
-              </div>
-      {/* <h2 className="w3-text-grey">Work Experience</h2> */}
+              </div>    
+       <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></h2> 
          {this.state.employmentListData && this.state.employmentListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.designation} / {data.organisation}</b>
@@ -933,7 +935,7 @@ class EditProfile extends Component {
                           '')}
               </div>                      
 
-      {/* <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2> */}
+       <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></h2> 
          {this.state.skillsListData && this.state.skillsListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.skillName} / {data.rating}</b>
@@ -973,8 +975,8 @@ class EditProfile extends Component {
                         '')}
               </div>                      
 
-      {/* <h2 className="w3-text-grey">
-      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2> */}
+       <h2 className="w3-text-grey">
+      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></h2>
          {this.state.projectListData && this.state.projectListData.map((data, index) => (                          
               <div className="w3-container">                        
                             <h5 className="w3-opacity"><b>{data.projectName} / {data.associatedWith}</b>
@@ -1022,7 +1024,7 @@ class EditProfile extends Component {
 
       
             <div>
-              {/* <span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span> */}
+              <span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></span>
                                       
                                       <span class="edit icon" tabindex="0"><a onClick={this.editCareerProfileComponent.bind(this,this.state.careerProfileListData)}>
                                       <span className="pe-7s-pen" />

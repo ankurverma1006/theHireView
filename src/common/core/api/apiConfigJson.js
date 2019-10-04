@@ -658,6 +658,15 @@ export default {
     showErrorMessage: false
   },
 
+  getUserListForHR : {
+    url: '/ui/getListForHR?jobId=:jobId',
+    method: 'GET',
+    data: {    
+    },
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
 
 
 };

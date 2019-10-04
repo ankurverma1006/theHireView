@@ -1402,7 +1402,8 @@ input[type='file'] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  height: auto; }
 
 section {
   border-bottom: 1px solid #d4d4da;
@@ -13637,13 +13638,28 @@ body {
   -moz-box-sizing: border-box;
 }
 
-.login-card input[type=email], input[type=password] {
+.login-card input[type=email]{
   height: 44px;
   font-size: 16px;
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
   background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.login-card input[type=password] {
+  height: 44px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fafafa;
   border: 1px solid #d9d9d9;
   border-top: 1px solid #c0c0c0;
   /* border-radius: 2px; */
@@ -13729,7 +13745,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  height: auto; }
 
 .editProfile--wrapper {
   display: flex;

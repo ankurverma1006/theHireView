@@ -116,24 +116,8 @@ class JobDescription extends Component {
     if(user){
       let userId =user.userId;       
       this.setState({userId: userId,user:user,roleId: user.roleId});
-    }
-    this.getJobDescriptionDetails(user.userId);   
-    document.body.classList.add('light-theme');
-    document.body.classList.add('absoluteHeader');
-    document.body.classList.remove('home');
-    document.body.classList.remove('fixedHeader');
-  }
-
-  componentWillReceiveProps(res) {
-    // this.setProfileData(res.user);
-    // this.setAchievementData(res.student.achievementData);
-    // this.renderRecommendationsByUserId();
-  }
-
-  componentDidMount() {  
-    if (this.props.student.achievementData) {
-      console.log(this.props.student.achievementData);
-    }
+      this.getJobDescriptionDetails(userId);   
+    }    
   }
 
   getJobDescriptionDetails(userId){
@@ -289,6 +273,7 @@ class JobDescription extends Component {
                                   jobDescriptionDetail={
                                     this.state.jobDescriptionDetail
                                   }
+                                  userData={this.state.user}
                                 />
                               ) : (
                                 '')}
@@ -320,7 +305,7 @@ class JobDescription extends Component {
                   <td className="text-right">{data.maxExperience}</td>
                   <td className="text-right">
                   <Button onClick={this.tagUserForJob.bind(this,data)}>
-                          {this.state.roleId==4 ? "Go For Map" : "View Student"}
+                          {this.props.user.roleId==4 ? "Go For Map" : "View Student"}
                    </Button>
                   </td>
                 </tr>

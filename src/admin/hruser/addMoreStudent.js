@@ -196,10 +196,12 @@ class AddMoreStudent extends Component {
       lastName,
       email,
       roleId,   
+      companyId,
+      companyName,
       createdBy      
     };
 
-    spikeViewApiService('signuphr', data)
+    spikeViewApiService('signupHR', data)
       .then(response1 => {        
             self.setState({ isLoading: false });   
                         

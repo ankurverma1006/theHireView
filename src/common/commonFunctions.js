@@ -156,47 +156,9 @@ export function getAPIURL() {
     httpServer: '',
     APIPort: ''
   };
-  switch (window.location.hostname) {
-    case '104.42.51.157':
-      returnUrl.APIURL = '104.42.51.157';
-      returnUrl.azureContainer = 'spikeview-media-production';
-      returnUrl.azureThumbContainer = 'spikeview-media-production-thumbnails';
-      returnUrl.httpServer = 'https://';
-      //returnUrl.APIPort = '3002';
-      break;
+  switch (window.location.hostname) {  
 
-    case '40.83.210.243':
-      returnUrl.APIURL = '40.83.210.243';
-      returnUrl.azureContainer = 'spikeview-media-production';
-      returnUrl.azureThumbContainer = 'spikeview-media-production-thumbnails';
-      returnUrl.httpServer = 'https://';
-     // returnUrl.APIPort = '3002';
-      break;
-    // case 'spikeview.com':
-    //   returnUrl.APIURL = 'spikeview.com';
-    //   returnUrl.azureContainer = 'spikeview-media-production';
-    //   returnUrl.azureThumbContainer = 'spikeview-media-production-thumbnails';
-    //   returnUrl.httpServer = 'http://';
-    //   returnUrl.APIPort = '3002';
-    //   break;
-
-    case 'app.spikeview.com':
-      returnUrl.APIURL = 'app.spikeview.com';
-      returnUrl.azureContainer = 'spikeview-media-production';
-      returnUrl.azureThumbContainer = 'spikeview-media-production-thumbnails';
-      returnUrl.httpServer = 'https://';
-      returnUrl.APIPort = '3002';
-      break;
-
-      case 'spikeview.com':
-      returnUrl.APIURL = 'spikeview.com';
-      returnUrl.azureContainer = 'spikeview-media-production';
-      returnUrl.azureThumbContainer = 'spikeview-media-production-thumbnails';
-      returnUrl.httpServer = 'https://';
- //     returnUrl.APIPort = '3002';
-      break;   
-
-    case '103.76.253.131':
+    case '133.76.253.131':
       returnUrl.APIURL = '103.76.253.131';
       returnUrl.azureContainer = 'spikeview-media-development';
       returnUrl.azureThumbContainer = 'spikeview-media-development-thumbnails';

@@ -36,7 +36,8 @@ import {
   renderMessage,
   isValidURL,
   ZoomInAndOut,
-  generateTimestamp
+  generateTimestamp,
+  showSuccessToast
 } from '../../common/commonFunctions';
 import spikeViewApiService from '../../common/core/api/apiService';
 //import MediaList from '../mediaList';
@@ -213,7 +214,8 @@ class AddJobDescription extends Component {
 
   componentDidMount() {
     // if(this.props.user){
-     let userId = this.props.user.userId;
+     let userId = this.props.userData.userId;
+     this.setState({userId:userId})
     // }  
     console.log('this.props.employmentDetail ',this.props.jobDescriptionDetail);
     this.setJobDescriptionData(this.props.jobDescriptionDetail);
@@ -329,7 +331,7 @@ class AddJobDescription extends Component {
    let title = this.state.profileRole && this.state.profileRole.label !== CONSTANTS.OTHER? this.state.profileRole.label: this.state.title;
    let titleId= this.state.profileRole && this.state.profileRole.label !== CONSTANTS.OTHER ? this.state.profileRole.value: null
    
-    let userId = this.props.user.userId;
+    let userId = this.state.userId;
     let postedBy = this.props.user.userId;
     let jobDescId=  this.state.jobDescId;   
 
@@ -355,6 +357,7 @@ class AddJobDescription extends Component {
         .then(response => {
           if (response.data.status === 'Success') {      
             self.setState({ isLoading: false });
+            showSuccessToast('Job Description added');
             self.closeJobDescriptionModal('save');
           } 
         })
@@ -485,13 +488,11 @@ class AddJobDescription extends Component {
       <Form horizontal className="lightBgForm">
               <Col sm={10}> 
 
-              <FormGroup className={this.getClasses('profileRole')}>
-              <label className="form-label">select title</label>
-                <InputGroup>
-                  <InputGroup.Addon>
-                    <span className="icon-username" />
-                  </InputGroup.Addon>              
-                 
+               <FormGroup className={this.getClasses('profileRole')}>
+                  <Col componentClass={ControlLabel} sm={3}>
+                  select title
+                  </Col>
+                  <Col sm={9}>
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
                       <Select
@@ -502,10 +503,10 @@ class AddJobDescription extends Component {
                         options={this.state.profileRoleList}
                         placeholder="Select all the location that you used along the way"
                       />
-                    </div>                   
-                    </InputGroup>
+                    </div>
                     {renderMessage(this.props.getValidationMessages('profileRole'))}
-                </FormGroup>
+                  </Col>
+                </FormGroup>             
               {this.state.titleNotAvailable == true ?
                   <FormGroup
                       controlId="formControlsTextarea"

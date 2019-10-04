@@ -6,7 +6,7 @@ import PeerConnection from './PeerConnection';
 import MainWindow from './MainWindow';
 import CallWindow from './CallWindow';
 import CallModal from './CallModal';
-import { captureUserMedia, S3Upload } from './AppUtils';
+//import { captureUserMedia, S3Upload } from './AppUtils';
 import RecordRTC from 'recordrtc';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -120,17 +120,17 @@ class App extends Component {
     }
 
     componentWillMount(){
-      this.requestUserMedia();
+     // this.requestUserMedia();
       this.audioStreamInitialize();
     }
   
     requestUserMedia() {      
       console.log('requestUserMedia')
-      captureUserMedia((stream) => {
-        this.setState({ localSrc: stream});
-        this.setState({ peerSrc : stream});
-        console.log('setting state', this.state)
-      });
+    //   captureUserMedia((stream) => {
+    //     this.setState({ localSrc: stream});
+    //     this.setState({ peerSrc : stream});
+    //     console.log('setting state', this.state)
+    //   });
     }
 
     audioStreamInitialize() {
@@ -219,58 +219,58 @@ class App extends Component {
     //       });
 
      //  this.startRecording(isCaller);
-   navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true
-}).then(async function(stream) {
+//    navigator.mediaDevices.getUserMedia({
+//     video: true,
+//     audio: true
+// }).then(async function(stream) {
    
-    self.state.recordVideo = RecordRTC(stream, {     
+//     self.state.recordVideo = RecordRTC(stream, {     
   
 
-    // disable logs
-    disableLogs: true,
+//     // disable logs
+//     disableLogs: true,
    
-    // disable logs
-    disableLogs: true,
+//     // disable logs
+//     disableLogs: true,
  
-    // get intervals based blobs
-    // value in milliseconds
-    timeSlice: 150000,
-    ondataavailable: function(e) {
-    console.log('ondataavailable -- ');
+//     // get intervals based blobs
+//     // value in milliseconds
+//     timeSlice: 150000,
+//     ondataavailable: function(e) {
+//     console.log('ondataavailable -- ');
 
-      var normalArr = [];
-      /*
-          Here we push the stream data to an array for future use.
-      */
-      self.recordedChunks.push(e.data);
-      normalArr.push(e.data);
+//       var normalArr = [];
+//       /*
+//           Here we push the stream data to an array for future use.
+//       */
+//       self.recordedChunks.push(e.data);
+//       normalArr.push(e.data);
 
-      /*
-          here we create a blob from the stream data that we have received.
-      */
-      var blob = new Blob(normalArr, {
-          type: 'video/webm'
-      });                   
-  //    let size = bytesToSize(recorder.getBlob().size);
+//       /*
+//           here we create a blob from the stream data that we have received.
+//       */
+//       var blob = new Blob(normalArr, {
+//           type: 'video/webm'
+//       });                   
+//   //    let size = bytesToSize(recorder.getBlob().size);
 
-      if (self.recordedChunks.length == 1) {
-               console.log(blob.size);
+//       if (self.recordedChunks.length == 1) {
+//                console.log(blob.size);
 
 
-          self.startMultiUpload(blob, self.filename)
-      } else {
-          /*
-              self.incr is basically a part number.
-              Part number of part being uploaded. This is a positive integer between 1 and 10,000.
-          */
-          self.incr = self.incr + 1
-          self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
-      }}
-  });      
+//           self.startMultiUpload(blob, self.filename)
+//       } else {
+//           /*
+//               self.incr is basically a part number.
+//               Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+//           */
+//           self.incr = self.incr + 1
+//           self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
+//       }}
+//   });      
 
   
-});
+//});
   }
 
   startRecording(id) {

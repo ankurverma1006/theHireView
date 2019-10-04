@@ -119,30 +119,17 @@ class UserMapping extends Component {
     if(user){
       let userId =user.userId;       
       this.setState({userId: userId,user:user,roleId:user.roleId});
-    }
-    
+    }    
     let jobDetail= this.props.location.state.jobDetail;
     console.log(jobDetail);
     if(jobDetail){
-      this.getUserListForMapping(jobDetail.jobDescId);   
+      if(this.props.user.roleId == 4){
+        this.getUserListForMapping(jobDetail.jobDescId);  
+      }else{
+        this.getUserListForHR(jobDetail.jobDescId);  
+      }  
       this.setJobDescriptionData(jobDetail);   
     } 
-    document.body.classList.add('light-theme');
-    document.body.classList.add('absoluteHeader');
-    document.body.classList.remove('home');
-    document.body.classList.remove('fixedHeader');
-  }
-
-  componentWillReceiveProps(res) {
-    // this.setProfileData(res.user);
-    // this.setAchievementData(res.student.achievementData);
-    // this.renderRecommendationsByUserId();
-  }
-
-  componentDidMount() {  
-    if (this.props.student.achievementData) {
-      console.log(this.props.student.achievementData);
-    }
   }
 
   setJobDescriptionData(jobDescription){
@@ -170,6 +157,20 @@ class UserMapping extends Component {
     });
   }
 
+  getUserListForHR(jobId){
+    spikeViewApiService('getUserListForMapping',{jobId})
+    .then(response => {     
+      if (response.data.status === "Success") {
+         let jobDescriptionListData= this.state.jobDescriptionListData;
+         jobDescriptionListData= response.data.result;
+     
+         this.setState({jobDescriptionListData: jobDescriptionListData});
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
 
   handleSubmit = (data,action) => {
     let jobMapId=data.jobMapId;

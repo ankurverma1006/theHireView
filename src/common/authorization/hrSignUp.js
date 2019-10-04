@@ -181,8 +181,8 @@ class HRSignup extends Component {
       firstName: ['required', 'regex:' + regExpressions.alphaOnly],
       lastName: ['required', 'regex:' + regExpressions.alphaOnly],
       email: 'required|email',
-      newPassword: ['required', 'regex:' + regExpressions.passwordPattern],
-      confirmNewPassword: 'required|same:newPassword'
+  // //   newPassword: ['required', 'regex:' + regExpressions.passwordPattern],
+    //  confirmNewPassword: 'required|same:newPassword'
      
     };
 
@@ -193,53 +193,13 @@ class HRSignup extends Component {
       'regex.lastName': validationMessages.lastName.alphaOnly,
       'required.email': validationMessages.email.required,
       'email.email': validationMessages.email.invalid,
-      'required.newPassword': validationMessages.password.newPassword,
-      'regex.newPassword': validationMessages.password.passwordPattern,
-      'required.confirmNewPassword':
-        validationMessages.password.confirmNewPassword,
-      'same.confirmNewPassword': validationMessages.password.same
+ //     'required.newPassword': validationMessages.password.newPassword,
+ //     'regex.newPassword': validationMessages.password.passwordPattern,
+      // 'required.confirmNewPassword':
+      //   validationMessages.password.confirmNewPassword,
+      // 'same.confirmNewPassword': validationMessages.password.same
      
-    };
-
-    // Validation for student in case of invite
-    if (
-      (type === 1 && this.state.invite === CONSTANTS.INVITE_0) ||
-      this.state.invite === CONSTANTS.INVITE_1 ||
-      this.state.invite === CONSTANTS.INVITE_2 ||
-      this.state.invite === CONSTANTS.INVITE_3 ||
-      this.state.invite === CONSTANTS.INVITE_4
-    ) {
-      // elementObject.year = 'required';
-      // elementObject.month = 'required';
-      // elementObject.day = 'required';
-
-      // messageObject['required.year'] = validationMessages.DOBYear.required;
-      // messageObject['required.month'] = validationMessages.DOBMonth.required;
-      // messageObject['required.day'] = validationMessages.DOBDay.required;
-    }
-
-    // Validation for parent
-    if (type === 2 && this.state.invite === CONSTANTS.INVITE_4) {
-      // elementObject.year = 'required';
-      // elementObject.month = 'required';
-      // elementObject.day = 'required';
-      // elementObject.parentEmail = 'required|email';
-      // elementObject.parentFirstName = [
-      //   'required',
-      //   'regex:' + regExpressions.alphaOnly
-      // ];
-
-      // messageObject['required.year'] = validationMessages.DOBYear.required;
-      // messageObject['required.month'] = validationMessages.DOBMonth.required;
-      // messageObject['required.day'] = validationMessages.DOBDay.required;
-      // messageObject['required.parentEmail'] =
-      //   validationMessages.parentEmail.required;
-      // messageObject['email.parentEmail'] = validationMessages.email.invalid;
-      // messageObject['required.parentFirstName'] =
-      //   validationMessages.parentFirstName.required;
-      // messageObject['regex.parentFirstName'] =
-      //   validationMessages.parentFirstName.alphaOnly;
-    }
+    };   
     this.validatorTypes = strategy.createSchema(elementObject, messageObject);
   }
 
@@ -328,7 +288,7 @@ class HRSignup extends Component {
     let firstName = this.state.firstName.trim();
     let lastName = this.state.lastName.trim();
     let email = this.state.email.toLowerCase().trim();
-    let password = encrypt(this.state.newPassword.trim());
+ //   let password = encrypt(this.state.newPassword.trim());
     let roleId = 3;
     let userId = this.state.userId;
     let deviceId = this.state.deviceId;
@@ -342,16 +302,16 @@ class HRSignup extends Component {
         firstName,
         lastName,
         email,
-        password,
+  //      password,
       //  dob,
     //    parentEmail,
      //   parentFirstName,
      //   parentLastName,
         roleId,
         companyId,
-        companyName
+        companyName,
     //    invite,
-   //     userId
+         userId:''
       };
 
       console.log(data);
@@ -365,8 +325,7 @@ class HRSignup extends Component {
               self.state.invite === CONSTANTS.INVITE_3
             ) {
               let loginData = {
-                email,
-                password,
+                email,                
                 deviceId
               };
 
@@ -382,20 +341,8 @@ class HRSignup extends Component {
                     });
                     const userResponse = response.payload.data.result;
                     if (userResponse && userResponse.token) {
-                      if (userResponse.roleId === 1) {
-                        if (self.state.invite === CONSTANTS.INVITE_1) {
-                          self.props.history.push('/student/connections');
-                        }
-
-                        if (self.state.invite === CONSTANTS.INVITE_2) {
-                          self.props.history.push(
-                            '/student/recommendationrequest'
-                          );
-                        }
-
-                        if (self.state.invite === CONSTANTS.INVITE_3) {
-                          self.props.history.push('/student/previewprofile');
-                        }
+                      if (userResponse.roleId === 1) {                     
+                      
                       }
                     }
                   }
@@ -664,8 +611,7 @@ class HRSignup extends Component {
                   <FormControl
                     type="Email"
                     placeholder="Email"
-                    name="email"
-                    readOnly={readOnly}
+                    name="email"                    
                     value={this.state.email}
                     onChange={this.handleChange}
                     autoComplete="off"
@@ -675,7 +621,7 @@ class HRSignup extends Component {
                 {renderMessage(this.props.getValidationMessages('email'))}
               </FormGroup>
 
-              <FormGroup className={this.getClasses('newPassword')}>
+              {/* <FormGroup className={this.getClasses('newPassword')}>
                 <label className="form-label">Password</label>
               
                   <FormControl
@@ -706,7 +652,7 @@ class HRSignup extends Component {
                   this.props.getValidationMessages('confirmNewPassword')
                 )}
               </FormGroup>
-
+ */}
 
               <FormGroup>
                 <Button

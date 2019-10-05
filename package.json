@@ -103,8 +103,8 @@
     "sass-loader": "^6.0.6"
   },
   "scripts": {
-    "start": "cross-env NODE_PATH=./src node scripts/start.js",
-    "build": "cross-env NODE_PATH=./src node scripts/build.js",
+    "start": "npm start",
+    "build": "npm run build",
     "test": "cross-env NODE_PATH=./src node scripts/test.js --env=jsdom",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"

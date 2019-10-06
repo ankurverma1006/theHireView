@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.js": "/static/js/main.c00fcdd3.chunk.js",
+    "main.js.map": "/static/js/main.c00fcdd3.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.00a5f10a.js",
+    "runtime-main.js.map": "/static/js/runtime-main.00a5f10a.js.map",
+    "static/css/2.2e3bb2d9.chunk.css": "/static/css/2.2e3bb2d9.chunk.css",
+    "static/js/2.6b7bd207.chunk.js": "/static/js/2.6b7bd207.chunk.js",
+    "static/js/2.6b7bd207.chunk.js.map": "/static/js/2.6b7bd207.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.e1397d8c72b8fead0eb13531f206fee9.js": "/precache-manifest.e1397d8c72b8fead0eb13531f206fee9.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.2e3bb2d9.chunk.css.map": "/static/css/2.2e3bb2d9.chunk.css.map",
+    "static/media/default-img.PNG": "/static/media/default-img.619dd2bc.PNG",
+    "static/media/default_achievement.jpg": "/static/media/default_achievement.88af0f79.jpg",
+    "static/media/sample-profile.jpg": "/static/media/sample-profile.ea9153b2.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.00a5f10a.js",
+    "static/css/2.2e3bb2d9.chunk.css",
+    "static/js/2.6b7bd207.chunk.js",
+    "static/js/main.c00fcdd3.chunk.js"
+  ]
+}

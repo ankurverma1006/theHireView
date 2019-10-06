@@ -1,0 +1,33 @@
+/**
+ * InPlace-Editor classes defined here.
+ */
+export var ROOT = 'e-inplaceeditor';
+export var ROOT_TIP = 'e-inplaceeditor-tip';
+export var VALUE_WRAPPER = 'e-editable-value-wrapper';
+export var VALUE = 'e-editable-value';
+export var OVERLAY_ICON = 'e-editable-overlay-icon';
+export var TIP_TITLE = 'e-editable-tip-title';
+export var TITLE = 'e-editable-title';
+export var INLINE = 'e-editable-inline';
+export var POPUP = 'e-editable-popup';
+export var WRAPPER = 'e-editable-wrapper';
+export var LOADING = 'e-editable-loading';
+export var FORM = 'e-editable-form';
+export var CTRL_GROUP = 'e-component-group';
+export var INPUT = 'e-editable-component';
+export var BUTTONS = 'e-editable-action-buttons';
+export var EDITABLE_ERROR = 'e-editable-error';
+export var ELEMENTS = 'e-editable-elements';
+export var OPEN = 'e-editable-open';
+export var BTN_SAVE = 'e-btn-save';
+export var BTN_CANCEL = 'e-btn-cancel';
+export var RTE_SPIN_WRAP = 'e-rte-spin-wrap';
+export var CTRL_OVERLAY = 'e-control-overlay';
+export var DISABLE = 'e-disable';
+export var ICONS = 'e-icons';
+export var PRIMARY = 'e-primary';
+export var SHOW = 'e-show';
+export var HIDE = 'e-hide';
+export var RTL = 'e-rtl';
+export var ERROR = 'e-error';
+export var LOAD = 'e-loading';

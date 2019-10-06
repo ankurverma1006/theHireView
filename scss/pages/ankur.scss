@@ -1,0 +1,47 @@
+.bannerBox {
+
+position: initial;
+
+height: 310px;
+
+background: rgba(74, 144, 226, 0.8);
+}
+
+.textName {
+position: absolute;
+width: 234px;
+height: 25px;
+
+font-family: Cambria;
+font-size: 30px;
+line-height: 35px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+}
+
+.ankurNewBox {
+    position: absolute;
+    width: 960px;
+    height: 130px;
+    
+    background: rgba(234, 225, 225, 0.38);
+    border: 3px solid rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    /* Note: backdrop-filter has minimal browser support */
+    left: 333px;
+    border-radius: 8px;
+
+}
+
+.buttonAnkur {
+    position: absolute;
+width: 135px;
+height: 44px;
+left: 750px;
+
+background: rgba(186, 217, 98, 0.7);
+border-radius: 50px;
+}

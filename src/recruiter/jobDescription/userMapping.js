@@ -22,7 +22,7 @@ import ShowVideo from '../jobDescription/showVideo';
 
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
-import DownloadLink from "react-download-link";
+import DownloadLink from 'react-download-link';
 //import Img from '../../common/cropper/img';
 import {
   showErrorToast,
@@ -47,15 +47,13 @@ import {
 import achievementDefaultImage from '../../assets/img/default_achievement.jpg';
 import SpiderChart from '../../common/spiderChart/spiderChart';
 
-
 const config = {
   bucketName: 'ankurself',
-  dirName: 'photos', /* optional */
+  dirName: 'photos' /* optional */,
   region: 'ap-south-1', // Put your aws region here
   accessKeyId: 'AKIAJHHM3PCJ25PK6OWQ',
   secretAccessKey: 'fTo0CpSivV7OWo2TrFGNUaA5E6ST1pB9Pwnsp5HB'
-}
-
+};
 
 var settings = {
   dots: false,
@@ -63,8 +61,8 @@ var settings = {
   speed: 500,
   slidesToShow: 3,
   swipeToSlide: true,
-//  nextArrow: <SampleNextArrow props={this.props} />,
-//  prevArrow: <SamplePrevArrow props={this.props} />,
+  //  nextArrow: <SampleNextArrow props={this.props} />,
+  //  prevArrow: <SamplePrevArrow props={this.props} />,
   responsive: [
     {
       breakpoint: 1024,
@@ -96,133 +94,129 @@ var settings = {
 class UserMapping extends Component {
   constructor(props, context) {
     super(props);
-    this.state = {      
-      showJobDescriptionComponent: false,      
-      jobDescriptionDetail: {},        
-     
+    this.state = {
+      showJobDescriptionComponent: false,
+      jobDescriptionDetail: {},
+
       loader1: false,
-      loader2: false,      
+      loader2: false,
       jobDescriptionListData: [],
-      showVideoComponent: false,     
-      userData:{},     
-      showDropdown: false,     
-      isActive: 'true',     
+      showVideoComponent: false,
+      userData: {},
+      showDropdown: false,
+      isActive: 'true',
       contentEditable: false,
       editName: false,
       name: '',
       editTagLine: false
     };
-   /// this.textInput = React.createRef();    
+    /// this.textInput = React.createRef();
   }
 
   componentWillMount() {
-    let user= this.props.otherUser? this.props.otherUser: this.props.user;
-    if(user){
-      let userId =user.userId;       
-      this.setState({userId: userId,user:user,roleId:user.roleId});
-    }    
-    let jobDetail= this.props.location.state.jobDetail;
+    let user = this.props.otherUser ? this.props.otherUser : this.props.user;
+    if (user) {
+      let userId = user.userId;
+      this.setState({ userId: userId, user: user, roleId: user.roleId });
+    }
+    let jobDetail = this.props.location.state.jobDetail;
     console.log(jobDetail);
-    if(jobDetail){
-      if(this.props.user.roleId == 4){
-        this.getUserListForMapping(jobDetail.jobDescId);  
-      }else{
-        this.getUserListForHR(jobDetail.jobDescId);  
-      }  
-      this.setJobDescriptionData(jobDetail);   
-    } 
+    if (jobDetail) {
+      if (this.props.user.roleId == 4) {
+        this.getUserListForMapping(jobDetail.jobDescId);
+      } else {
+        this.getUserListForHR(jobDetail.jobDescId);
+      }
+      this.setJobDescriptionData(jobDetail);
+    }
   }
 
-  setJobDescriptionData(jobDescription){
-     this.setState({
-      jobDescription:jobDescription,
+  setJobDescriptionData(jobDescription) {
+    this.setState({
+      jobDescription: jobDescription,
       description: jobDescription.description,
       title: jobDescription.title,
-      jobId:jobDescription.jobDescId 
-
-     });
-  }
-
-  getUserListForMapping(jobId){
-    theRapidHireApiService('getUserListForMapping',{jobId})
-    .then(response => {     
-      if (response.data.status === "Success") {
-         let jobDescriptionListData= this.state.jobDescriptionListData;
-         jobDescriptionListData= response.data.result;
-     
-         this.setState({jobDescriptionListData: jobDescriptionListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
+      jobId: jobDescription.jobDescId
     });
   }
 
-  getUserListForHR(jobId){
-    theRapidHireApiService('getUserListForHR',{jobId})
-    .then(response => {     
-      if (response.data.status === "Success") {
-         let jobDescriptionListData= this.state.jobDescriptionListData;
-         jobDescriptionListData= response.data.result;
-     
-         this.setState({jobDescriptionListData: jobDescriptionListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getUserListForMapping(jobId) {
+    theRapidHireApiService('getUserListForMapping', { jobId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let jobDescriptionListData = this.state.jobDescriptionListData;
+          jobDescriptionListData = response.data.result;
+
+          this.setState({ jobDescriptionListData: jobDescriptionListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  handleSubmit = (data,action) => {
-    let jobMapId=data.jobMapId;
-    let jobId=this.state.jobId;
-    let candidateId=data.userId;
-    let hrId=this.state.userId;
-    let status= action;
-    let createdBy= this.props.user.userId;
+  getUserListForHR(jobId) {
+    theRapidHireApiService('getUserListForHR', { jobId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let jobDescriptionListData = this.state.jobDescriptionListData;
+          jobDescriptionListData = response.data.result;
 
-    let dataMap={
+          this.setState({ jobDescriptionListData: jobDescriptionListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  handleSubmit = (data, action) => {
+    let jobMapId = data.jobMapId;
+    let jobId = this.state.jobId;
+    let candidateId = data.userId;
+    let hrId = this.state.userId;
+    let status = action;
+    let createdBy = this.props.user.userId;
+
+    let dataMap = {
       jobMapId,
       jobId,
       candidateId,
       hrId,
       status,
-      createdBy        
-    }
-    
-    if(jobMapId!=="" || jobMapId!==null){
-        theRapidHireApiService('createJobMap',dataMap)
-        .then(response => {     
-          if (response.data.status === "Success") {
-            this.getUserListForMapping(this.state.jobId);   
+      createdBy
+    };
+
+    if (jobMapId !== '' || jobMapId !== null) {
+      theRapidHireApiService('createJobMap', dataMap)
+        .then(response => {
+          if (response.data.status === 'Success') {
+            this.getUserListForMapping(this.state.jobId);
             //  let jobDescriptionListData= this.state.jobDescriptionListData;
             //  jobDescriptionListData= response.data.result;
-        
+
             //  this.setState({jobDescriptionListData: jobDescriptionListData});
           }
         })
         .catch(err => {
           console.log(err);
         });
-    }else{
-      theRapidHireApiService('updateJobMap',dataMap)
-      .then(response => {     
-        if (response.data.status === "Success") {
-          this.getUserListForMapping(this.state.jobId);   
-          //  let jobDescriptionListData= this.state.jobDescriptionListData;
-          //  jobDescriptionListData= response.data.result;
-      
-          //  this.setState({jobDescriptionListData: jobDescriptionListData});
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      theRapidHireApiService('updateJobMap', dataMap)
+        .then(response => {
+          if (response.data.status === 'Success') {
+            this.getUserListForMapping(this.state.jobId);
+            //  let jobDescriptionListData= this.state.jobDescriptionListData;
+            //  jobDescriptionListData= response.data.result;
+
+            //  this.setState({jobDescriptionListData: jobDescriptionListData});
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-  }
-
-    
-
+  };
 
   contentEditable = () => {
     window.scrollTo(500, 0);
@@ -268,33 +262,34 @@ class UserMapping extends Component {
         name
       });
     }
-  };  
+  };
 
- 
-  showVideoComponent = index => {   
-    let jobDescriptionListData= this.state.jobDescriptionListData;
-    if(jobDescriptionListData[index])
-     jobDescriptionListData[index]['showVideoComponent']= jobDescriptionListData[index]['showVideoComponent'] ? !jobDescriptionListData[index]['showVideoComponent']: true;
+  showVideoComponent = index => {
+    let jobDescriptionListData = this.state.jobDescriptionListData;
+    if (jobDescriptionListData[index])
+      jobDescriptionListData[index][
+        'showVideoComponent'
+      ] = jobDescriptionListData[index]['showVideoComponent']
+        ? !jobDescriptionListData[index]['showVideoComponent']
+        : true;
     this.setState({
-      jobDescriptionListData: this.state.jobDescriptionListData   
-    }); 
+      jobDescriptionListData: this.state.jobDescriptionListData
+    });
   };
 
   editJobDescriptionComponent = jobDescriptionDetail => {
     console.log(jobDescriptionDetail);
     this.setState({
-      jobDescriptionDetail: jobDescriptionDetail ,
-      showJobDescriptionComponent: !this.state.showJobDescriptionComponent    
+      jobDescriptionDetail: jobDescriptionDetail,
+      showJobDescriptionComponent: !this.state.showJobDescriptionComponent
     });
-  }
-
- 
+  };
 
   getProfileData = () => {
     let userId = this.state.userId;
     this.props.actionGetStudentPersonalInfo(userId);
   };
-  
+
   generateSASToken() {
     theRapidHireApiService('getSASToken')
       .then(response => {
@@ -316,28 +311,28 @@ class UserMapping extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };  
+  };
 
-
-  showVideoHistory = data =>{
+  showVideoHistory = data => {
     this.props.history.push({
       pathname: '/recruiter/videoHistory',
       state: {
-        userId: data.userId
+        userId: data.userId,
+        showCandidateData: data
       }
     });
-  }
- 
- 
-  render() {let self= this;
+  };
+
+  render() {
+    let self = this;
     return (
-    //  <div className="wrapper">
-   
-       /* <SideBar jobDescription={this.state.jobDescription} /> */
-      //  <Header {...this.props} />     
-        // <div className="main-panel">   
-        // <div className="w3-content main-panel1">    
-          /* <div className="">
+      //  <div className="wrapper">
+
+      /* <SideBar jobDescription={this.state.jobDescription} /> */
+      //  <Header {...this.props} />
+      // <div className="main-panel">
+      // <div className="w3-content main-panel1">
+      /* <div className="">
             <div className="">
               <img
                 src="../../assets/img/svg-loaders/three-dots.svg"
@@ -470,8 +465,7 @@ class UserMapping extends Component {
             ))}  </ul>
         </div> */
 
-
-/* <div className="card">
+      /* <div className="card">
     <div className="content table-responsive table-full-width">
       <table className="table table-bigboy">
         <thead>
@@ -516,28 +510,19 @@ class UserMapping extends Component {
         </tbody>
       </table>
     </div></div> */
-    
-    
-    
-    
-    
-    <div className="wrapper">
-     <ToastContainer
-        autoClose={5000}
-        className="custom-toaster-main-cls"
-        toastClassName="custom-toaster-bg"
-        transition={ZoomInAndOut}
-      />
-        <Header {...this.props} />     
-          <div className="main-panel">          
-        
 
-        <div className="w3-content main-panel1">
-        
-          <div className="container main">
-           
-
-            {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
+      <div className="wrapper">
+        <ToastContainer
+          autoClose={5000}
+          className="custom-toaster-main-cls"
+          toastClassName="custom-toaster-bg"
+          transition={ZoomInAndOut}
+        />
+        <Header {...this.props} />
+        <div className="main-panel">
+          <div className="w3-content main-panel1">
+            <div className="container main">
+              {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
               <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
@@ -552,146 +537,150 @@ class UserMapping extends Component {
                 add student
               </button>
             </div> */}
-            {this.state.jobDescriptionListData && this.state.jobDescriptionListData.map(function(data, index) {
-                return (
-                  <div
-                    key={index}
-                    className="suggestion-usd"
-                    id={'student_' + data.userId}
-                  >
-                    <div className="student-img deflt-icon centeredBox flex">
-                      {data.profilePicture ? (
-                        <img
-                          src={data.profilePicture}
-                          alt=""
-                          className="img-responsive"
-                        />
-                      ) : (
-                        <div className="pp-default">
-                          <span className="icon-user_default2" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="student-info flex justify-content-space-between">
-                      <div className="flex align-center justify-content-space-bettween p-20-30 stuBgWhite">
-                        <div className="flex-1">
-                          <h3>
-                            {data.firstName
-                              ? data.firstName +
-                                ' ' +
-                                (data.lastName ? data.lastName : '')
-                              : null}
-                          </h3>
-                          <p>{data.email}</p>
-                          <p>{data.experience}</p>
-                        </div>
+              {this.state.jobDescriptionListData &&
+                this.state.jobDescriptionListData.map(function(data, index) {
+                  return (
+                    <div
+                      key={index}
+                      className="suggestion-usd"
+                      id={'student_' + data.userId}
+                    >
+                      <div className="student-img deflt-icon centeredBox flex">
+                        {data.profilePicture ? (
+                          <img
+                            src={data.profilePicture}
+                            alt=""
+                            className="img-responsive"
+                          />
+                        ) : (
+                          <div className="pp-default">
+                            <span className="icon-user_default2" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="student-info flex justify-content-space-between">
+                        <div className="flex align-center justify-content-space-bettween p-20-30 stuBgWhite">
+                          <div className="flex-1">
+                            <h3>
+                              {data.firstName
+                                ? data.firstName +
+                                  ' ' +
+                                  (data.lastName ? data.lastName : '')
+                                : null}
+                            </h3>
+                            <p>{data.email}</p>
+                            <p>{data.experience}</p>
+                          </div>
 
-                         <div className="flex-1">
-                          <h6>
-                            {data.profileRole[0] && data.profileRole[0].profileRole ? data.profileRole[0].profileRole :null}                            
-                          </h6>
-                          {data.skills && data.skills.map(item => ( <p className="p--name wrap-long-words">{
-                                                                                    limitCharacter(item.skillName,8)}</p>))}
-                        </div>
+                          <div className="flex-1">
+                            <h6>
+                              {data.profileRole[0] &&
+                              data.profileRole[0].profileRole
+                                ? data.profileRole[0].profileRole
+                                : null}
+                            </h6>
+                            {data.skills &&
+                              data.skills.map(item => (
+                                <p className="p--name wrap-long-words">
+                                  {limitCharacter(item.skillName, 8)}
+                                </p>
+                              ))}
+                          </div>
 
-                        <div className="btn-group flex align-center">                 
-                        {self.props.user.roleId == 4 ?
-                            <button onClick={self.handleSubmit.bind(
-                                    self,
-                                    data,
-                                    null                          
-                                  )} 
+                          <div className="btn-group flex align-center">
+                            {self.props.user.roleId == 4 ? (
+                              <button
+                                onClick={self.handleSubmit.bind(
+                                  self,
+                                  data,
+                                  null
+                                )}
+                                className="btn btn-primary no-round"
+                                //  onClick={self.handleClickProfile.bind(self, data)}
+                              >
+                                Map
+                              </button>
+                            ) : (
+                              <button
+                                onClick={self.showVideoComponent.bind(
+                                  self,
+                                  index
+                                )}
+                                className="btn btn-primary no-round"
+                                //  onClick={self.handleClickProfile.bind(self, data)}
+                              >
+                                Watch
+                              </button>
+                            )}
+                            {data.showVideoComponent == true ? (
+                              <ShowVideo
+                                closeShowVideoComponent={
+                                  self.showVideoComponent
+                                }
+                                chatLink={data.chatLink}
+                                userId={data.userId}
+                              />
+                            ) : (
+                              ''
+                            )}
+                            &nbsp; &nbsp;
+                            <button
+                              onClick={self.showVideoHistory.bind(self, data)}
                               className="btn btn-primary no-round"
-                            //  onClick={self.handleClickProfile.bind(self, data)}
+                              //  onClick={self.handleClickProfile.bind(self, data)}
                             >
-                              Map
-                            </button>                       
-                          :
-                          <button onClick={self.showVideoComponent.bind(
-                            self,
-                            index                            
-                          )} 
-                            className="btn btn-primary no-round"
-                          //  onClick={self.handleClickProfile.bind(self, data)}
-                          >
-                           Watch
-                          </button>}
-                          {data.showVideoComponent ==
-                              true ? (
-                                <ShowVideo
-                                  closeShowVideoComponent={
-                                    self.showVideoComponent
-                                  }                                 
-                                  chatLink={
-                                    data.chatLink
-                                  }
-                                  userId={data.userId}
-                                />
-                              ) : (
-                                '')}
-                          &nbsp; &nbsp;
-
-                          
-                          <button onClick={self.showVideoHistory.bind(
-                            self,
-                            data                            
-                          )} 
-                            className="btn btn-primary no-round"
-                          //  onClick={self.handleClickProfile.bind(self, data)}
-                          >
-                           History
-                          </button>
-                                              
-                          <DropdownButton
-                            className="burger-trigger"
-                            title={<span className="icon-burger" />}
-                            id="1"
-                          >
-                            <MenuItem
+                              History
+                            </button>
+                            <DropdownButton
+                              className="burger-trigger"
+                              title={<span className="icon-burger" />}
+                              id="1"
+                            >
+                              <MenuItem
                               // onSelect={self.addParentModel.bind(
                               //   this,
                               //   data.userId
                               // )}
-                            >
-                              <i className="m-ico icon-plus" />
-                              Add Parent
-                            </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/parent/list',
-                                  state: { studentData: data }
-                                })
-                              }
-                            >
-                              <i className="m-ico icon-parent" /> Parent List
-                            </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/student/profilelog',
-                                  state: { profileOwner: data.userId }
-                                })
-                              }
-                            >
-                              <i className="m-ico icon-profile-sharing" />{' '}
-                              Profile Sharing Log
-                            </MenuItem>
+                              >
+                                <i className="m-ico icon-plus" />
+                                Add Parent
+                              </MenuItem>
+                              <MenuItem
+                                onSelect={() =>
+                                  self.props.history.push({
+                                    pathname: '/parent/list',
+                                    state: { studentData: data }
+                                  })
+                                }
+                              >
+                                <i className="m-ico icon-parent" /> Parent List
+                              </MenuItem>
+                              <MenuItem
+                                onSelect={() =>
+                                  self.props.history.push({
+                                    pathname: '/student/profilelog',
+                                    state: { profileOwner: data.userId }
+                                  })
+                                }
+                              >
+                                <i className="m-ico icon-profile-sharing" />{' '}
+                                Profile Sharing Log
+                              </MenuItem>
 
-                            <MenuItem
-                            //   onSelect={self.deleteStudent.bind(
-                            //     this,
-                            //     data.userId,
-                            //     self.props.parent.userId
-                            //   )}
-                            >
-                              <i className="m-ico icon-delete" /> Delete
-                            </MenuItem>
-                          </DropdownButton>
+                              <MenuItem
+                              //   onSelect={self.deleteStudent.bind(
+                              //     this,
+                              //     data.userId,
+                              //     self.props.parent.userId
+                              //   )}
+                              >
+                                <i className="m-ico icon-delete" /> Delete
+                              </MenuItem>
+                            </DropdownButton>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* <div className="flex align-center justify-content-space-bettween tag-wrap">
+                        {/* <div className="flex align-center justify-content-space-bettween tag-wrap">
                         <div className="promo-tag br-light">
                           Skills <span>{data.accomplishment}</span>
                         </div>
@@ -700,27 +689,23 @@ class UserMapping extends Component {
                           Location <span>{data.recommendation}</span>
                         </div>
                       </div> */}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-          </div>         
-          {/* {this.state.addStudentModel ? (
+                  );
+                })}
+            </div>
+            {/* {this.state.addStudentModel ? (
             <AddMoreStudent
               addStudentModel={this.state.addStudentModel}
               closeAddStudentModel={this.addStudentModel}
             />
           ) : null} */}
-        </div></div>
+          </div>
+        </div>
       </div>
-    
-    
-    
-    
-    
-    
-    // </div></div>
-    //   </div>
+
+      // </div></div>
+      //   </div>
     );
   }
 }

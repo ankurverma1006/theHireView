@@ -3,65 +3,71 @@ import Emitter from './Emitter';
 import socket from './socket';
 
 window.moz = !!navigator.mozGetUserMedia;
-var chromeVersion = !!navigator.mozGetUserMedia ? 0 : parseInt(navigator.userAgent.match( /Chrom(e|ium)\/([0-9]+)\./ )[2]);
-let moz= window.moz;
+var chromeVersion = !!navigator.mozGetUserMedia
+  ? 0
+  : parseInt(navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./)[2]);
+let moz = window.moz;
 var iceServers = [];
 
-    if (moz) {
-        iceServers.push({
-            url: 'stun:23.21.150.121'
-        });
+if (moz) {
+  iceServers.push({
+    url: 'stun:23.21.150.121'
+  });
 
-        iceServers.push({
-            url: 'stun:stun.services.mozilla.com'
-        });
-    }
+  iceServers.push({
+    url: 'stun:stun.services.mozilla.com'
+  });
+}
 
-    if (!moz) {
-        iceServers.push({
-            url: 'stun:stun.l.google.com:19302'
-        });
+if (!moz) {
+  iceServers.push({
+    url: 'stun:stun.l.google.com:19302'
+  });
 
-        iceServers.push({
-            url: 'stun:stun.anyfirewall.com:3478'
-        });
-    }
+  iceServers.push({
+    url: 'stun:stun.anyfirewall.com:3478'
+  });
+}
 
-    if (!moz && chromeVersion < 28) {
-        iceServers.push({
-            url: 'turn:homeo@turn.bistri.com:80',
-            credential: 'homeo'
-        });
-    }
+if (!moz && chromeVersion < 28) {
+  iceServers.push({
+    url: 'turn:homeo@turn.bistri.com:80',
+    credential: 'homeo'
+  });
+}
 
-    if (!moz && chromeVersion >= 28) {
-        iceServers.push({
-            url: 'turn:turn.bistri.com:80',
-            credential: 'homeo',
-            username: 'homeo'
-        });
+if (!moz && chromeVersion >= 28) {
+  iceServers.push({
+    url: 'turn:turn.bistri.com:80',
+    credential: 'homeo',
+    username: 'homeo'
+  });
 
-        iceServers.push({
-            url: 'turn:turn.anyfirewall.com:443?transport=tcp',
-            credential: 'webrtc',
-            username: 'webrtc'
-        });
-    }
+  iceServers.push({
+    url: 'turn:turn.anyfirewall.com:443?transport=tcp',
+    credential: 'webrtc',
+    username: 'webrtc'
+  });
+}
 
-const PC_CONFIG = { iceServers: iceServers };// [{ urls: ['stun:stun.l.google.com:19302'] }] };
+const PC_CONFIG = { iceServers: iceServers }; // [{ urls: ['stun:stun.l.google.com:19302'] }] };
 
 class PeerConnection extends Emitter {
   /**
-     * Create a PeerConnection.
-     * @param {String} friendID - ID of the friend you want to call.
-     */
+   * Create a PeerConnection.
+   * @param {String} friendID - ID of the friend you want to call.
+   */
   constructor(friendID) {
     super();
     this.pc = new RTCPeerConnection(PC_CONFIG);
-    this.pc.onicecandidate = event => socket.emit('call', {
-      to: this.friendID,
-      candidate: event.candidate
-    });
+
+    console.log('constructor ', this.friendID);
+
+    this.pc.onicecandidate = event =>
+      socket.emit('call', {
+        to: this.friendID,
+        candidate: event.candidate
+      });
     this.pc.onaddstream = event => this.emit('peerStream', event.stream);
 
     this.mediaDevice = new MediaDevice();
@@ -74,8 +80,9 @@ class PeerConnection extends Emitter {
    * @param {Object} config - configuration for the call {audio: boolean, video: boolean}
    */
   start(isCaller, config) {
+    console.log('start  call');
     this.mediaDevice
-      .on('stream', (stream) => {
+      .on('stream', stream => {
         this.pc.addStream(stream);
         this.emit('localStream', stream);
         if (isCaller) socket.emit('request', { to: this.friendID });
@@ -100,21 +107,23 @@ class PeerConnection extends Emitter {
   }
 
   createOffer() {
-    this.pc.createOffer()
+    this.pc
+      .createOffer()
       .then(this.getDescription.bind(this))
       .catch(err => console.log(err));
     return this;
   }
 
   createAnswer() {
-    this.pc.createAnswer()
+    this.pc
+      .createAnswer()
       .then(this.getDescription.bind(this))
       .catch(err => console.log(err));
     return this;
   }
 
   getDescription(desc) {
-    console.log('desc - - ',desc);
+    console.log('desc - - ', desc);
     this.pc.setLocalDescription(desc);
     socket.emit('call', { to: this.friendID, sdp: desc });
     return this;

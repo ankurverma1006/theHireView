@@ -28,14 +28,14 @@ export default {
     data: {
       firstName: '',
       lastName: '',
-      email: '',    
-      roleId: '',    
+      email: '',
+      roleId: '',
       userId: '',
-      createdBy:''
+      createdBy: ''
     },
     showResultMessage: true,
     showErrorMessage: true
-  }, 
+  },
 
   signupHR: {
     url: 'app/signuphr',
@@ -43,15 +43,15 @@ export default {
     data: {
       firstName: '',
       lastName: '',
-      email: '',    
-      roleId: '',    
-      userId: '',     
-      companyId:'',
-      companyName:''     
+      email: '',
+      roleId: '',
+      userId: '',
+      companyId: '',
+      companyName: ''
     },
     showResultMessage: true,
     showErrorMessage: true
-  }, 
+  },
 
   signupParent: {
     url: '/app/signup',
@@ -70,7 +70,7 @@ export default {
     showResultMessage: true,
     showErrorMessage: true
   },
-  
+
   emailVerify: {
     url: '/app/user/verify',
     method: 'PUT',
@@ -127,7 +127,6 @@ export default {
     showErrorMessage: true
   },
 
-
   getUserDetails: {
     url: '/ui/user?userId=:userId',
     method: 'GET',
@@ -140,10 +139,10 @@ export default {
     url: '/ui/userProfile/addResume',
     method: 'PUT',
     data: {
-      userProfileId:'',
-      userId:'',
-      resumeURL:'',
-      resumeName:''
+      userProfileId: '',
+      userId: '',
+      resumeURL: '',
+      resumeName: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -153,14 +152,13 @@ export default {
     url: '/ui/userProfile/saveVideo',
     method: 'PUT',
     data: {
-      userId:'',
-      userProfileId:'',
-      videoLink:''
+      userId: '',
+      userProfileId: '',
+      videoLink: ''
     },
     showResultMessage: true,
     showErrorMessage: true
   },
-
 
   getEmploymentListById: {
     url: '/ui/employment?userId=:userId',
@@ -173,24 +171,24 @@ export default {
   addEmployment: {
     url: '/ui/employment',
     method: 'POST',
-    data: {      
-      userId:'',
-      designation:'',
-      organisation:'',
-      currentCompany:'',
-      currentSalary:'',
-      currentSalaryInLakh:'',
-      currentSalaryInThousand:'',
-      describe:'',
-      noticePeriod:'',
-      offeredSalary:'',
-      offeredSalaryInLakh:'',
-      offeredSalaryInThousand:'',
-      offeredDesignation:'',
-      startDate:'',
-      endDate:'',
-      lastWorkingDate:'',
-      nextEmployer:''    
+    data: {
+      userId: '',
+      designation: '',
+      organisation: '',
+      currentCompany: '',
+      currentSalary: '',
+      currentSalaryInLakh: '',
+      currentSalaryInThousand: '',
+      describe: '',
+      noticePeriod: '',
+      offeredSalary: '',
+      offeredSalaryInLakh: '',
+      offeredSalaryInThousand: '',
+      offeredDesignation: '',
+      startDate: '',
+      endDate: '',
+      lastWorkingDate: '',
+      nextEmployer: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -200,24 +198,24 @@ export default {
     url: 'ui/employment',
     method: 'PUT',
     data: {
-      userId:'',
-      employmentId:'',
-      designation:'',
-      organisation:'',
-      currentCompany:'',
-      currentSalary:'',
-      currentSalaryInLakh:'',
-      currentSalaryInThousand:'',
-      describe:'',
-      noticePeriod:'',
-      offeredSalary:'',
-      offeredSalaryInLakh:'',
-      offeredSalaryInThousand:'',
-      offeredDesignation:'',
-      startDate:'',
-      endDate:'',
-      lastWorkingDate:'',
-      nextEmployer:''    
+      userId: '',
+      employmentId: '',
+      designation: '',
+      organisation: '',
+      currentCompany: '',
+      currentSalary: '',
+      currentSalaryInLakh: '',
+      currentSalaryInThousand: '',
+      describe: '',
+      noticePeriod: '',
+      offeredSalary: '',
+      offeredSalaryInLakh: '',
+      offeredSalaryInThousand: '',
+      offeredDesignation: '',
+      startDate: '',
+      endDate: '',
+      lastWorkingDate: '',
+      nextEmployer: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -226,7 +224,7 @@ export default {
   deleteEmployment: {
     url: 'ui/employment?employmentId=:employmentId',
     method: 'DELETE',
-    data: { },
+    data: {},
     showResultMessage: true,
     showErrorMessage: true
   },
@@ -256,7 +254,7 @@ export default {
     showResultMessage: false,
     showErrorMessage: false
   },
-  
+
   //predefined values
   getCompanyList: {
     url: '/app/company',
@@ -265,8 +263,7 @@ export default {
     showResultMessage: false,
     showErrorMessage: false
   },
-  
-  
+
   getProjectListById: {
     url: '/ui/project?userId=:userId',
     method: 'GET',
@@ -286,15 +283,15 @@ export default {
   addProject: {
     url: '/ui/project',
     method: 'POST',
-    data: {      
-      userId:'',
-      projectName : '',
-      projectURL : '',
-      associatedWith : '',
-      projectFinished : '',       
-      description : '',     
-      startDate:'',
-      endDate:''         
+    data: {
+      userId: '',
+      projectName: '',
+      projectURL: '',
+      associatedWith: '',
+      projectFinished: '',
+      description: '',
+      startDate: '',
+      endDate: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -304,20 +301,19 @@ export default {
     url: '/ui/project',
     method: 'PUT',
     data: {
-      userId:'',
-      projectName : '',
-      projectURL : '',
-      associatedWith : '',
-      projectFinished : '',       
-      description : '',     
-      startDate:'',
-      endDate:'',
-      projectId:''
+      userId: '',
+      projectName: '',
+      projectURL: '',
+      associatedWith: '',
+      projectFinished: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      projectId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
   },
-
 
   getDesiredProfileListById: {
     url: '/ui/careerProfile?userId=:userId',
@@ -327,23 +323,22 @@ export default {
     showErrorMessage: false
   },
 
-
   addCareerProfile: {
     url: '/ui/careerProfile',
     method: 'POST',
-    data: {      
-        userId:'',
-        industry : '',
-        functionalArea : '',
-        role : '',
-        jobType : '',       
-        employmentType : '',     
-        desiredShift:  '',
-        expectedSalary : '',       
-        expectedSalaryInLakh : '',     
-        expectedSalaryInThousand:  '',
-        desiredLocation : [],       
-        desiredIndustry : []       
+    data: {
+      userId: '',
+      industry: '',
+      functionalArea: '',
+      role: '',
+      jobType: '',
+      employmentType: '',
+      desiredShift: '',
+      expectedSalary: '',
+      expectedSalaryInLakh: '',
+      expectedSalaryInThousand: '',
+      desiredLocation: [],
+      desiredIndustry: []
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -353,19 +348,19 @@ export default {
     url: '/ui/careerProfile',
     method: 'PUT',
     data: {
-      userId:'',
-        industry : '',
-        functionalArea : '',
-        role : '',
-        jobType : '',  
-        profileId:'',     
-        employmentType : '',     
-        desiredShift:  '',
-        expectedSalary : '',       
-        expectedSalaryInLakh : '',     
-        expectedSalaryInThousand:  '',
-        desiredLocation : [],       
-        desiredIndustry : []      
+      userId: '',
+      industry: '',
+      functionalArea: '',
+      role: '',
+      jobType: '',
+      profileId: '',
+      employmentType: '',
+      desiredShift: '',
+      expectedSalary: '',
+      expectedSalaryInLakh: '',
+      expectedSalaryInThousand: '',
+      desiredLocation: [],
+      desiredIndustry: []
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -374,18 +369,18 @@ export default {
   addJobDescription: {
     url: '/ui/jobDescription',
     method: 'POST',
-    data: {      
-        userId:'' ,       
-        title : '',
-        titleId : '',
-        description : '',
-        noOfPosition : 0,
-        minExperience : 0,                
-        maxExperience : 0,    
-        location : [],    
-        postedBy: '',  
-        skills: [],
-        jobDescId:''      
+    data: {
+      userId: '',
+      title: '',
+      titleId: '',
+      description: '',
+      noOfPosition: 0,
+      minExperience: 0,
+      maxExperience: 0,
+      location: [],
+      postedBy: '',
+      skills: [],
+      jobDescId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -403,17 +398,17 @@ export default {
     url: '/ui/jobDescription',
     method: 'PUT',
     data: {
-      recruiterId:'' ,
-      companyId:'',
-      title : '',
-      description : '',
-      noOfPosition : '',
-      minExperience : '',                
-      maxExperience : '',    
-      location : [],      
+      recruiterId: '',
+      companyId: '',
+      title: '',
+      description: '',
+      noOfPosition: '',
+      minExperience: '',
+      maxExperience: '',
+      location: [],
       skills: [],
-      postedBy: '', 
-      jobDescId:'' 
+      postedBy: '',
+      jobDescId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -422,15 +417,15 @@ export default {
   addUserSkills: {
     url: '/ui/userProfile',
     method: 'POST',
-    data: { 
-     userId:'',
-     roleId:'',
-     skills:[],    
-     profileRole:[],
-     experienceInYear:0,
-     experienceInMonth:0,
-     currentLocation:0,
-     mobileNo:0 
+    data: {
+      userId: '',
+      roleId: '',
+      skills: [],
+      profileRole: [],
+      experienceInYear: 0,
+      experienceInMonth: 0,
+      currentLocation: 0,
+      mobileNo: 0
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -448,9 +443,9 @@ export default {
     url: '/ui/userProfile',
     method: 'PUT',
     data: {
-      userId:'',
-      userProfileId:'',  
-      skills:[]
+      userId: '',
+      userProfileId: '',
+      skills: []
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -460,15 +455,15 @@ export default {
     url: '/ui/userProfile',
     method: 'PUT',
     data: {
-      userId:'',
-      roleId:'',
-      userProfileId:'',        
-      profileRole:[],
-      skills:[],
-      experienceInYear:0,
-      experienceInMonth:0,
-      currentLocation:0,
-      mobileNo:0 
+      userId: '',
+      roleId: '',
+      userProfileId: '',
+      profileRole: [],
+      skills: [],
+      experienceInYear: 0,
+      experienceInMonth: 0,
+      currentLocation: 0,
+      mobileNo: 0
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -477,10 +472,10 @@ export default {
   createInterviewersSkills: {
     url: 'api/v1/public/user/web/createInterviewersSkills',
     method: 'POST',
-    data: {       
-      userId:'',
-      keySkillId:'',
-      skillId:''    
+    data: {
+      userId: '',
+      keySkillId: '',
+      skillId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -497,10 +492,10 @@ export default {
   editInterviewersSkillsData: {
     url: 'api/v1/public/user/web/editInterviewersSkillsData',
     method: 'PUT',
-    data: {      
-      userId:'',
-      skills:'',
-      skillId:''
+    data: {
+      userId: '',
+      skills: '',
+      skillId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -510,12 +505,12 @@ export default {
     url: '/ui/timeSlot',
     method: 'POST',
     data: {
-      slotId:'',
-      slotRegisteredDate:'',
+      slotId: '',
+      slotRegisteredDate: '',
       startTimeStamp: '',
-      endTimeStamp:'',
+      endTimeStamp: '',
       interviewerId: '',
-      userId:''
+      userId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -525,82 +520,78 @@ export default {
     url: '/ui/timeSlot',
     method: 'PUT',
     data: {
-      slotId:'',
-      slotRegisteredDate:'',
+      slotId: '',
+      slotRegisteredDate: '',
       startTimeStamp: '',
-      endTimeStamp:'',
+      endTimeStamp: '',
       interviewerId: '',
-      userId:''
+      userId: ''
     },
     showResultMessage: true,
     showErrorMessage: true
   },
 
-  bookedTimeSlot : {
+  bookedTimeSlot: {
     url: '/ui/bookedTimeSlot',
     method: 'POST',
     data: {
-      userId:'',
-      slotRegisteredDate:''
+      userId: '',
+      slotRegisteredDate: ''
     },
     showResultMessage: false,
     showErrorMessage: false
   },
 
-  deleteTimeSlotByInterviewer : {
+  deleteTimeSlotByInterviewer: {
     url: '/ui/deleteTimeSlot?slotId=:slotId',
     method: 'GET',
-    data: {     
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
-  getTimeSlotByInterviewer : {
+  getTimeSlotByInterviewer: {
     url: '/ui/timeSlot?interviewerId=:interviewerId',
     method: 'GET',
-    data: {     
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
-  getTimeSlotByUser : {
+  getTimeSlotByUser: {
     url: '/ui/timeSlot?userId=:userId',
     method: 'GET',
-    data: {     
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
   saveChatLink: {
-      url: '/ui/saveChatLink',
-      method: 'PUT',
-      data: {
-        slotId:'',
-        roleId:'',
-        videoChatLink:'',
-        userId:''
-      },
-      showResultMessage: true,
-      showErrorMessage: true
+    url: '/ui/saveChatLink',
+    method: 'PUT',
+    data: {
+      slotId: '',
+      roleId: '',
+      videoChatLink: '',
+      videoSkillTag: '',
+      userId: ''
+    },
+    showResultMessage: true,
+    showErrorMessage: true
   },
 
-  getCandidateList : {
+  getCandidateList: {
     url: '/ui/candidateList?userId=:userId',
     method: 'GET',
-    data: {    
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
-  getHrList : {
+  getHrList: {
     url: '/ui/hrList?userId=:userId',
     method: 'GET',
-    data: {    
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
@@ -609,18 +600,17 @@ export default {
     url: '/ui/jobMap',
     method: 'POST',
     data: {
-      jobMapId:'',
-      jobId:'',
+      jobMapId: '',
+      jobId: '',
       candidateId: '',
-      hrId:'',
-      status:'',
-      createdBy: ''     
+      hrId: '',
+      status: '',
+      createdBy: ''
     },
     showResultMessage: true,
     showErrorMessage: true
   },
 
-  
   updateProfileImage: {
     url: '/ui/user',
     method: 'PUT',
@@ -632,41 +622,42 @@ export default {
     showErrorMessage: false
   },
 
-
   updateJobMap: {
     url: '/ui/jobMap',
     method: 'PUT',
     data: {
-      jobMapId:'',
-      jobId:'',
+      jobMapId: '',
+      jobId: '',
       candidateId: '',
-      hrId:'',
-      status:'',
-      createdBy: ''     
+      hrId: '',
+      status: '',
+      createdBy: ''
     },
     showResultMessage: true,
     showErrorMessage: true
   },
 
-
-  getUserListForMapping : {
+  getUserListForMapping: {
     url: '/ui/jobMap?jobId=:jobId',
     method: 'GET',
-    data: {    
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
-  getUserListForHR : {
+  getUserListForHR: {
     url: '/ui/getListForHR?jobId=:jobId',
     method: 'GET',
-    data: {    
-    },
+    data: {},
     showResultMessage: false,
     showErrorMessage: false
   },
 
-
-
+  getPreSignedURL: {
+    url: '/ui/azure/upload',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  }
 };

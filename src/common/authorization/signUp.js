@@ -16,6 +16,7 @@ import {
 // import { YearPicker, MonthPicker, DayPicker } from 'react-dropdown-date';
 
 import Sidebar from './sideBar';
+import FacebookLogin from 'react-facebook-login';
 import theRapidHireApiService from '../core/api/apiService';
 import {
   ZoomInAndOut,
@@ -76,8 +77,8 @@ class Signup extends Component {
     this.getRoles();
     this.setValidatorTypes(
       this.props.location.state &&
-      this.props.location.state.eventKey &&
-      this.props.location.state.eventKey === 2
+        this.props.location.state.eventKey &&
+        this.props.location.state.eventKey === 2
         ? 2
         : 3
     );
@@ -102,10 +103,10 @@ class Signup extends Component {
       'email.email': validationMessages.email.invalid
     };
 
-    if (parseInt(type, 10) === 3) {     
+    if (parseInt(type, 10) === 3) {
     }
 
-    if (parseInt(type, 10) === 2) {    
+    if (parseInt(type, 10) === 2) {
     }
     this.validatorTypes = strategy.createSchema(elementObject, messageObject);
   }
@@ -154,19 +155,19 @@ class Signup extends Component {
   };
 
   validateData = () => {
-    let self = this;   
+    let self = this;
     this.props.validate(function(error) {
       if (!error) {
         var email = self.state.email
           ? self.state.email.toLowerCase().trim()
-          : '';       
-        
-          self.setState({ isLoading: true });
-          self.handleSubmit();
-        }      
+          : '';
+
+        self.setState({ isLoading: true });
+        self.handleSubmit();
+      }
     });
   };
- 
+
   handleSelect = eventKey => {
     if (eventKey !== this.state.roleId) {
       this.setState({
@@ -200,234 +201,188 @@ class Signup extends Component {
     let firstName = this.state.firstName.trim();
     let lastName = this.state.lastName.trim();
     let email = this.state.email.toLowerCase().trim();
-    let roleId = this.state.roleId;   
+    let roleId = this.state.roleId;
 
-    let self = this;    
-     
-      let data = {
-        firstName,
-        lastName,
-        email,      
-        roleId
-       // dob
-      };
+    let self = this;
 
-      theRapidHireApiService('signupUser', data)
-        .then(response => {
-          if (response.data.status === 'Success') {
-            self.handleResetForm();
-            setTimeout(function() {
-              self.props.history.push('/login');
-            }, 5000);
-          } else {
-            self.setState({ isLoading: false });
-          }
-        })
-        .catch(err => {
+    let data = {
+      firstName,
+      lastName,
+      email,
+      roleId
+      // dob
+    };
+
+    theRapidHireApiService('signupUser', data)
+      .then(response => {
+        if (response.data.status === 'Success') {
+          self.handleResetForm();
+          setTimeout(function() {
+            self.props.history.push('/login');
+          }, 5000);
+        } else {
           self.setState({ isLoading: false });
-          console.log(err);
-        });  
-
+        }
+      })
+      .catch(err => {
+        self.setState({ isLoading: false });
+        console.log(err);
+      });
   }
-  
-
-  
 
   render() {
     const { isLoading } = this.state;
+    const responseFacebook = response => {
+      console.log('facebook console');
+      console.log(response);
+      this.signup(response, 'facebook');
+    };
     return (
-      <div className="wrapper">        
-          <div className="main-panel">     
-            <div className="login_card">
-               <div className="header">
-       
+      <div className="wrapper">
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-        
-        <div className="formContent forgotPasswordForm bg-transparent">
-          <div className="centeredBox p-6">
-          <div className="flex align-center mb-1">
-                  <Link to="/login" className="md-icon mr-1">
-                    <span className="icon-back_arrow2" />
-                  </Link>
-                  <legend className="color-blue mb-0">Back To Login</legend>
-          </div>
+        <div className="main-panel">
+          <div className="banner">
+            <div className="overlay"></div>
+            <div className="banner-content">
+              <div className="">
+                <div className="login_card">
+                  <div className="header">
+                    <FacebookLogin
+                      appId="1928279157274431"
+                      autoLoad={false}
+                      fields="name,email,picture"
+                      callback={responseFacebook}
+                    />
+                    <br />
+                    <br />
+                    <div className="formContent forgotPasswordForm bg-transparent">
+                      <div className="centeredBox p-6">
+                        <div
+                          style={{ position: 'relative' }}
+                          className="flex align-center mb-1"
+                        >
+                          <Link to="/login" className="md-icon mr-1">
+                            <span className="icon-back_arrow2" />
+                          </Link>
+                          <legend className="color-blue mb-0">
+                            Back To Login
+                          </legend>
+                        </div>
 
-
-
-
-
-
-            <Nav bsStyle="tabs" activeKey={this.state.eventKey == 2 ? 2 : 3}>            
-
-              <NavItem eventKey={2} onClick={this.handleSelect.bind(this, '2')}>
-              Interviewer SIGN UP
-              </NavItem>
-
-              <NavItem eventKey={3} onClick={this.handleSelect.bind(this, '3')}>
-                User SIGN UP
-              </NavItem>
-              <NavItem
-                  eventKey={4}
-                  onClick={() => this.props.history.push('/hrsignup')}
-                >
-                  HR SIGN UP
-                </NavItem>
-            </Nav>
-            <form>
-              {/* <div className="signupText">
-                Sign up to theRapidHire as
-                <ButtonToolbar>
-                  <DropdownButton
-                    bsSize="xsmall"
-                    title={this.state.roleId === 1 ? 'Student' : 'Parent'}
-                    id="dropdown-size-large"
-                  >
-                    {this.state.roles.length > 0
-                      ? this.state.roles.map((role, index) => (
-                          <MenuItem
-                            key={index}
-                            eventKey={role.roleTypeId}
-                            onSelect={this.handleSelect}
+                        <Nav
+                          bsStyle="tabs"
+                          activeKey={this.state.eventKey == 2 ? 2 : 3}
+                        >
+                          <NavItem
+                            eventKey={2}
+                            onClick={this.handleSelect.bind(this, '2')}
                           >
-                            {role.roleName}
-                          </MenuItem>
-                        ))
-                      : ''}
-                  </DropdownButton>
-                </ButtonToolbar>
-              </div> */}
+                            Interviewer SIGN UP
+                          </NavItem>
 
-              <FormGroup className={this.getClasses('firstName')}>
-                <label className="form-label">First Name</label>
-               
-                  {/* <InputGroup.Addon>
+                          <NavItem
+                            eventKey={3}
+                            onClick={this.handleSelect.bind(this, '3')}
+                          >
+                            User SIGN UP
+                          </NavItem>
+                          <NavItem
+                            eventKey={4}
+                            onClick={() => this.props.history.push('/hrsignup')}
+                          >
+                            HR SIGN UP
+                          </NavItem>
+                        </Nav>
+                        <form>
+                          <FormGroup
+                            style={{ position: 'relative' }}
+                            className={this.getClasses('email')}
+                          >
+                            <label className="form-label">First Name</label>
+
+                            {/* <InputGroup.Addon>
                     <span className="icon-username" />
                   </InputGroup.Addon> */}
-                  <FormControl
-                    type="text"
-                    placeholder="First Name"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    maxLength="35"
-                  />
-               
-                {renderMessage(this.props.getValidationMessages('firstName'))}
-              </FormGroup>
+                            <FormControl
+                              type="text"
+                              placeholder="First Name"
+                              name="firstName"
+                              value={this.state.firstName}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="35"
+                            />
 
-              <FormGroup className={this.getClasses('lastName')}>
-                <label className="form-label">Last Name</label>
-                {/* <InputGroup>
+                            {renderMessage(
+                              this.props.getValidationMessages('firstName')
+                            )}
+                          </FormGroup>
+
+                          <FormGroup
+                            style={{ position: 'relative' }}
+                            className={this.getClasses('lastName')}
+                          >
+                            <label className="form-label">Last Name</label>
+                            {/* <InputGroup>
                   <InputGroup.Addon>
                     <span className="icon-username" />
                   </InputGroup.Addon> */}
-                  <FormControl
-                    type="text"
-                    placeholder="Last Name"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    maxLength="35"
-                  />             
-                {renderMessage(this.props.getValidationMessages('lastName'))}
-              </FormGroup>
+                            <FormControl
+                              type="text"
+                              placeholder="Last Name"
+                              name="lastName"
+                              value={this.state.lastName}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="35"
+                            />
+                            {renderMessage(
+                              this.props.getValidationMessages('lastName')
+                            )}
+                          </FormGroup>
 
-              <FormGroup className={this.getClasses('email')}>
-                <label className="form-label">Email</label>              
-                  <FormControl
-                    type="Email"
-                    placeholder="Email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    onKeyPress={this.submitData}
-                  />               
-                {renderMessage(this.props.getValidationMessages('email'))}
-              </FormGroup>
+                          <FormGroup
+                            style={{ position: 'relative' }}
+                            className={this.getClasses('email')}
+                          >
+                            <label className="form-label">Email</label>
+                            <FormControl
+                              type="Email"
+                              placeholder="Email"
+                              name="email"
+                              value={this.state.email}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              onKeyPress={this.submitData}
+                            />
+                            {renderMessage(
+                              this.props.getValidationMessages('email')
+                            )}
+                          </FormGroup>
 
-              {/* {this.state.roleId === 1 ? (
-                <FormGroup>
-                  <label className="form-label">Date Of Birth</label>
-                  <div className="dob">
-                    <div className={`form-group ${this.getClasses('year')}`}>
-                      <YearPicker
-                        id="year"
-                        name="year"
-                        classes="form-control"
-                        defaultValue="Year"
-                        start={1970}
-                        end={moment().year()}
-                        reverse
-                        value={this.state.year}
-                        onChange={year => this.selectDate('year', year)}
-                      />
-                      {renderMessage(this.props.getValidationMessages('year'))}
-                    </div>
-
-                    <div className={`form-group ${this.getClasses('month')}`}>
-                      <MonthPicker
-                        id="month"
-                        name="month"
-                        classes="form-control"
-                        defaultValue="Month"
-                        short
-                        endYearGiven
-                        year={this.state.year}
-                        value={this.state.month}
-                        onChange={month => this.selectDate('month', month)}
-                      />
-
-                      {renderMessage(this.props.getValidationMessages('month'))}
-                    </div>
-
-                    <div className={`form-group ${this.getClasses('day')}`}>
-                      <DayPicker
-                        defaultValue="Day"
-                        id="day"
-                        name="day"
-                        classes="form-control"
-                        year={this.state.year}
-                        month={this.state.month}
-                        endYearGiven
-                        value={this.state.day}
-                        onChange={day => this.selectDate('day', day)}
-                      />
-                      {renderMessage(this.props.getValidationMessages('day'))}
-                    </div>
-                  </div>
-                  <span
-                    className="error"
-                    id="dateOfBirth"
-                    style={{ display: 'none' }}
-                  >
-                    Please enter valid date of birth
-                  </span>                  
-                </FormGroup>
-              ) : (
-                ''
-              )} */}
-   
-              <FormGroup>
-                <Button
-                  bsStyle="primary"
-                  className="centeredBtn btn-lg"
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.validateData : null}
-                >
-                  {isLoading ? 'In Progress...' : 'Sign Up'}
-                </Button>
-              </FormGroup>
-            </form>
+                          <FormGroup style={{ position: 'relative' }}>
+                            <Button
+                              bsStyle="primary"
+                              className="centeredBtn btn-lg"
+                              disabled={isLoading}
+                              onClick={!isLoading ? this.validateData : null}
+                            >
+                              {isLoading ? 'In Progress...' : 'Sign Up'}
+                            </Button>
+                          </FormGroup>
+                        </form>
+                      </div>
+                    </div>{' '}
+                  </div>{' '}
+                </div>
+              </div>{' '}
+            </div>{' '}
           </div>
-        </div> </div> </div>
         </div>
       </div>
     );

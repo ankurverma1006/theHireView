@@ -11,8 +11,8 @@ import { get } from 'http';
 
 let apiFailCounter = 0;
 
-axios.defaults.baseURL = "https://therapidhire.herokuapp.com/";
- //  getAPIURL().httpServer + getAPIURL().APIURL + ":" + getAPIURL().APIPort;
+axios.defaults.baseURL = // "https://therapidhire.herokuapp.com/";
+  getAPIURL().httpServer + getAPIURL().APIURL + ':' + getAPIURL().APIPort;
 
 axios.interceptors.request.use(
   function(config) {

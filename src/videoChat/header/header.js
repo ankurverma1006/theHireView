@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem,
+  FormGroup,
+  FormControl
+} from 'react-bootstrap';
 
 import { bindActionCreators } from 'redux';
 import { ToastContainer } from 'react-toastify';
@@ -26,66 +34,75 @@ import {
 import userDefaultImage from '../../assets/img/default-img.PNG';
 
 let AsyncTypeahead = asyncContainer(Typeahead);
-var keyCheck=false,renderChangeMenu=false;
+var keyCheck = false,
+  renderChangeMenu = false;
 class Header extends Component {
- 
-
   logout = () => {
     this.props.actionUserLogout();
     this.props.history.push('/');
   };
-  
-  showVideoChat = () => {    
+
+  showVideoChat = () => {
     this.props.history.push('/js/app');
   };
 
   render() {
     return (
-    <Navbar fluid={true}>
-      <Navbar.Header>
-        <button type="button" className="navbar-toggle" data-toggle="collapse">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-        </button>
-      </Navbar.Header>
+      <Navbar fluid={true}>
+        <Navbar.Header>
+          <button
+            type="button"
+            className="navbar-toggle"
+            data-toggle="collapse"
+          >
+            <span className="sr-only">Toggle navigation</span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+            <span className="icon-bar"></span>
+          </button>
+        </Navbar.Header>
 
-      <Navbar.Collapse>
-
-        <Nav>
-          <NavItem><i className="fa fa-dashboard"></i></NavItem>
-          <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
-            <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
-        </Nav>
-        <div className="separator"></div>
-        <Navbar.Form pullLeft>
-          <FormGroup>
-            <span className="input-group-addon"><i className="fa fa-search"></i></span>
-            <FormControl type="text" placeholder="Type to search" />
-          </FormGroup>
-        </Navbar.Form>
-        <Nav pullRight>
-          <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>
-         <NavItem onClick={this.showVideoChat}> Video Chat</NavItem>
-          <NavDropdown title="Dropdown" id="right-nav-bar">
-            <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem>
-          </NavDropdown>
-          <NavItem onClick={this.logout}>Log out</NavItem>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-  }}
+        <Navbar.Collapse>
+          <Nav>
+            <NavItem>
+              <i className="fa fa-dashboard"></i>
+            </NavItem>
+            <NavDropdown
+              title={<i className="fa fa-globe" />}
+              id="basic-nav-dropdown"
+            >
+              <MenuItem>Action</MenuItem>
+              <MenuItem>Another action</MenuItem>
+              <MenuItem>Something else here</MenuItem>
+              <MenuItem divider />
+              <MenuItem>Separated link</MenuItem>
+            </NavDropdown>
+          </Nav>
+          <div className="separator"></div>
+          <Navbar.Form pullLeft>
+            <FormGroup>
+              <span className="input-group-addon">
+                <i className="fa fa-search"></i>
+              </span>
+              <FormControl type="text" placeholder="Type to search" />
+            </FormGroup>
+          </Navbar.Form>
+          <Nav pullRight>
+            <NavItem onClick={this.showVideoChat}> Video Chat</NavItem>
+            <NavDropdown title="Dropdown" id="right-nav-bar">
+              <MenuItem>Action</MenuItem>
+              <MenuItem>Another action</MenuItem>
+              <MenuItem>Something else here</MenuItem>
+              <MenuItem divider />
+              <MenuItem>Separated link</MenuItem>
+            </NavDropdown>
+            <NavItem onClick={this.logout}>Log out</NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    );
+  }
+}
 const mapStateToProps = state => {
   return {
     user: state.User.userData,
@@ -110,5 +127,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Header);
-
-

@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem,
+  FormGroup,
+  FormControl
+} from 'react-bootstrap';
 
 import { bindActionCreators } from 'redux';
 import { ToastContainer } from 'react-toastify';
@@ -26,73 +34,108 @@ import {
 import userDefaultImage from '../../assets/img/default-img.PNG';
 
 let AsyncTypeahead = asyncContainer(Typeahead);
-var keyCheck=false,renderChangeMenu=false;
+var keyCheck = false,
+  renderChangeMenu = false;
 class Header extends Component {
   constructor(props, context) {
     super(props);
-    this.state={
-      userProfile:{}
-
-    }    
+    this.state = {
+      userProfile: {}
+    };
   }
 
   componentWillMount() {
-    let user= this.props.otherUser? this.props.otherUser: this.props.user;    
-    if(user){
-      let userId =user.userId; 
+    let user = this.props.otherUser ? this.props.otherUser : this.props.user;
+    if (user) {
+      let userId = user.userId;
       this.getUserProfileData(userId);
     }
-  } 
+  }
 
-  logout = () => {
+  logout = e => {
+    e.preventDefault();
     this.props.actionUserLogout();
     this.props.history.push('/');
   };
-  
-  showVideoChat = () => {    
+
+  showVideoChat = () => {
     this.props.history.push('/js/app');
   };
 
-  getUserProfileData(userId){
-    theRapidHireApiService('getUserSkillsById',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-        console.log(response.data);       
-         let userProfile = response.data.result[0];     
-         
-         this.setState({userProfile:userProfile});        
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  } 
+  getUserProfileData(userId) {
+    theRapidHireApiService('getUserSkillsById', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          console.log(response.data);
+          let userProfile = response.data.result[0];
+
+          this.setState({ userProfile: userProfile });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   render() {
-    let _this= this;
+    let _this = this;
     return (
-    <Navbar fluid={true}>
-      <Navbar.Header>
-        {/* <button type="button" className="navbar-toggle" data-toggle="collapse">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-        </button> */}
-      </Navbar.Header>
+      <header>
+        <div className="header-area">
+          <div className="container-fluid">
+            <div className="row top-head">
+              <div className="col-md-6 col-sm-4">
+                <div className="logo">
+                  <a href="#">
+                    <img src="assets/img/logo.png" />
+                  </a>
+                </div>
+              </div>
+              <div className="col-md-6 col-sm-8">
+                <div style={{ color: 'aliceblue' }} className="text-right">
+                  {/* <span><Link to="/admin/candidate">Admin</Link> <a className="yellow" href="#">Job Seaker</a></span><span><a href="#">Employer</a></span> */}
+                  <div class="container-fluid">
+                    <div class="separator"></div>
+                    {this.props.user && this.props.user.roleId == 4 ? (
+                      <Navbar.Form pullLeft>
+                        <FormGroup>
+                          <span className="input-group-addon">
+                            {' '}
+                            <Link to="/admin/candidate">Admin</Link>
+                          </span>
+                        </FormGroup>
+                      </Navbar.Form>
+                    ) : null}
 
-      <Navbar.Collapse>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li role="presentation" class="">
+                        {' '}
+                        <Link to="/user/profile">Profile </Link>
+                      </li>
+                      {_this.state.userProfile ? (
+                        <li role="presentation" class="">
+                          <Link to="/user/dashboard">Dashboard </Link>
+                        </li>
+                      ) : null}
 
-        {/* <Nav>
-          <NavItem><i className="fa fa-dashboard"></i></NavItem>
-          <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
-             <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem> 
-          </NavDropdown>
-        </Nav> */}
+                      {_this.state.userProfile ? (
+                        <li role="presentation" class="">
+                          <Link to="/user/timeSlots">Time Slot </Link>
+                        </li>
+                      ) : null}
+                      <li role="presentation" class="">
+                        <a role="button" onClick={this.logout} href="#">
+                          Log out
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* 
+                <Navbar fluid={true}>
+    
+
+       
         <div className="separator"></div>
         {this.props.user && this.props.user.roleId == 4 ? <Navbar.Form pullLeft>
           <FormGroup>
@@ -104,20 +147,20 @@ class Header extends Component {
         <NavItem> <Link to="/user/profile">Profile </Link></NavItem>
         {_this.state.userProfile ?    <NavItem> <Link to="/user/dashboard">Dashboard </Link></NavItem>:null}
        {_this.state.userProfile ? 
-        <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>:null}      
-          {/* <NavDropdown title="Dropdown" id="right-nav-bar">
-            <MenuItem>Action</MenuItem>
-            <MenuItem>Another action</MenuItem>
-            <MenuItem>Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem>Separated link</MenuItem> 
-          </NavDropdown> */}
-          <NavItem onClick={this.logout}>Log out</NavItem>
+        <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>:null}     
+           <NavItem onClick={this.logout}>Log out</NavItem>
         </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-  }}
+     
+    </Navbar> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+}
 const mapStateToProps = state => {
   return {
     user: state.User.userData,
@@ -142,5 +185,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Header);
-
-

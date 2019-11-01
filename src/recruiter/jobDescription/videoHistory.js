@@ -9,20 +9,29 @@ import SideBar from '../header/sidebar';
 //   FormControl,
 //   InputGroup
 // } from 'react-bootstrap';
-import { Modal, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Modal, DropdownButton, MenuItem, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //import { ToastContainer } from 'react-toastify';
 import Slider from 'react-slick';
 import _ from 'lodash';
-
+import {
+  Player,
+  ControlBar,
+  ReplayControl,
+  ForwardControl,
+  CurrentTimeDisplay,
+  TimeDivider,
+  PlaybackRateMenuButton,
+  VolumeMenuButton
+} from 'video-react';
 import VideoPlayer from 'react-video-js-player';
 //import Summary from './summary/addSummary';
 import ShowVideo from '../jobDescription/showVideo';
 
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
-import DownloadLink from "react-download-link";
+import DownloadLink from 'react-download-link';
 //import Img from '../../common/cropper/img';
 import {
   showErrorToast,
@@ -46,16 +55,14 @@ import {
 import achievementDefaultImage from '../../assets/img/default_achievement.jpg';
 import SpiderChart from '../../common/spiderChart/spiderChart';
 
-
-
 var settings = {
   dots: false,
   infinite: false,
   speed: 500,
   slidesToShow: 3,
   swipeToSlide: true,
- // nextArrow: <SampleNextArrow props={this.props} />,
- // prevArrow: <SamplePrevArrow props={this.props} />,
+  // nextArrow: <SampleNextArrow props={this.props} />,
+  // prevArrow: <SamplePrevArrow props={this.props} />,
   responsive: [
     {
       breakpoint: 1024,
@@ -84,67 +91,49 @@ var settings = {
   ]
 };
 
-const hasGetUserMedia = !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia || navigator.msGetUserMedia);
+const hasGetUserMedia = !!(
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia
+);
 
 class VideoHistory extends Component {
   constructor(props, context) {
     super(props);
-   
-    this.state = {  
-        video: {
-            src: "http://www.example.com/path/to/video.mp4",
-            poster: "http://www.example.com/path/to/video_poster.jpg"
-        },    
-      showJobDescriptionComponent: false,      
-      jobDescriptionDetail: {},        
-     
+
+    this.state = {
+      video: {
+        src: 'http://www.example.com/path/to/video.mp4',
+        poster: 'http://www.example.com/path/to/video_poster.jpg'
+      },
+      showJobDescriptionComponent: false,
+      jobDescriptionDetail: {},
+
       loader1: false,
-      loader2: false,      
-      jobDescriptionListData: [],     
-      userData:{},     
-      showDropdown: false,     
-      isActive: 'true',     
+      loader2: false,
+      jobDescriptionListData: [],
+      userData: {},
+      showDropdown: false,
+      isActive: 'true',
       contentEditable: false,
       editName: false,
       name: '',
       editTagLine: false,
-      showVideo:false
+      showVideo: false,
+      videoSkillTag: []
     };
-    var wRegion = "ap-south-1";
-    var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
-    var s3bucketName = "ankurself";
-    var audioPath = "/audio-files";
-    var s3bucketName = "ankurself";
-    var audioPath = "/audio-files";
-    var audioStoreWithBucket=s3bucketName+audioPath;
-    //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
-    this.region = "ap-south-1"; //s3 region
-    this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
-    this.bucketName = audioStoreWithBucket; //audio file store
-    this.s3=null; //variable defination for s3
-    this.dateinfo = new Date();
-    this.timestampData = this.dateinfo.getTime(); //timestamp used for file uniqueness
-    this.etag = []; // etag is used to save the parts of the single upload file
-    this.recordedChunks = []; //empty Array
-    this.booleanStop = false; // this is for final multipart complete
-    this.incr = 0; // multipart requires incremetal so that they can merge all parts by ascending order
-    this.filename = this.timestampData.toString() + ".webm"; //unique filename
-    this.uploadId = ""; // upload id is required in multipart
-    this.recorder=null; //initializing recorder variable
-    this.player=null;
     //To use microphone it shud be {audio: true}
     this.audioConstraints = {
       //  audio: true,
-        video: true
+      video: true
     };
-
+    this.seek = this.seek.bind(this);
   }
 
   componentWillMount() {
     //let userId = this.props.user.userId;
-    
     document.body.classList.add('light-theme');
     document.body.classList.add('absoluteHeader');
     document.body.classList.remove('home');
@@ -153,123 +142,127 @@ class VideoHistory extends Component {
     this.getSlotDetails(this.props.location.state.userId);
   }
 
-
-  getSlotDetails(userId){   
-    theRapidHireApiService('getTimeSlotByUser',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-        console.log(response);
-        let slotVideoData = response.data.result[0];
-        let videoLinkInterviewer= slotVideoData.videoChatLinkInterviewer;
-        let videoLinkUser= slotVideoData.videoChatLinkUser;
-    //     let bookedSlotData=[];
-    //     bookedSlotData = response.data.result;
-      this.setState({videoLinkInterviewer,videoLinkUser});
-      }
-     
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getSlotDetails(userId) {
+    theRapidHireApiService('getTimeSlotByUser', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          console.log(response);
+          let slotVideoData = response.data.result[0];
+          let videoLinkInterviewer = slotVideoData.videoChatLinkInterviewer;
+          let videoLinkUser = slotVideoData.videoChatLinkUser;
+          console.log(response.data);
+          let videoSkillTag = response.data.result[0].videoSkillTag;
+          //     let bookedSlotData=[];
+          //     bookedSlotData = response.data.result;
+          this.setState({ videoLinkInterviewer, videoSkillTag });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  componentWillReceiveProps(res) {
-  
+  //   onPlayerReady(player){
+  //     console.log("Player is ready: ", player);
+  //     this.player = player;
+  // }
+
+  // onVideoPlay(duration){
+  //     console.log("Video played at: ", duration);
+  // }
+
+  // onVideoPause(duration){
+  //     console.log("Video paused at: ", duration);
+  // }
+
+  // onVideoTimeUpdate(duration){
+  //     console.log("Time updated: ", duration);
+  // }
+
+  // onVideoSeeking(duration){
+  //     console.log("Video seeking: ", duration);
+  // }
+
+  // onVideoSeeked(from, to){
+  //     console.log(`Video seeked from ${from} to ${to}`);
+  // }
+
+  // onVideoEnd(){
+  //     console.log("Video ended");
+  // }
+
+  seek(seconds) {
+    return () => {
+      this.player.seek(seconds);
+    };
   }
-
-  componentDidMount() {
-
-     if(!hasGetUserMedia) {
-      alert("Your browser cannot stream from your webcam. Please switch to Chrome or Firefox.");
-      return;
-    }
-    const script = document.createElement("script");
-
-    script.src = "https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js";
-    script.async = true;
-
-    document.body.appendChild(script)
-    if (this.props.student.achievementData) {
-      console.log(this.props.student.achievementData);
-    }
-
-  }
-
- 
-
-  onPlayerReady(player){
-    console.log("Player is ready: ", player);
-    this.player = player;
-}
-
-onVideoPlay(duration){
-    console.log("Video played at: ", duration);
-}
-
-onVideoPause(duration){
-    console.log("Video paused at: ", duration);
-}
-
-onVideoTimeUpdate(duration){
-    console.log("Time updated: ", duration);
-}
-
-onVideoSeeking(duration){
-    console.log("Video seeking: ", duration);
-}
-
-onVideoSeeked(from, to){
-    console.log(`Video seeked from ${from} to ${to}`);
-}
-
-onVideoEnd(){
-    console.log("Video ended");
-}
-
-
 
   render() {
     const videoConstraints = {
-        facingMode: "user"
-      };
+      facingMode: 'user'
+    };
     return (
-        <div className="wrapper">
-        <Header {...this.props} />     
-          <div className="main-panel">   
-        <div>
-                  <VideoPlayer
-                    controls={true}
-                    src={this.state.videoLinkInterviewer}
-                    poster={this.state.video.poster}
-                    width="720"
-                    height="420"
-                    onReady={this.onPlayerReady.bind(this)}
-                    onPlay={this.onVideoPlay.bind(this)}
-                    onPause={this.onVideoPause.bind(this)}
-                    onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
-                    onSeeking={this.onVideoSeeking.bind(this)}
-                    onSeeked={this.onVideoSeeked.bind(this)}
-                    onEnd={this.onVideoEnd.bind(this)}
-                />  
+      <div className="wrapper">
+        <Header {...this.props} />
+        <div className="main-panel">
+          <div>
+            {this.state.videoLinkInterviewer ? (
+              // <VideoPlayer
+              //             controls={true}
+              //             src={this.state.videoLinkInterviewer}
+              //      //       poster={this.state.video.poster}
+              //             type="video/webm"
+              //             currentTime="10.573812"
+              //             width="720"
+              //             height="420"
+              //             onReady={this.onPlayerReady.bind(this)}
+              //             onPlay={this.onVideoPlay.bind(this)}
+              //             onPause={this.onVideoPause.bind(this)}
+              //             onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
+              //             onSeeking={this.onVideoSeeking.bind(this)}
+              //             onSeeked={this.onVideoSeeked.bind(this)}
+              //             onEnd={this.onVideoEnd.bind(this)}
+              //         />
+              <Player
+                poster="/assets/poster.png"
+                fluid={false}
+                videoWidth="720"
+                videoHeight="420"
+                ref={player => {
+                  this.player = player;
+                }}
+              >
+                <source src={this.state.videoLinkInterviewer} />
+                <source src={this.state.videoLinkInterviewer} />
 
-                  <VideoPlayer
-                    controls={true}
-                    src={this.state.videoChatLinkUser}
-                    poster={this.state.video.poster}
-                    width="720"
-                    height="420"
-                    onReady={this.onPlayerReady.bind(this)}
-                    onPlay={this.onVideoPlay.bind(this)}
-                    onPause={this.onVideoPause.bind(this)}
-                    onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
-                    onSeeking={this.onVideoSeeking.bind(this)}
-                    onSeeked={this.onVideoSeeked.bind(this)}
-                    onEnd={this.onVideoEnd.bind(this)}
-                />  
-            
-            </div>
-        </div>    
-     
+                <ControlBar>
+                  <ReplayControl seconds={10} order={1.1} />
+                  <ForwardControl seconds={30} order={1.2} />
+                  <CurrentTimeDisplay order={4.1} />
+                  <TimeDivider order={4.2} />
+                  <PlaybackRateMenuButton
+                    rates={[5, 2, 1, 0.5, 0.1]}
+                    order={7.1}
+                  />
+                  <VolumeMenuButton />
+                </ControlBar>
+              </Player>
+            ) : (
+              'Video is not available'
+            )}
+          </div>
+
+          {this.state.videoSkillTag &&
+            this.state.videoSkillTag.length > 0 &&
+            this.state.videoSkillTag.map((data, index) => (
+              <div>
+                {data.skill}
+                <Button onClick={this.seek(1)} className="mr-3">
+                  currentTime = 50
+                </Button>
+              </div>
+            ))}
+        </div>
       </div>
     );
   }

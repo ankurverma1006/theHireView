@@ -25,7 +25,7 @@ import AddPersonalProfile from '../profile/addPersonalProfile';
 import AddSkills from '../profile/addSkills';
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
-import DownloadLink from "react-download-link";
+import DownloadLink from 'react-download-link';
 //import Img from '../../common/cropper/img';
 import {
   showErrorToast,
@@ -46,81 +46,76 @@ import {
   actionUpdateUserInfo,
   actionGetAchievementsData
 } from '../../common/core/redux/actions';
-import achievementDefaultImage from '../../assets/img/default_achievement.jpg';
-import SpiderChart from '../../common/spiderChart/spiderChart';
-import Select from 'react-select';
 
 const config = {
   bucketName: 'ankurself',
-  dirName: 'photos', /* optional */
+  dirName: 'photos' /* optional */,
   region: 'ap-south-1', // Put your aws region here
   accessKeyId: 'AKIAJHHM3PCJ25PK6OWQ',
   secretAccessKey: 'fTo0CpSivV7OWo2TrFGNUaA5E6ST1pB9Pwnsp5HB'
-}
-var settings=null;
+};
+var settings = null;
 
-const skills1=[
-  {label:'Developer',value:1 },
-  {label:'React Developer',value:2 }
-  ]
+const skills1 = [
+  { label: 'Developer', value: 1 },
+  { label: 'React Developer', value: 2 }
+];
 
 class EditProfile extends Component {
   constructor(props, context) {
     super(props);
-    this.state = {      
+    this.state = {
       showEmploymentComponent: false,
       showSkillsComponent: false,
       showProjectComponent: false,
-      showPCareerProfileComponent: false,     
-      showEducationComponent:false,
-      educationDetail: {}, 
-      employmentDetail: {},            
-      skillsDetail: {},     
-      projectDetail: {},    
-      careerProfileDetail: {}, 
+      showPCareerProfileComponent: false,
+      showEducationComponent: false,
+      educationDetail: {},
+      employmentDetail: {},
+      skillsDetail: {},
+      projectDetail: {},
+      careerProfileDetail: {},
       loader1: false,
       loader2: false,
-      imageSource: '',      
+      imageSource: '',
       employmentListData: [],
-      skillsListData:[],
-      projectListData:[],
-      userData:{},    
-      showDropdown: false,     
-      isActive: 'true',     
+      skillsListData: [],
+      projectListData: [],
+      userData: {},
+      showDropdown: false,
+      isActive: 'true',
       contentEditable: false,
       editName: false,
       name: '',
       editTagLine: false,
-      profileRoleList:[],
-      userProfile:{}
+      profileRoleList: [],
+      userProfile: {}
     };
-   // this.textInput = React.createRef();    
+    // this.textInput = React.createRef();
   }
 
   componentWillMount() {
-    let user= this.props.otherUser? this.props.otherUser: this.props.user;
-    
-    if(user){
-      let userId =user.userId; 
+    let user = this.props.otherUser ? this.props.otherUser : this.props.user;
+
+    if (user) {
+      let userId = user.userId;
       this.getEmploymentData(userId);
-      this.getUserDetails(userId);  
+      this.getUserDetails(userId);
       this.getSkillsData(userId);
       this.getProjectsData(userId);
       this.getCareerProfileData(userId);
       this.getUserProfileData(userId);
       this.setProfileData(user);
-      this.setState({userId: userId,user:user});
-    }    
+      this.setState({ userId: userId, user: user });
+    }
     this.uploadImageToAzure = this.uploadImageToAzure.bind(this);
   }
 
   componentWillReceiveProps(res) {
-     this.setProfileData(res.user);   
+    this.setProfileData(res.user);
   }
 
-  componentDidMount() { 
-  
-  }
+  componentDidMount() {}
 
   setProfileData = data => {
     //console.log(data);
@@ -131,7 +126,7 @@ class EditProfile extends Component {
       let lastName = data.lastName;
       // let tagline = data.tagline.trim();
       // let editTag = data.tagline.trim();
-      let email= data.email;
+      let email = data.email;
       let tagline = data.tagline ? data.tagline.trim() : null;
       let editTag = data.tagline ? data.tagline.trim() : null;
 
@@ -141,7 +136,7 @@ class EditProfile extends Component {
         (data.lastName ? data.lastName : '');
       let profileImage = data.profilePicture;
       if (profileImage) {
-        profileImage = profileImage //getThumbImage('medium', profileImage);
+        profileImage = profileImage; //getThumbImage('medium', profileImage);
       }
       let coverImage = data.coverImage;
       if (coverImage) {
@@ -162,248 +157,248 @@ class EditProfile extends Component {
         name
       });
     }
-  }; 
+  };
 
   //Get Section
-  getUserDetails(userId){
-    theRapidHireApiService('getUserDetails',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-         let userData= this.state.userData;
-         userData= response.data.result[0];     
-         this.setState({userData: userData});        
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  } 
-
-  getEmploymentData(userId){
-    theRapidHireApiService('getEmploymentListById',{userId})
-    .then(response => { 
-      console.log(response);    
-      if (response.data.status === 'Success') {
-         let employmentListData= this.state.employmentListData;
-         employmentListData= response.data.result;
-         this.setState({employmentListData: employmentListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getUserDetails(userId) {
+    theRapidHireApiService('getUserDetails', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let userData = this.state.userData;
+          userData = response.data.result[0];
+          this.setState({ userData: userData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  getSkillsData(userId){
-    theRapidHireApiService('getUserSkillsById',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-        console.log(response.data);
-         let skillsListData= this.state.skillsListData;
-         let skillsDetail = response.data.result[0];
-         console.log('skillsDetail',skillsDetail);
-         skillsListData= skillsDetail.skills
-         this.setState({skillsListData,skillsDetail});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getEmploymentData(userId) {
+    theRapidHireApiService('getEmploymentListById', { userId })
+      .then(response => {
+        console.log(response);
+        if (response.data.status === 'Success') {
+          let employmentListData = this.state.employmentListData;
+          employmentListData = response.data.result;
+          this.setState({ employmentListData: employmentListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  getProjectsData(userId){
-    theRapidHireApiService('getProjectListById',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-         let projectListData= this.state.projectListData;
-         projectListData= response.data.result;
-         this.setState({projectListData: projectListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getSkillsData(userId) {
+    theRapidHireApiService('getUserSkillsById', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          console.log(response.data);
+          let skillsListData = this.state.skillsListData;
+          let skillsDetail = response.data.result[0];
+          console.log('skillsDetail', skillsDetail);
+          skillsListData = skillsDetail.skills;
+          this.setState({ skillsListData, skillsDetail });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  getCareerProfileData(userId){
-    theRapidHireApiService('getDesiredProfileListById',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-         let careerProfileListData= this.state.careerProfileListData;
-         careerProfileListData= response.data.result[0];
-         this.setState({careerProfileListData: careerProfileListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  } 
+  getProjectsData(userId) {
+    theRapidHireApiService('getProjectListById', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let projectListData = this.state.projectListData;
+          projectListData = response.data.result;
+          this.setState({ projectListData: projectListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getCareerProfileData(userId) {
+    theRapidHireApiService('getDesiredProfileListById', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let careerProfileListData = this.state.careerProfileListData;
+          careerProfileListData = response.data.result[0];
+          this.setState({ careerProfileListData: careerProfileListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   getProfileData = () => {
     let userId = this.state.userId;
     this.props.actionGetStudentPersonalInfo(userId);
   };
 
-  getUserProfileData(userId){
-    theRapidHireApiService('getUserSkillsById',{userId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-        console.log(response.data);       
-         let userProfile = response.data.result[0];       
-         let profileRole= userProfile.profileRole[0].profileRole;
-         let experience= userProfile.experienceInYear;
-         let mobileNo= userProfile.mobileNo;
-         let currentLocation= userProfile.currentLocation;
-         let videoLink = userProfile.videoLink;
-         this.setState({userProfile:userProfile,
-                    profileRole,
-                    experience,
-                    mobileNo,
-                    currentLocation,
-                    videoLink
-         }); 
-         this.setUserProfileData(userProfile);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  } 
+  getUserProfileData(userId) {
+    theRapidHireApiService('getUserSkillsById', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          console.log(response.data);
+          let userProfile = response.data.result[0];
+          let profileRole = userProfile.profileRole[0].profileRole;
+          let experience = userProfile.experienceInYear;
+          let mobileNo = userProfile.mobileNo;
+          let currentLocation = userProfile.currentLocation;
+          let videoLink = userProfile.videoLink;
+          this.setState({
+            userProfile: userProfile,
+            profileRole,
+            experience,
+            mobileNo,
+            currentLocation,
+            videoLink
+          });
+          this.setUserProfileData(userProfile);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
-  setUserProfileData = data => {    
-    console.log('data ',data);
-    if (data) { 
-      this.setState({     
-          userProfileId : data.userProfileId,
-          skills:data.skills,
-          year: data.experienceInYear,
-          month: data.experienceInMonth,
-          location: data.currentLocation,
-          mobileNo: data.mobileNo,
-          resumeURL: data.resumeURL,
-          resumeName:data.resumeName,
-          profileRole: data.profileRole[0].profileRoleId          
-        });    
-    }
-  };
-
-   //Show Component Section
-   showEducationComponent = event => {    
-    this.setState({
-      showEducationComponent: !this.state.showEducationComponent   
-    });
-    if(!this.state.showEducationComponent){
-       this.setState({educationDetail :  null});
-       //this.getEducationData(this.state.userId);
+  setUserProfileData = data => {
+    console.log('data ', data);
+    if (data) {
+      this.setState({
+        userProfileId: data.userProfileId,
+        skills: data.skills,
+        year: data.experienceInYear,
+        month: data.experienceInMonth,
+        location: data.currentLocation,
+        mobileNo: data.mobileNo,
+        resumeURL: data.resumeURL,
+        resumeName: data.resumeName,
+        profileRole: data.profileRole[0].profileRoleId
+      });
     }
   };
 
   //Show Component Section
-  showEmploymentComponent = event => {    
+  showEducationComponent = event => {
     this.setState({
-      showEmploymentComponent: !this.state.showEmploymentComponent   
+      showEducationComponent: !this.state.showEducationComponent
     });
-    if(!this.state.showEmploymentComponent){
-       this.setState({employmentDetail :  null});
-       this.getEmploymentData(this.state.userId);
+    if (!this.state.showEducationComponent) {
+      this.setState({ educationDetail: null });
+      //this.getEducationData(this.state.userId);
     }
   };
 
-  showSkillsComponent = event => {    
+  //Show Component Section
+  showEmploymentComponent = event => {
     this.setState({
-      showSkillsComponent: !this.state.showSkillsComponent   
-    });    
-    
-    if(!this.state.showSkillsComponent){
-     //  this.setState({skillsDetail :  null});
-       this.getSkillsData(this.state.userId);
+      showEmploymentComponent: !this.state.showEmploymentComponent
+    });
+    if (!this.state.showEmploymentComponent) {
+      this.setState({ employmentDetail: null });
+      this.getEmploymentData(this.state.userId);
     }
   };
 
-  showSkillsComponent = event => {    
+  showSkillsComponent = event => {
     this.setState({
-      showSkillsComponent: !this.state.showSkillsComponent   
-    });    
-    
-    if(!this.state.showSkillsComponent){
-     //  this.setState({skillsDetail :  null});
-       this.getSkillsData(this.state.userId);
-    }
-  }; 
+      showSkillsComponent: !this.state.showSkillsComponent
+    });
 
-  showPersonalProfileComponent = event => {    
-    this.setState({
-      showPersonalProfileComponent: !this.state.showPersonalProfileComponent   
-    });    
-    
-    if(!this.state.showPersonalProfileComponent){
-     //  this.setState({skillsDetail :  null});
-       this.getSkillsData(this.state.userId);
-    }
-  }; 
-
-  showProjectComponent = event => {    
-    this.setState({
-      showProjectComponent: !this.state.showProjectComponent   
-    });    
-    
-    if(!this.state.showProjectComponent){
-       this.setState({projectDetail :  null});
-       this.getProjectsData(this.state.userId);
+    if (!this.state.showSkillsComponent) {
+      //  this.setState({skillsDetail :  null});
+      this.getSkillsData(this.state.userId);
     }
   };
 
-  showCareerProfileComponent = event => {    
+  showSkillsComponent = event => {
     this.setState({
-      showCareerProfileComponent: !this.state.showCareerProfileComponent   
-    });    
-    
-    if(!this.state.showCareerProfileComponent){
-       this.setState({careerProfileDetail :  null});
-       this.getCareerProfileData(this.state.userId);
+      showSkillsComponent: !this.state.showSkillsComponent
+    });
+
+    if (!this.state.showSkillsComponent) {
+      //  this.setState({skillsDetail :  null});
+      this.getSkillsData(this.state.userId);
     }
   };
 
- 
+  showPersonalProfileComponent = event => {
+    this.setState({
+      showPersonalProfileComponent: !this.state.showPersonalProfileComponent
+    });
+
+    if (!this.state.showPersonalProfileComponent) {
+      //  this.setState({skillsDetail :  null});
+      this.getSkillsData(this.state.userId);
+    }
+  };
+
+  showProjectComponent = event => {
+    this.setState({
+      showProjectComponent: !this.state.showProjectComponent
+    });
+
+    if (!this.state.showProjectComponent) {
+      this.setState({ projectDetail: null });
+      this.getProjectsData(this.state.userId);
+    }
+  };
+
+  showCareerProfileComponent = event => {
+    this.setState({
+      showCareerProfileComponent: !this.state.showCareerProfileComponent
+    });
+
+    if (!this.state.showCareerProfileComponent) {
+      this.setState({ careerProfileDetail: null });
+      this.getCareerProfileData(this.state.userId);
+    }
+  };
+
   editEducationComponent = educationDetail => {
     console.log(educationDetail);
     this.setState({
-      educationDetail: educationDetail ,
-      showEducationComponent: !this.state.showEducationComponent    
+      educationDetail: educationDetail,
+      showEducationComponent: !this.state.showEducationComponent
     });
-  }
+  };
 
   editEmploymentComponent = employmentDetail => {
     console.log(employmentDetail);
     this.setState({
-      employmentDetail: employmentDetail ,
-      showEmploymentComponent: !this.state.showEmploymentComponent    
+      employmentDetail: employmentDetail,
+      showEmploymentComponent: !this.state.showEmploymentComponent
     });
-  }
+  };
 
-  editSkillsComponent = skillsDetail => {    
+  editSkillsComponent = skillsDetail => {
     this.setState({
-      skillsDetail: skillsDetail ,
-      showSkillsComponent: !this.state.showSkillsComponent    
+      skillsDetail: skillsDetail,
+      showSkillsComponent: !this.state.showSkillsComponent
     });
-  }
+  };
 
   editProjectComponent = projectDetail => {
     console.log(projectDetail);
     this.setState({
-      projectDetail: projectDetail ,
-      showProjectComponent: !this.state.showProjectComponent    
+      projectDetail: projectDetail,
+      showProjectComponent: !this.state.showProjectComponent
     });
-  }
+  };
 
   editCareerProfileComponent = careerProfileDetail => {
     console.log(careerProfileDetail);
     this.setState({
-      careerProfileDetail: careerProfileDetail ,
-      showCareerProfileComponent: !this.state.showCareerProfileComponent    
+      careerProfileDetail: careerProfileDetail,
+      showCareerProfileComponent: !this.state.showCareerProfileComponent
     });
-  }  
-  
+  };
+
   generateSASToken() {
     theRapidHireApiService('getSASToken')
       .then(response => {
@@ -425,8 +420,7 @@ class EditProfile extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };  
-
+  };
 
   // Change name by making editable
   contentEditable = () => {
@@ -434,7 +428,7 @@ class EditProfile extends Component {
     //console.log(!this.state.contentEditable);
     this.setState({ contentEditable: !this.state.contentEditable });
   };
- 
+
   makeTagLineEditable = () => {
     let editTag = this.state.tagline ? this.state.tagline : '';
     this.setState({
@@ -442,7 +436,6 @@ class EditProfile extends Component {
       editTag: editTag
     });
   };
-
 
   saveTagLine = () => {
     let userId = this.state.userId;
@@ -523,54 +516,48 @@ class EditProfile extends Component {
     });
   };
 
-
-  //Profile Change 
+  //Profile Change
   uploadImageToAzure(file) {
     let userId = this.state.userId;
 
     if (file !== '') {
-        S3FileUpload
-        .uploadFile(file, config)
+      S3FileUpload.uploadFile(file, config)
         .then(data => {
           let profileImage = getThumbImage('medium', this.state.imageName);
-              this.setState({ profileImage: profileImage, loader1: false });             
-              this.updateUserData(data.location, userId);
-        })    
-        .catch(err => console.error(err));     
+          this.setState({ profileImage: profileImage, loader1: false });
+          this.updateUserData(data.location, userId);
+        })
+        .catch(err => console.error(err));
     }
   }
 
-  updateUserData = (uploadPath, userId) => {  
-      let profilePicture = uploadPath;
-      let data = {
-        userId,
-        profilePicture
-      };
-      this.props.actionUpdateUserInfo({ profilePicture });
-      theRapidHireApiService('updateProfileImage', data);    
+  updateUserData = (uploadPath, userId) => {
+    let profilePicture = uploadPath;
+    let data = {
+      userId,
+      profilePicture
+    };
+    this.props.actionUpdateUserInfo({ profilePicture });
+    theRapidHireApiService('updateProfileImage', data);
   };
-  
+
   handleImageChange = (action, event) => {
     let fileName = event.target.files[0].name;
-    S3FileUpload
-    .uploadFile(event.target.files[0], config)
-    .then(data => {
-      
-      let userId= this.state.userId;
+    S3FileUpload.uploadFile(event.target.files[0], config).then(data => {
+      let userId = this.state.userId;
       let profilePicture = data.location;
       let profileData = {
         userId,
         profilePicture
       };
       this.props.actionUpdateUserInfo({ profilePicture });
-      theRapidHireApiService('updateProfileImage', profileData);    
-
-    })
+      theRapidHireApiService('updateProfileImage', profileData);
+    });
     // this.setState({ imageSource: '' });
     // const file = event.target.files[0];
     // const fileName = file.name;
     // const fileType = file.type;
-    // if (file) {      
+    // if (file) {
     //   let reader = new FileReader();
     //   reader.readAsDataURL(event.target.files[0]);
     //   reader.onload = event => {
@@ -585,148 +572,166 @@ class EditProfile extends Component {
   };
 
   // Upload file to Azure
-  uploadFiles= event => {
+  uploadFiles = event => {
     console.log(event.target.files[0]);
     let fileName = event.target.files[0].name;
-    S3FileUpload
-    .uploadFile(event.target.files[0], config)
-    .then(data => {
-      let sendData ={
-         userProfileId: this.state.userProfileId,
-         userId: this.state.userId,
-         resumeURL:data.location,
-         resumeName: fileName
-      };     
-      console.log(data);
-      theRapidHireApiService('addResume',sendData)
-      .then(response => {     
-        if (response.data.status === 'Success') {
-          this.getUserProfileData(this.state.userId);
-        }
+    S3FileUpload.uploadFile(event.target.files[0], config)
+      .then(data => {
+        let sendData = {
+          userProfileId: this.state.userProfileId,
+          userId: this.state.userId,
+          resumeURL: data.location,
+          resumeName: fileName
+        };
+        console.log(data);
+        theRapidHireApiService('addResume', sendData)
+          .then(response => {
+            if (response.data.status === 'Success') {
+              this.getUserProfileData(this.state.userId);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       })
-      .catch(err => {
-        console.log(err);
-      });
-    })    
-    .catch(err => console.error(err));
-  }
+      .catch(err => console.error(err));
+  };
 
   DeleteFile = event => {
-    S3FileUpload
-    .deleteFile(this.state.resumeName, config)
-    .then(response =>{ console.log(response);
-      let sendData ={
-        userProfileId: this.state.userProfileId,
-        userId: this.state.userId,
-        resumeURL:null,
-        resumeName: null
-     };     
-     
-     theRapidHireApiService('addResume',sendData)
-     .then(response => {     
-       if (response.data.status === 'Success') {
-         this.getUserProfileData(this.state.userId);
-       }
-     })
-     .catch(err => {
-       console.log(err);
-     });
-    })
-    .catch(err => console.error(err));
-  }
- 
+    S3FileUpload.deleteFile(this.state.resumeName, config)
+      .then(response => {
+        console.log(response);
+        let sendData = {
+          userProfileId: this.state.userProfileId,
+          userId: this.state.userId,
+          resumeURL: null,
+          resumeName: null
+        };
+
+        theRapidHireApiService('addResume', sendData)
+          .then(response => {
+            if (response.data.status === 'Success') {
+              this.getUserProfileData(this.state.userId);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => console.error(err));
+  };
+
   render() {
     return (
       <div className="wrapper">
-      <Header {...this.props} />     
-      <div className="main-panel">   
-        
-      {/* <ToastContainer
+        <Header {...this.props} />
+        <div className="main-panel">
+          {/* <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />  */}
-        <div className="">   
-       {this.state.imageSource ? (
-          <ImageCropper
-            imageSource={this.state.imageSource}
-            imageName={this.state.imageName}
-            imageType={this.state.imageType}
-            aspectRatio={this.state.action === 1 ? 1 / 1 : 16 / 9}
-            modalSize={this.state.action === 1 ? 'medium' : 'large'}
-            cropBoxWidth={this.state.action === 1 ? '200' : '700'}
-            cropBoxHeight={this.state.action === 1 ? '200' : '700'}
-            uploadImageToAzure={this.uploadImageToAzure}
-          />
-        ) : null} 
+          <div className="">
+            {this.state.imageSource ? (
+              <ImageCropper
+                imageSource={this.state.imageSource}
+                imageName={this.state.imageName}
+                imageType={this.state.imageType}
+                aspectRatio={this.state.action === 1 ? 1 / 1 : 16 / 9}
+                modalSize={this.state.action === 1 ? 'medium' : 'large'}
+                cropBoxWidth={this.state.action === 1 ? '200' : '700'}
+                cropBoxHeight={this.state.action === 1 ? '200' : '700'}
+                uploadImageToAzure={this.uploadImageToAzure}
+              />
+            ) : null}
 
-        
-
-  <div className="w3-content main-panel1">
- 
- 
- <div className="w3-row-padding">
-  
-   <div className="w3-third">
-     <div className="w3-white w3-text-grey w3-card-4">
-      <div className="w3-display-container " style={{overflow:"hidden"}}>
-      <img  src={this.state.profileImage} style={{width:"100%","padding-right": "132px"}} alt="Avatar" />          
-            
-      <div className="">
-      <div className="">
-                    <div className="">    
-         <input  type="file"
-                        onChange={this.handleImageChange.bind(this, 1)}
-                        accept="image/*"
-                        value=""
+            <div className="w3-content main-panel1">
+              <div className="w3-row-padding">
+                <div className="w3-third">
+                  <div className="w3-white w3-text-grey w3-card-4">
+                    <div
+                      className="w3-display-container "
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <img
+                        src={this.state.profileImage}
+                        style={{ width: '100%', 'padding-right': '132px' }}
+                        alt="Avatar"
                       />
-                      <span className="icon-camera icon" />  
-        </div>  </div>  </div>   
-      </div>      
-      <div className="w3-container">
-      <p><i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.firstName} {this.state.lastName}</p>
-        <p><i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.profileRole}</p>
-        <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-        <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.email}</p>
-        <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>{this.state.mobileNo}</p>
-        <p><i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
-                    {this.state.profileRole ?         
-                                      <Button
-                                      bsStyle="primary no-bold no-round mr-1"
-                                        onClick={this.showPersonalProfileComponent.bind(
-                                          this                            
-                                        )}
-                                       >
-                                       <span className="icon-share2" />
-                                        Add Information
-                                       </Button>
-                                       :
-                                        <Button onClick={this.showPersonalProfileComponent.bind(
-                                           this                            
-                                              )}
-                                                className="btn btn-white with-icon">
-                                          <span className="icon-share2" />
-                                          Add Information
-                                        </Button>}
 
-                          {this.state.showPersonalProfileComponent ==
-                            true ? (
-                              <AddPersonalProfile
-                                closePersonalProfileComponent={
-                                  this.showPersonalProfileComponent
-                                }           
-                                user={
-                                  this.state.user
-                                }                    
-                                userProfile={
-                                  this.state.userProfile
-                                }
-                              />
-                            ) : (
-                              '')}    
-        </p>
-        {/* <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
+                      <div className="">
+                        <div className="">
+                          <div className="">
+                            <input
+                              type="file"
+                              onChange={this.handleImageChange.bind(this, 1)}
+                              accept="image/*"
+                              value=""
+                            />
+                            <span className="icon-camera icon" />
+                          </div>{' '}
+                        </div>{' '}
+                      </div>
+                    </div>
+                    <div className="w3-container">
+                      <p>
+                        <i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        {this.state.firstName} {this.state.lastName}
+                      </p>
+                      <p>
+                        <i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        {this.state.profileRole}
+                      </p>
+                      <p>
+                        <i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        London, UK
+                      </p>
+                      <p>
+                        <i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        {this.state.email}
+                      </p>
+                      <p>
+                        <i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        {this.state.mobileNo}
+                      </p>
+                      <p>
+                        <i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        {this.state.profileRole ? (
+                          <Button
+                            bsStyle="primary no-bold no-round mr-1"
+                            onClick={this.showPersonalProfileComponent.bind(
+                              this
+                            )}
+                          >
+                            <span className="icon-share2" />
+                            Add Information
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={this.showPersonalProfileComponent.bind(
+                              this
+                            )}
+                            className="btn btn-white with-icon"
+                          >
+                            <span className="icon-share2" />
+                            Add Information
+                          </Button>
+                        )}
+
+                        {this.state.showPersonalProfileComponent == true ? (
+                          <AddPersonalProfile
+                            closePersonalProfileComponent={
+                              this.showPersonalProfileComponent
+                            }
+                            user={this.state.user}
+                            userProfile={this.state.userProfile}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </p>
+                      {/* <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
         <p>Adobe Photoshop</p>
         <div className="w3-light-grey w3-round-xlarge w3-small">
           <div className="w3-container w3-center w3-round-xlarge w3-teal" style={{width:"90%"}}>90%</div>
@@ -762,263 +767,365 @@ class EditProfile extends Component {
         </div>
         className
       </div> */}
-       </div>
-    </div>  
-  </div>
+                    </div>
+                  </div>
+                </div>
 
-<div className="w3-twothird">
-
-  <div className="w3-container w3-card w3-white w3-margin-bottom">
-             
-      <h2 className="w3-text-grey">
-               Resume        
-      </h2>
-       <div className="centerButton">   
-        <ul style={{"list-style": "none"}}><li>
-       <p>   <div style={{"padding-left": "150px"}}> <input type="file" onChange={this.uploadFiles.bind(this)} />
-         <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i></div> </p></li>
-         <li>
-            <p><a>{this.state.resumeName}</a></p> </li>  </ul>                    
-      </div> 
-      {/* <div className="centerButton">
+                <div className="w3-twothird">
+                  <div className="w3-container w3-card w3-white w3-margin-bottom">
+                    <h2 className="w3-text-grey">Resume</h2>
+                    <div className="centerButton">
+                      <ul style={{ 'list-style': 'none' }}>
+                        <li>
+                          <p>
+                            {' '}
+                            <div style={{ 'padding-left': '150px' }}>
+                              {' '}
+                              <input
+                                type="file"
+                                onChange={this.uploadFiles.bind(this)}
+                              />
+                              <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                            </div>{' '}
+                          </p>
+                        </li>
+                        <li>
+                          <p>
+                            <a>{this.state.resumeName}</a>
+                          </p>{' '}
+                        </li>{' '}
+                      </ul>
+                    </div>
+                    {/* <div className="centerButton">
       <input type="file" onChange={this.uploadFiles.bind(this)} /> </div> */}
-      <div className="w3-container">
-        <h5 className="w3-opacity"><b>
-        { this.state.resumeURL ?  <DownloadLink
-                          filename={this.state.resumeURL}
-                          exportFile={() => "My cached data"}
-                      >
+                    <div className="w3-container">
+                      <h5 className="w3-opacity">
+                        <b>
+                          {this.state.resumeURL ? (
+                            <DownloadLink
+                              filename={this.state.resumeURL}
+                              exportFile={() => 'My cached data'}
+                            >
                               Link to download
-                      </DownloadLink> : null}       </b></h5>    
-                      <p>             
-         { this.state.resumeURL ? 
-                        <a onClick={this.DeleteFile.bind(this)}>Delete Resume</a>: null}
-                        <br></br>         
-                       </p>       
-       
-      </div>     
-    </div>
+                            </DownloadLink>
+                          ) : null}{' '}
+                        </b>
+                      </h5>
+                      <p>
+                        {this.state.resumeURL ? (
+                          <a onClick={this.DeleteFile.bind(this)}>
+                            Delete Resume
+                          </a>
+                        ) : null}
+                        <br></br>
+                      </p>
+                    </div>
+                  </div>
 
-    {/* Education */}
-    <div className="w3-container w3-card w3-white w3-margin-bottom">
-    <h2 className="w3-text-grey">Education</h2>
-              <div className="centerButton">                        
-                <Button
-                  bsStyle="primary no-bold no-round mr-1"
-                  className="no-bold no-round"
-                 // disabled={isLoading}
-                  onClick={this.showEducationComponent.bind(this)}
-                >  Add Education
-              </Button>
-              {this.state.showEducationComponent ==
-                              true ? (
-                                <Education
-                                  closeEducationComponent={
-                                    this.showEducationComponent
-                                  }     
-                                  user={
-                                    this.state.user
-                                  }                           
-                                  educationMode={
-                                    this.state.educationDetail
-                                  }
-                                />
-                              ) : (
-              '')}
-              </div>
-     
-         {this.state.employmentListDeducationListDataata && this.state.educationListData.map((data, index) => (                          
-              <div className="w3-container">                        
-                            <h5 className="w3-opacity"><b></b>
-                              <a onClick={this.editEducationComponent.bind(this,data)}>
-                                      <span className="pe-7s-pen" />
-                                    </a>
-                            </h5>
-                            <h6 className="w3-text-teal"><i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                              {moment(parseInt(data.startDate,10)).format("DD-MMM-YYYY")+' ' } to 
-                                        {data.endDate ?' '+moment(parseInt(data.endDate,10)).format("DD-MMM-YYYY"):<span className="w3-tag w3-teal w3-round">Present</span>}
-                            </h6>
-                            <p>Lorem ipsum dolor sit amet.</p>                          
-              </div>))}                 
-  </div>
-
-   {/* Experience */}
-     <div className="w3-container w3-card w3-white w3-margin-bottom">
-              <div className="centerButton">                        
-                <Button
-                  bsStyle="primary no-bold no-round mr-1"
-                  className="no-bold no-round"
-                 // disabled={isLoading}
-                  onClick={this.showEmploymentComponent.bind(this)}
-                >  Add Experience
-              </Button>
-              {this.state.showEmploymentComponent ==
-                              true ? (
-                                <AddEmployment
-                                  closeEmploymentComponent={
-                                    this.showEmploymentComponent
-                                  }     
-                                  user={
-                                    this.state.user
-                                  }                           
-                                  employmentDetail={
-                                    this.state.employmentDetail
-                                  }
-                                />
-                              ) : (
-              '')}
-              </div>
-      <h2 className="w3-text-grey">Work Experience</h2>
-         {this.state.employmentListData && this.state.employmentListData.map((data, index) => (                          
-              <div className="w3-container">                        
-                            <h5 className="w3-opacity"><b>{data.designation} / {data.organisation}</b>
-                              <a onClick={this.editEmploymentComponent.bind(this,data)}>
-                                      <span className="pe-7s-pen" />
-                                    </a>
-                            </h5>
-                            <h6 className="w3-text-teal"><i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                              {moment(parseInt(data.startDate,10)).format("DD-MMM-YYYY")+' ' } to 
-                                        {data.endDate ?' '+moment(parseInt(data.endDate,10)).format("DD-MMM-YYYY"):<span className="w3-tag w3-teal w3-round">Present</span>}
-                            </h6>
-                            <p></p>                          
-              </div>))}                 
-  </div>
-
-   {/* Skills */}
-   <div className="w3-container w3-card w3-white w3-margin-bottom">
-              <div className="centerButton">                        
-                <Button
-                  bsStyle="primary no-bold no-round mr-1"
-                  className="no-bold no-round"
-                 // disabled={isLoading}
-                  onClick={this.showSkillsComponent.bind(this)}
-                >     Add Skills
-              </Button>
-              {this.state.showSkillsComponent ==true ? (
-                          <AddSkills
-                            closeSkillsComponent={
-                              this.showSkillsComponent
-                            }   
-                            user={
-                              this.state.user
-                            }                            
-                            skillsDetail={
-                              this.state.skillsDetail
-                            }
-                          />
-                        ) : (
-                          '')}
-              </div>                      
-
-      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Skills</h2>
-         {this.state.skillsListData && this.state.skillsListData.map((data, index) => (                          
-              <div className="w3-container">                        
-                            <h5 className="w3-opacity"><b>{data.skillName} / {data.rating}</b>
-                              <a onClick={this.editSkillsComponent.bind(this,data)}>
-                                      <span className="pe-7s-pen" />
-                                    </a>
-                            </h5>                           
-                            <p>Lorem ipsum dolor sit amet.</p>                          
-              </div>))}                 
-  </div>
-    
-
-
- {/* Project */}  
- <div className="w3-container w3-card w3-white w3-margin-bottom">
-              <div className="centerButton">                        
-                <Button
-                  bsStyle="primary no-bold no-round mr-1"
-                  className="no-bold no-round"
-                 // disabled={isLoading}
-                  onClick={this.showProjectComponent.bind(this)}
-                >     Add Project
-              </Button>
-              {this.state.showProjectComponent ==true ? (
-                        <AddProject
-                          closeProjectComponent={
-                            this.showProjectComponent
-                          }
-                          user={
-                            this.state.user
-                          }                        
-                          projectDetail={
-                            this.state.projectDetail
-                          }
+                  {/* Education */}
+                  <div className="w3-container w3-card w3-white w3-margin-bottom">
+                    <h2 className="w3-text-grey">Education</h2>
+                    <div className="centerButton">
+                      <Button
+                        bsStyle="primary no-bold no-round mr-1"
+                        className="no-bold no-round"
+                        // disabled={isLoading}
+                        onClick={this.showEducationComponent.bind(this)}
+                      >
+                        {' '}
+                        Add Education
+                      </Button>
+                      {this.state.showEducationComponent == true ? (
+                        <Education
+                          closeEducationComponent={this.showEducationComponent}
+                          user={this.state.user}
+                          educationMode={this.state.educationDetail}
                         />
                       ) : (
-                        '')}
-              </div>                      
+                        ''
+                      )}
+                    </div>
 
-      <h2 className="w3-text-grey"><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Project</h2>
-         {this.state.projectListData && this.state.projectListData.map((data, index) => (                          
-              <div className="w3-container">                        
-                            <h5 className="w3-opacity"><b>{data.projectName} / {data.associatedWith}</b>
-                              <a onClick={this.editProjectComponent.bind(this,data)}>
-                                      <span className="pe-7s-pen" />
-                                    </a>
-                            </h5>
-                            <h6 className="w3-text-teal"><i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                              {moment(parseInt(data.startDate,10)).format("DD-MMM-YYYY")+' ' } to 
-                                        {data.endDate ?' '+moment(parseInt(data.endDate,10)).format("DD-MMM-YYYY"):<span className="w3-tag w3-teal w3-round">Present</span>}
-                            </h6>                           
-                            <p>Lorem ipsum dolor sit amet.</p>                          
-              </div>))}                 
-  </div>
-    
+                    {this.state.employmentListDeducationListDataata &&
+                      this.state.educationListData.map((data, index) => (
+                        <div className="w3-container">
+                          <h5 className="w3-opacity">
+                            <b></b>
+                            <a
+                              onClick={this.editEducationComponent.bind(
+                                this,
+                                data
+                              )}
+                            >
+                              <span className="pe-7s-pen" />
+                            </a>
+                          </h5>
+                          <h6 className="w3-text-teal">
+                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                            {moment(parseInt(data.startDate, 10)).format(
+                              'DD-MMM-YYYY'
+                            ) + ' '}{' '}
+                            to
+                            {data.endDate ? (
+                              ' ' +
+                              moment(parseInt(data.endDate, 10)).format(
+                                'DD-MMM-YYYY'
+                              )
+                            ) : (
+                              <span className="w3-tag w3-teal w3-round">
+                                Present
+                              </span>
+                            )}
+                          </h6>
+                          <p>Lorem ipsum dolor sit amet.</p>
+                        </div>
+                      ))}
+                  </div>
 
+                  {/* Experience */}
+                  <div className="w3-container w3-card w3-white w3-margin-bottom">
+                    <div className="centerButton">
+                      <Button
+                        bsStyle="primary no-bold no-round mr-1"
+                        className="no-bold no-round"
+                        // disabled={isLoading}
+                        onClick={this.showEmploymentComponent.bind(this)}
+                      >
+                        {' '}
+                        Add Experience
+                      </Button>
+                      {this.state.showEmploymentComponent == true ? (
+                        <AddEmployment
+                          closeEmploymentComponent={
+                            this.showEmploymentComponent
+                          }
+                          user={this.state.user}
+                          employmentDetail={this.state.employmentDetail}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                    <h2 className="w3-text-grey">Work Experience</h2>
+                    {this.state.employmentListData &&
+                      this.state.employmentListData.map((data, index) => (
+                        <div className="w3-container">
+                          <h5 className="w3-opacity">
+                            <b>
+                              {data.designation} / {data.organisation}
+                            </b>
+                            <a
+                              onClick={this.editEmploymentComponent.bind(
+                                this,
+                                data
+                              )}
+                            >
+                              <span className="pe-7s-pen" />
+                            </a>
+                          </h5>
+                          <h6 className="w3-text-teal">
+                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                            {moment(parseInt(data.startDate, 10)).format(
+                              'DD-MMM-YYYY'
+                            ) + ' '}{' '}
+                            to
+                            {data.endDate ? (
+                              ' ' +
+                              moment(parseInt(data.endDate, 10)).format(
+                                'DD-MMM-YYYY'
+                              )
+                            ) : (
+                              <span className="w3-tag w3-teal w3-round">
+                                Present
+                              </span>
+                            )}
+                          </h6>
+                          <p></p>
+                        </div>
+                      ))}
+                  </div>
 
+                  {/* Skills */}
+                  <div className="w3-container w3-card w3-white w3-margin-bottom">
+                    <div className="centerButton">
+                      <Button
+                        bsStyle="primary no-bold no-round mr-1"
+                        className="no-bold no-round"
+                        // disabled={isLoading}
+                        onClick={this.showSkillsComponent.bind(this)}
+                      >
+                        {' '}
+                        Add Skills
+                      </Button>
+                      {this.state.showSkillsComponent == true ? (
+                        <AddSkills
+                          closeSkillsComponent={this.showSkillsComponent}
+                          user={this.state.user}
+                          skillsDetail={this.state.skillsDetail}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
 
-  {/* Desired Career Profile */}  
- <div className="w3-container w3-card w3-white" style={{"margin-bottom": "200px"}}>
-              <div className="centerButton">                        
-              {this.state.careerProfileListData?null:  <Button
-                  bsStyle="primary no-bold no-round mr-1"
-                  className="no-bold no-round"
-                 // disabled={isLoading}
-                  onClick={this.showCareerProfileComponent.bind(this)}
-                >     Add Career 
-              </Button>}
-              {this.state.showCareerProfileComponent ==
-                                true ? (
-                                  <AddCareerProfile
-                                    closeCareerProfileComponent={
-                                      this.showCareerProfileComponent
-                                    }
-                                    user={
-                                      this.state.user
-                                    }                                   
-                                    careerProfileDetail={
-                                      this.state.careerProfileDetail
-                                    }
-                                  />
-                                ) : (
-                                  '')}                           
-              </div>                    
+                    <h2 className="w3-text-grey">
+                      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                      Skills
+                    </h2>
+                    {this.state.skillsListData &&
+                      this.state.skillsListData.map((data, index) => (
+                        <div className="w3-container">
+                          <h5 className="w3-opacity">
+                            <b>
+                              {data.skillName} / {data.rating}
+                            </b>
+                            <a
+                              onClick={this.editSkillsComponent.bind(
+                                this,
+                                data
+                              )}
+                            >
+                              <span className="pe-7s-pen" />
+                            </a>
+                          </h5>
+                          <p>Lorem ipsum dolor sit amet.</p>
+                        </div>
+                      ))}
+                  </div>
 
-      
-            <div ><span style={{"font-weight": 600,"font-size": "20px",color: "#333"}}><i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Desired Career Profile</span>
-                                      <span class="edit icon" tabindex="0"><a onClick={this.editCareerProfileComponent.bind(this,this.state.careerProfileListData)}>
-                                      <span className="pe-7s-pen" />
-                                          </a></span>
+                  {/* Project */}
+                  <div className="w3-container w3-card w3-white w3-margin-bottom">
+                    <div className="centerButton">
+                      <Button
+                        bsStyle="primary no-bold no-round mr-1"
+                        className="no-bold no-round"
+                        // disabled={isLoading}
+                        onClick={this.showProjectComponent.bind(this)}
+                      >
+                        {' '}
+                        Add Project
+                      </Button>
+                      {this.state.showProjectComponent == true ? (
+                        <AddProject
+                          closeProjectComponent={this.showProjectComponent}
+                          user={this.state.user}
+                          projectDetail={this.state.projectDetail}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+
+                    <h2 className="w3-text-grey">
+                      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                      Project
+                    </h2>
+                    {this.state.projectListData &&
+                      this.state.projectListData.map((data, index) => (
+                        <div className="w3-container">
+                          <h5 className="w3-opacity">
+                            <b>
+                              {data.projectName} / {data.associatedWith}
+                            </b>
+                            <a
+                              onClick={this.editProjectComponent.bind(
+                                this,
+                                data
+                              )}
+                            >
+                              <span className="pe-7s-pen" />
+                            </a>
+                          </h5>
+                          <h6 className="w3-text-teal">
+                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                            {moment(parseInt(data.startDate, 10)).format(
+                              'DD-MMM-YYYY'
+                            ) + ' '}{' '}
+                            to
+                            {data.endDate ? (
+                              ' ' +
+                              moment(parseInt(data.endDate, 10)).format(
+                                'DD-MMM-YYYY'
+                              )
+                            ) : (
+                              <span className="w3-tag w3-teal w3-round">
+                                Present
+                              </span>
+                            )}
+                          </h6>
+                          <p>Lorem ipsum dolor sit amet.</p>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Desired Career Profile */}
+                  <div
+                    className="w3-container w3-card w3-white"
+                    style={{ 'margin-bottom': '200px' }}
+                  >
+                    <div className="centerButton">
+                      {this.state.careerProfileListData ? null : (
+                        <Button
+                          bsStyle="primary no-bold no-round mr-1"
+                          className="no-bold no-round"
+                          // disabled={isLoading}
+                          onClick={this.showCareerProfileComponent.bind(this)}
+                        >
+                          {' '}
+                          Add Career
+                        </Button>
+                      )}
+                      {this.state.showCareerProfileComponent == true ? (
+                        <AddCareerProfile
+                          closeCareerProfileComponent={
+                            this.showCareerProfileComponent
+                          }
+                          user={this.state.user}
+                          careerProfileDetail={this.state.careerProfileDetail}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+
+                    <div>
+                      <span
+                        style={{
+                          'font-weight': 600,
+                          'font-size': '20px',
+                          color: '#333'
+                        }}
+                      >
+                        <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                        Desired Career Profile
+                      </span>
+                      <span class="edit icon" tabindex="0">
+                        <a
+                          onClick={this.editCareerProfileComponent.bind(
+                            this,
+                            this.state.careerProfileListData
+                          )}
+                        >
+                          <span className="pe-7s-pen" />
+                        </a>
+                      </span>
+                    </div>
+
+                    <div className="w3-container">
+                      <h5 className="w3-opacity">
+                        <b>
+                          {this.state.careerProfileListData &&
+                            this.state.careerProfileListData.desiredLocation}
+                        </b>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-     
-            <div className="w3-container">                        
-              <h5 className="w3-opacity"><b>{this.state.careerProfileListData && this.state.careerProfileListData.desiredLocation}</b>                
-              </h5>                                     
-            </div>              
-  </div>
-  
-  </div>  
- </div>  
- </div>
-
-    
-
-
-        
-        
-      </div></div></div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

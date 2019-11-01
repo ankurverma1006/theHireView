@@ -13,9 +13,7 @@ var cryptlib = require('cryptlib'),
   key = cryptlib.getHashSha256(ENCRYPTION_KEY, 32); //32 bytes = 256 bits
 
 let azureURL = `${CONSTANTS.azureBlobURI}/${CONSTANTS.azureContainer}`;
-let azureThumbURL = `${CONSTANTS.azureBlobURI}/${
-  CONSTANTS.azureThumbContainer
-}`;
+let azureThumbURL = `${CONSTANTS.azureBlobURI}/${CONSTANTS.azureThumbContainer}`;
 
 const cryptr = new Cryptr(CONSTANTS.CRYPTER_KEY);
 let toastId = '';
@@ -42,8 +40,8 @@ export const getLocalStorage = key => {
   if (key) {
     let data = localStorage.getItem(key);
     if (data) {
-          console.log(data);
-          data = JSON.parse(decryptedData(data));
+      console.log(data);
+      data = JSON.parse(decryptedData(data));
       return data;
     }
   }
@@ -157,20 +155,21 @@ export function getAPIURL() {
     httpServer: '',
     APIPort: ''
   };
-  switch (window.location.hostname) {  
-
+  switch (window.location.hostname) {
     case '133.76.253.131':
       returnUrl.APIURL = '103.76.253.131';
       returnUrl.azureContainer = 'theRapidHire-media-development';
-      returnUrl.azureThumbContainer = 'theRapidHire-media-development-thumbnails';
+      returnUrl.azureThumbContainer =
+        'theRapidHire-media-development-thumbnails';
       returnUrl.httpServer = 'http://';
       returnUrl.APIPort = '3002';
       break;
 
     default:
-      returnUrl.APIURL = 'localhost';
+      returnUrl.APIURL = 'localhost'; //'192.168.2.4';
       returnUrl.azureContainer = 'theRapidHire-media-development';
-      returnUrl.azureThumbContainer = 'theRapidHire-media-development-thumbnails';
+      returnUrl.azureThumbContainer =
+        'theRapidHire-media-development-thumbnails';
       returnUrl.httpServer = 'http://';
       returnUrl.APIPort = '3002';
       break;

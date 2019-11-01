@@ -8,6 +8,7 @@ import { getLocalStorage } from './common/commonFunctions';
 
 import Login from './common/authorization/login';
 import Signup from './common/authorization/signUp';
+import Home from './common/authorization/home';
 import HRSignup from './common/authorization/hrSignUp';
 import ChangePassword from './common/changePassword/changePassword';
 import ForgotPassword from './common/forgotPassword/resetPassword';
@@ -17,6 +18,7 @@ import UserDashboard from './user/dashboard/dashboard';
 import UserEditProfile from './user/profile/editProfile';
 import TimeSlotUser from './user/profile/timeSlots';
 import SlotArrangement from './user/profile/slotArrangement';
+import UserVideoChat from './user/videoChat/videoChat';
 
 import Video from './video/video';
 
@@ -26,7 +28,7 @@ import App from './videoChat/js/app';
 import TimeSlot from './interviewer/profile/timeSlots';
 import InterviewerDashboard from './interviewer/dashboard/dashboard';
 import InterviewerEditProfile from './interviewer/profile/editProfile';
-
+import InterviewerVideoChat from './interviewer/videoChat/videoChat';
 
 /******************** Recruiter Routing ****************************/
 import UserMapping from './recruiter/jobDescription/userMapping';
@@ -38,7 +40,7 @@ import VideoHistory from './recruiter/jobDescription/videoHistory';
 import Candidate from './admin/candidate/candidate';
 import Hruser from './admin/hruser/hruser';
 // import ReactGA from 'react-ga';
-var createHistory= require("history").createBrowserHistory;
+var createHistory = require('history').createBrowserHistory;
 // const history = createHistory();
 // ReactGA.initialize('UA-139519546-1');
 // history.listen(location => ReactGA.pageview(location.pathname));
@@ -82,31 +84,44 @@ class theRapidHireRoute extends Component {
         <Route exact path="/forgot" component={ForgotPassword} />
         <Route exact path="/changepassword" component={ChangePassword} />
 
-      
-
-    
         <Route exact path="/user/dashboard" component={UserDashboard} />
         <Route exact path="/user/profile" component={UserEditProfile} />
         <Route exact path="/interviewer/timeSlots" component={TimeSlot} />
         <Route exact path="/user/timeSlots" component={TimeSlotUser} />
         <Route exact path="/user/slotArrangement" component={SlotArrangement} />
-        <Route exact path="/recruiter/jobDesription" component={JobDescription} />
+        <Route exact path="/user/videoChat" component={UserVideoChat} />
+
+        <Route
+          exact
+          path="/recruiter/jobDesription"
+          component={JobDescription}
+        />
         <Route exact path="/video" component={Video} />
-        
-        
-        <Route exact path="/interviewer/interviewerProfile" component={InterviewerEditProfile} />
-        <Route exact path="/interviewer/dashboard" component={InterviewerDashboard} />
-       
+
+        <Route
+          exact
+          path="/interviewer/interviewerProfile"
+          component={InterviewerEditProfile}
+        />
+        <Route
+          exact
+          path="/interviewer/dashboard"
+          component={InterviewerDashboard}
+        />
+        <Route
+          exact
+          path="/interviewer/videoChat"
+          component={InterviewerVideoChat}
+        />
+
         <Route exact path="/js/app" component={App} />
 
         <Route exact path="/recruiter/userMapping" component={UserMapping} />
         <Route exact path="/recruiter/videoHistory" component={VideoHistory} />
 
-
         {/* Admin Routes */}
         <Route exact path="/admin/candidate" component={Candidate} />
         <Route exact path="/admin/hruser" component={Hruser} />
-     
       </Switch>
     );
   }

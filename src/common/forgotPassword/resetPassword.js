@@ -92,73 +92,86 @@ class ResetPassword extends Component {
   render() {
     const { isLoading } = this.state;
     return (
-      <div className="wrapper">        
-      <div className="main-panel">     
-        <div className="login_card">
-           <div className="header">
+      <div className="wrapper">
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-        <div className="formContent">
-          <div className="centeredBox p-5">
-            <form className="forgotPasswordForm bg-transparent">
-              <FormGroup>
-                {/* <legend className="color-blue">
+        <div className="main-panel">
+          <div className="banner">
+            <div className="overlay"></div>
+            <div className="banner-content"></div>
+          </div>
+        </div>
+        <div className="login_card">
+          <div className="header">
+            <div className="formContent">
+              <div className="centeredBox p-5">
+                <form className="forgotPasswordForm bg-transparent">
+                  <FormGroup>
+                    {/* <legend className="color-blue">
                   <Link to="/login">
                     <span className="icon-edit_pencil icon icon-shift" />
                   </Link>{' '}
                   Forgot Password
                 </legend> */}
 
-                <div className="flex align-center mb-1">
-                  <Link to="/login" className="md-icon mr-1">
-                    <span className="icon-back_arrow2" />
-                  </Link>
-                  <legend className="color-blue mb-0">Forgot Password</legend>
-                </div>
+                    <div
+                      style={{ position: 'relative' }}
+                      className="flex align-center mb-1"
+                    >
+                      <Link to="/login" className="md-icon mr-1">
+                        <span className="icon-back_arrow2" />
+                      </Link>
+                      <legend className="color-blue mb-0">
+                        Forgot Password
+                      </legend>
+                    </div>
 
-                <p className="lead mb-50">
-                  <strong>
-                    Reset your password by filling in your email address. You
-                    will then receive an email with new password.
-                  </strong>
-                </p>
-              </FormGroup>
-              <FormGroup className={this.getClasses('email')}>
-                <InputGroup>
-                  <InputGroup.Addon>
-                    <span className="icon-email" />
-                  </InputGroup.Addon>
-                  <FormControl
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    onKeyPress={this.submitData}
-                  />
-                </InputGroup>
-                {renderMessage(this.props.getValidationMessages('email'))}
-              </FormGroup>
-              <FormGroup>
-                <Button
-                  bsStyle="primary"
-                  className="centeredBtn btn-lg"
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.handleButtonState : null}
-                >
-                  {isLoading ? 'In Progress...' : 'Reset'}
-                </Button>
-              </FormGroup>
-            </form>
+                    <p style={{ position: 'relative' }} className="lead mb-50">
+                      <strong>
+                        Reset your password by filling in your email address.
+                        You will then receive an email with new password.
+                      </strong>
+                    </p>
+                  </FormGroup>
+                  <FormGroup
+                    style={{ position: 'relative' }}
+                    className={this.getClasses('email')}
+                  >
+                    <InputGroup>
+                      <InputGroup.Addon>
+                        <span className="icon-email" />
+                      </InputGroup.Addon>
+                      <FormControl
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        onKeyPress={this.submitData}
+                      />
+                    </InputGroup>
+                    {renderMessage(this.props.getValidationMessages('email'))}
+                  </FormGroup>
+                  <FormGroup>
+                    <Button
+                      bsStyle="primary"
+                      className="centeredBtn btn-lg"
+                      disabled={isLoading}
+                      onClick={!isLoading ? this.handleButtonState : null}
+                    >
+                      {isLoading ? 'In Progress...' : 'Reset'}
+                    </Button>
+                  </FormGroup>
+                </form>
+              </div>
+            </div>{' '}
           </div>
-        </div> </div>
         </div>
-      </div>
       </div>
     );
   }

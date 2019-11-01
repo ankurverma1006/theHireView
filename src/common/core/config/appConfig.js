@@ -35,9 +35,9 @@ const CONSTANTS = {
   toYear: moment().year(),
   fromGrade: 1,
   toGrade: 12,
-  OTHER:'Other',
+  OTHER: 'Other',
   socket: {
-    URL: "https://therapidhire.herokuapp.com/" //getAPIURL().httpServer + getAPIURL().APIURL + ':' + getAPIURL().APIPort
+    URL: getAPIURL().httpServer + getAPIURL().APIURL + ':' + getAPIURL().APIPort //  "https://therapidhire.herokuapp.com/"
     //URL: 'http://' + getAPIURL().APIURL + ':3001'
   },
   icons,
@@ -54,6 +54,12 @@ const CONSTANTS = {
     LIKEFEED: 'LikeFeed',
     SHAREFEED: 'ShareFeed',
     COMMENTONFEED: 'CommentOnFeed'
+  },
+  USERS: {
+    USER_ROLE: 1,
+    INTERVIEWER_ROLE: 2,
+    HR_ROLE: 3,
+    ADMIN_ROLE: 4
   },
   singleTrack: 'single',
   multipleTrack: 'multiple'

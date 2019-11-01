@@ -66,8 +66,8 @@ class HRSignup extends Component {
       parentField: false,
       invite: CONSTANTS.INVITE_4,
       invitedRoleId: 1,
-      otherCompanyName:false,
-      companyDetail:[]
+      otherCompanyName: false,
+      companyDetail: []
     };
 
     this.initialState = this.state;
@@ -82,8 +82,8 @@ class HRSignup extends Component {
     console.log('call');
     this.setValidatorTypes(
       this.props.location.state &&
-      this.props.location.state.eventKey &&
-      this.props.location.state.eventKey === 2
+        this.props.location.state.eventKey &&
+        this.props.location.state.eventKey === 2
         ? 2
         : 1
     );
@@ -153,23 +153,24 @@ class HRSignup extends Component {
     }
   };
 
-  getCompanyList(){
+  getCompanyList() {
     theRapidHireApiService('getCompanyList')
-    .then(response => {     
-      if (response.data.status === 'Success') {
-         let companyDetail= this.state.companyDetail;
-         response.data.result.forEach(function(data){         
-         
-            companyDetail.push({label: data.companyName,value:data.companyId })
-        })     
-         this.setState({companyDetail: companyDetail});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let companyDetail = this.state.companyDetail;
+          response.data.result.forEach(function(data) {
+            companyDetail.push({
+              label: data.companyName,
+              value: data.companyId
+            });
+          });
+          this.setState({ companyDetail: companyDetail });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
-
 
   // type = 1 = student,   type = 2 = parent
   setValidatorTypes(type) {
@@ -180,10 +181,9 @@ class HRSignup extends Component {
     let elementObject = {
       firstName: ['required', 'regex:' + regExpressions.alphaOnly],
       lastName: ['required', 'regex:' + regExpressions.alphaOnly],
-      email: 'required|email',
-  // //   newPassword: ['required', 'regex:' + regExpressions.passwordPattern],
-    //  confirmNewPassword: 'required|same:newPassword'
-     
+      email: 'required|email'
+      // //   newPassword: ['required', 'regex:' + regExpressions.passwordPattern],
+      //  confirmNewPassword: 'required|same:newPassword'
     };
 
     let messageObject = {
@@ -192,14 +192,13 @@ class HRSignup extends Component {
       'required.lastName': validationMessages.lastName.required,
       'regex.lastName': validationMessages.lastName.alphaOnly,
       'required.email': validationMessages.email.required,
-      'email.email': validationMessages.email.invalid,
- //     'required.newPassword': validationMessages.password.newPassword,
- //     'regex.newPassword': validationMessages.password.passwordPattern,
+      'email.email': validationMessages.email.invalid
+      //     'required.newPassword': validationMessages.password.newPassword,
+      //     'regex.newPassword': validationMessages.password.passwordPattern,
       // 'required.confirmNewPassword':
       //   validationMessages.password.confirmNewPassword,
       // 'same.confirmNewPassword': validationMessages.password.same
-     
-    };   
+    };
     this.validatorTypes = strategy.createSchema(elementObject, messageObject);
   }
 
@@ -226,7 +225,7 @@ class HRSignup extends Component {
         email: '',
         newPassword: '',
         confirmNewPassword: '',
-        companyName:''
+        companyName: ''
         // parentEmail: '',
         // parentFirstName: '',
         // parentLastName: '',
@@ -259,128 +258,130 @@ class HRSignup extends Component {
     console.log('validateData -- ');
     let self = this;
     this.props.validate(function(error) {
-      if (!error) {       
-          //self.setState({ isLoading: true });
-          self.handleSubmit();        
+      if (!error) {
+        //self.setState({ isLoading: true });
+        self.handleSubmit();
       }
     });
   };
 
   handleCompanyChange = newValue => {
-    if(newValue.value == 1){
-       
-        // this.validatorTypes.rules['companyName'] = 'required|companyName';
-        // this.validatorTypes.messages['required.companyName'] =
-        //                                         'Please enter companyName';
-        this.setState({otherCompanyName: true});
-    }else{
-        // this.validatorTypes.rules['companyName'] = '';
-        // this.validatorTypes.messages['required.companyName'] =
-        //                                         'Please enter companyName';
+    if (newValue.value == 1) {
+      // this.validatorTypes.rules['companyName'] = 'required|companyName';
+      // this.validatorTypes.messages['required.companyName'] =
+      //                                         'Please enter companyName';
+      this.setState({ otherCompanyName: true });
+    } else {
+      // this.validatorTypes.rules['companyName'] = '';
+      // this.validatorTypes.messages['required.companyName'] =
+      //                                         'Please enter companyName';
     }
-        this.setState({
-        company: newValue
-        });
-    
+    this.setState({
+      company: newValue
+    });
   };
 
   handleSubmit() {
     let firstName = this.state.firstName.trim();
     let lastName = this.state.lastName.trim();
     let email = this.state.email.toLowerCase().trim();
- //   let password = encrypt(this.state.newPassword.trim());
+    //   let password = encrypt(this.state.newPassword.trim());
     let roleId = 3;
     let userId = this.state.userId;
     let deviceId = this.state.deviceId;
     console.log(this.state.company);
-    let companyName = this.state.company && this.state.company.value !== 1? this.state.company.label: this.state.companyName;
-    let companyId= this.state.company && this.state.company.value !== 1 ? this.state.company.value: null
-    let students = [];    
+    let companyName =
+      this.state.company && this.state.company.value !== 1
+        ? this.state.company.label
+        : this.state.companyName;
+    let companyId =
+      this.state.company && this.state.company.value !== 1
+        ? this.state.company.value
+        : null;
+    let students = [];
     let self = this;
 
-      let data = {
-        firstName,
-        lastName,
-        email,
-  //      password,
+    let data = {
+      firstName,
+      lastName,
+      email,
+      //      password,
       //  dob,
-    //    parentEmail,
-     //   parentFirstName,
-     //   parentLastName,
-        roleId,
-        companyId,
-        companyName,
-    //    invite,
-         userId:''
-      };
+      //    parentEmail,
+      //   parentFirstName,
+      //   parentLastName,
+      roleId,
+      companyId,
+      companyName,
+      //    invite,
+      userId: ''
+    };
 
-      console.log(data);
+    console.log(data);
 
-      theRapidHireApiService('signupHR', data)
-        .then(response => {
-          if (response.data.status === 'Success') {
-            if (
-              self.state.invite === CONSTANTS.INVITE_1 ||
-              self.state.invite === CONSTANTS.INVITE_2 ||
-              self.state.invite === CONSTANTS.INVITE_3
-            ) {
-              let loginData = {
-                email,                
-                deviceId
-              };
+    theRapidHireApiService('signupHR', data)
+      .then(response => {
+        if (response.data.status === 'Success') {
+          if (
+            self.state.invite === CONSTANTS.INVITE_1 ||
+            self.state.invite === CONSTANTS.INVITE_2 ||
+            self.state.invite === CONSTANTS.INVITE_3
+          ) {
+            let loginData = {
+              email,
+              deviceId
+            };
 
-              this.props
-                .actionUserLogin(loginData)
-                .then(response => {
-                  if (
-                    response.payload &&
-                    response.payload.data.status === 'Success'
-                  ) {
-                    self.setState({
-                      isLoading: false
-                    });
-                    const userResponse = response.payload.data.result;
-                    if (userResponse && userResponse.token) {
-                      if (userResponse.roleId === 1) {                     
-                      
-                      }
+            this.props
+              .actionUserLogin(loginData)
+              .then(response => {
+                if (
+                  response.payload &&
+                  response.payload.data.status === 'Success'
+                ) {
+                  self.setState({
+                    isLoading: false
+                  });
+                  const userResponse = response.payload.data.result;
+                  if (userResponse && userResponse.token) {
+                    if (userResponse.roleId === 1) {
                     }
                   }
-                })
-                .catch(error => {
-                  self.setState({
-                    isLoading: false,
-                    password: ''
-                  });
-                  console.log('err', error);
+                }
+              })
+              .catch(error => {
+                self.setState({
+                  isLoading: false,
+                  password: ''
                 });
-            } else {
-              self.setState({
-                isLoading: false,
-                firstName: '',
-                lastName: '',
-                email: '',
-                newPassword: '',
-                confirmNewPassword: '',
-                // day: '',
-                // month: '',
-                // year: '',
-                // parentFirstName: '',
-                // parentLastName: ''
+                console.log('err', error);
               });
-              setTimeout(function() {
-                self.props.history.push('/login');
-              }, 5000);
-            }
           } else {
-            self.setState({ isLoading: false });
+            self.setState({
+              isLoading: false,
+              firstName: '',
+              lastName: '',
+              email: '',
+              newPassword: '',
+              confirmNewPassword: ''
+              // day: '',
+              // month: '',
+              // year: '',
+              // parentFirstName: '',
+              // parentLastName: ''
+            });
+            setTimeout(function() {
+              self.props.history.push('/login');
+            }, 5000);
           }
-        })
-        .catch(err => {
+        } else {
           self.setState({ isLoading: false });
-          console.log(err);
-        }); 
-  
+        }
+      })
+      .catch(err => {
+        self.setState({ isLoading: false });
+        console.log(err);
+      });
   }
 
   selectDate(type, value) {
@@ -463,8 +464,7 @@ class HRSignup extends Component {
         this.validatorTypes.messages['required.parentFirstName'] = '';
       }
     }
-  }  
-
+  }
 
   render() {
     const { isLoading } = this.state;
@@ -480,194 +480,189 @@ class HRSignup extends Component {
       readOnly = false;
     }
     return (
-    <div className="wrapper">        
-      <div className="main-panel">     
-        <div className="login_card">
-           <div className="header">
-       
+      <div className="wrapper">
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-          
-        <div className="formContent forgotPasswordForm bg-transparent">
-          <div className="centeredBox p-7">      
-          <div className="flex align-center mb-1">
-                  <Link to="/login" className="md-icon mr-1">
-                    <span className="icon-back_arrow2" />
-                  </Link>
-                  <legend className="color-blue mb-0">Back To Login</legend>
-                </div>     
-                <Nav bsStyle="tabs" activeKey={4}>               
-                <NavItem
-                  eventKey={2}
-                  onClick={() =>
-                    this.props.history.push({
-                      pathname: '/signup',
-                      state: {
-                        eventKey: 2
-                      }
-                    })
-                  }
-                >
-                  Interviewer SIGN UP
-                </NavItem>
-                <NavItem
-                  eventKey={1}
-                  onClick={() =>
-                    this.props.history.push({
-                      pathname: '/signup',
-                      state: {
-                        eventKey: 1
-                      }
-                    })
-                  }
-                >
-                  USER SIGN UP
-                </NavItem>
-                <NavItem
-                  eventKey={4}                 
-                >
-                  HR SIGN UP
-                </NavItem>
-              </Nav>
-           
+        <div className="main-panel">
+          <div className="banner">
+            <div className="overlay"></div>
+            <div className="banner-content">
+              <div className="login_card">
+                <div className="header">
+                  <div className="formContent forgotPasswordForm bg-transparent">
+                    <div className="centeredBox p-7">
+                      <div
+                        style={{ position: 'relative' }}
+                        className="flex align-center mb-1"
+                      >
+                        <Link to="/login" className="md-icon mr-1">
+                          <span className="icon-back_arrow2" />
+                        </Link>
+                        <legend className="color-blue mb-0">
+                          Back To Login
+                        </legend>
+                      </div>
+                      <Nav bsStyle="tabs" activeKey={4}>
+                        <NavItem
+                          eventKey={2}
+                          onClick={() =>
+                            this.props.history.push({
+                              pathname: '/signup',
+                              state: {
+                                eventKey: 2
+                              }
+                            })
+                          }
+                        >
+                          Interviewer SIGN UP
+                        </NavItem>
+                        <NavItem
+                          eventKey={1}
+                          onClick={() =>
+                            this.props.history.push({
+                              pathname: '/signup',
+                              state: {
+                                eventKey: 1
+                              }
+                            })
+                          }
+                        >
+                          USER SIGN UP
+                        </NavItem>
+                        <NavItem eventKey={4}>HR SIGN UP</NavItem>
+                      </Nav>
 
-            <form>
-                      
-              <FormGroup className={this.getClasses('company')}>
-              <label className="form-label">Add Company</label>
-              
-                    <div className="custom-select">
-                      <span className="icon-down_arrow selectIcon" />
-                      <Select
-                        className="form-control"                        
-                        name="company"
-                        value={this.state.company}
-                        onChange={this.handleCompanyChange}
-                        options={this.state.companyDetail}
-                        placeholder="Select company"
-                      />
-                    </div>                   
-                   
-                    {renderMessage(this.props.getValidationMessages('company'))}
-                </FormGroup>
+                      <form>
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('company')}
+                        >
+                          <label className="form-label">Add Company</label>
 
-                {this.state.otherCompanyName === true ?
+                          <div className="custom-select">
+                            <span className="icon-down_arrow selectIcon" />
+                            <Select
+                              className="form-control"
+                              name="company"
+                              value={this.state.company}
+                              onChange={this.handleCompanyChange}
+                              options={this.state.companyDetail}
+                              placeholder="Select company"
+                            />
+                          </div>
 
-                <FormGroup className={this.getClasses('companyName')}>
-                    <label className="form-label">Company Name</label>
-                  
-                    <FormControl
-                        type="text"
-                        placeholder="Company Name"
-                        name="companyName"
-                        value={this.state.companyName}
-                        onChange={this.handleChange}
-                        autoComplete="off"
-                        maxLength="35"
-                    />
-                  
-                    {renderMessage(this.props.getValidationMessages('companyName'))}
-                </FormGroup> : null}
+                          {renderMessage(
+                            this.props.getValidationMessages('company')
+                          )}
+                        </FormGroup>
 
-              <FormGroup className={this.getClasses('firstName')}>
-                <label className="form-label">First Name</label>
-              
-                  <FormControl
-                    type="text"
-                    placeholder="First Name"
-                    name="firstName"
-                    value={this.state.firstName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    maxLength="35"
-                  />
-               
-                {renderMessage(this.props.getValidationMessages('firstName'))}
-              </FormGroup>
+                        {this.state.otherCompanyName === true ? (
+                          <FormGroup
+                            style={{ position: 'relative' }}
+                            className={this.getClasses('companyName')}
+                          >
+                            <label className="form-label">Company Name</label>
 
-              <FormGroup className={this.getClasses('lastName')}>
-                <label className="form-label">Last Name</label>
-           
-                  <FormControl
-                    type="text"
-                    placeholder="Last Name"
-                    name="lastName"
-                    value={this.state.lastName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    maxLength="35"
-                  />
-                
-                {renderMessage(this.props.getValidationMessages('lastName'))}
-              </FormGroup>
+                            <FormControl
+                              type="text"
+                              placeholder="Company Name"
+                              name="companyName"
+                              value={this.state.companyName}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="35"
+                            />
 
-              <FormGroup className={this.getClasses('email')}>
-                <label className="form-label">Email</label>
-               
-                  <FormControl
-                    type="Email"
-                    placeholder="Email"
-                    name="email"                    
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                    onKeyPress={this.submitData}
-                  />
-            
-                {renderMessage(this.props.getValidationMessages('email'))}
-              </FormGroup>
+                            {renderMessage(
+                              this.props.getValidationMessages('companyName')
+                            )}
+                          </FormGroup>
+                        ) : null}
 
-              {/* <FormGroup className={this.getClasses('newPassword')}>
-                <label className="form-label">Password</label>
-              
-                  <FormControl
-                    type="password"
-                    placeholder="Password"
-                    name="newPassword"
-                    value={this.state.newPassword}
-                    onChange={this.handleChange}
-                    maxLength="20"
-                    autoComplete="new-password"
-                  />
-                
-                {renderMessage(this.props.getValidationMessages('newPassword'))}
-              </FormGroup>
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('firstName')}
+                        >
+                          <label className="form-label">First Name</label>
 
-              <FormGroup className={this.getClasses('confirmNewPassword')}>
-                <label className="form-label">Confirm Password</label>
-              
-                  <FormControl
-                    type="password"
-                    placeholder="Confirm password"
-                    name="confirmNewPassword"
-                    value={this.state.confirmNewPassword}
-                    onChange={this.handleChange}
-                    maxLength="20"
-                  />               
-                {renderMessage(
-                  this.props.getValidationMessages('confirmNewPassword')
-                )}
-              </FormGroup>
- */}
+                          <FormControl
+                            type="text"
+                            placeholder="First Name"
+                            name="firstName"
+                            value={this.state.firstName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            maxLength="35"
+                          />
 
-              <FormGroup>
-                <Button
-                  bsStyle="primary"
-                  className="centeredBtn btn-lg"
-                  disabled={isLoading}
-                  onClick={!isLoading ? this.validateData : null}
-                >
-                  {isLoading ? 'In Progress...' : 'Sign Up'}
-                </Button>
-              </FormGroup>
-            </form>
-          </div> </div>
-        </div>
-      </div>
+                          {renderMessage(
+                            this.props.getValidationMessages('firstName')
+                          )}
+                        </FormGroup>
+
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('lastName')}
+                        >
+                          <label className="form-label">Last Name</label>
+
+                          <FormControl
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastName"
+                            value={this.state.lastName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            maxLength="35"
+                          />
+
+                          {renderMessage(
+                            this.props.getValidationMessages('lastName')
+                          )}
+                        </FormGroup>
+
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('email')}
+                        >
+                          <label className="form-label">Email</label>
+
+                          <FormControl
+                            type="Email"
+                            placeholder="Email"
+                            name="email"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            onKeyPress={this.submitData}
+                          />
+
+                          {renderMessage(
+                            this.props.getValidationMessages('email')
+                          )}
+                        </FormGroup>
+
+                        <FormGroup>
+                          <Button
+                            bsStyle="primary"
+                            className="centeredBtn btn-lg"
+                            disabled={isLoading}
+                            onClick={!isLoading ? this.validateData : null}
+                          >
+                            {isLoading ? 'In Progress...' : 'Sign Up'}
+                          </Button>
+                        </FormGroup>
+                      </form>
+                    </div>{' '}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>{' '}
         </div>
       </div>
     );

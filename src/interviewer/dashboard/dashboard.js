@@ -12,7 +12,7 @@ import moment from 'moment';
 
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
-import DownloadLink from "react-download-link";
+import DownloadLink from 'react-download-link';
 //import Img from '../../common/cropper/img';
 import {
   showErrorToast,
@@ -37,15 +37,13 @@ import {
 import achievementDefaultImage from '../../assets/img/default_achievement.jpg';
 import SpiderChart from '../../common/spiderChart/spiderChart';
 
-
 const config = {
   bucketName: 'ankurself',
-  dirName: 'photos', /* optional */
+  dirName: 'photos' /* optional */,
   region: 'ap-south-1', // Put your aws region here
   accessKeyId: 'AKIAJHHM3PCJ25PK6OWQ',
   secretAccessKey: 'fTo0CpSivV7OWo2TrFGNUaA5E6ST1pB9Pwnsp5HB'
-}
-
+};
 
 var settings = {
   dots: false,
@@ -86,125 +84,115 @@ var settings = {
 class Dashboard extends Component {
   constructor(props, context) {
     super(props);
-    this.state = {      
-      showJobDescriptionComponent: false,      
-      jobDescriptionDetail: {},        
-     
+    this.state = {
+      showJobDescriptionComponent: false,
+      jobDescriptionDetail: {},
+
       loader1: false,
-      loader2: false,      
+      loader2: false,
       jobDescriptionListData: [],
-      showVideoComponent: false,     
-      userData:{},     
-      showDropdown: false,     
-      isActive: 'true',     
+      showVideoComponent: false,
+      userData: {},
+      showDropdown: false,
+      isActive: 'true',
       contentEditable: false,
       editName: false,
       name: '',
       editTagLine: false
     };
-   /// this.textInput = React.createRef();    
+    /// this.textInput = React.createRef();
   }
 
   componentWillMount() {
-    let user= this.props.otherUser? this.props.otherUser: this.props.user;
-    
-    if(user){
-      this.getSlotDetails(user.userId);        
-    } 
-   
+    let user = this.props.otherUser ? this.props.otherUser : this.props.user;
+
+    if (user) {
+      this.getSlotDetails(user.userId);
+    }
   }
 
-  componentWillReceiveProps(res) {
-    
+  componentWillReceiveProps(res) {}
+
+  componentDidMount() {}
+
+  getSlotDetails(userId) {
+    let interviewerId = userId;
+    theRapidHireApiService('getTimeSlotByInterviewer', { interviewerId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          console.log(response);
+          let bookedSlotData = [];
+          bookedSlotData = response.data.result;
+          this.setState({ bookedSlotData: bookedSlotData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  componentDidMount() {  
-    
+  getUserListForMapping(jobId) {
+    theRapidHireApiService('getUserListForMapping', { jobId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let jobDescriptionListData = this.state.jobDescriptionListData;
+          jobDescriptionListData = response.data.result;
+
+          this.setState({ jobDescriptionListData: jobDescriptionListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  getSlotDetails(userId){   
-    let interviewerId= userId ;
-    theRapidHireApiService('getTimeSlotByInterviewer',{interviewerId})
-    .then(response => {     
-      if (response.data.status === 'Success') {
-        console.log(response);
-        let bookedSlotData=[];
-        bookedSlotData = response.data.result;
-      this.setState({bookedSlotData:bookedSlotData});
-      }
-     
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
+  handleSubmit = (data, action) => {
+    let jobMapId = data.jobMapId;
+    let jobId = this.state.jobId;
+    let candidateId = data.userId;
+    let hrId = this.state.userId;
+    let status = action;
+    let createdBy = this.props.user.userId;
 
-  getUserListForMapping(jobId){
-    theRapidHireApiService('getUserListForMapping',{jobId})
-    .then(response => {     
-      if (response.data.status === "Success") {
-         let jobDescriptionListData= this.state.jobDescriptionListData;
-         jobDescriptionListData= response.data.result;
-     
-         this.setState({jobDescriptionListData: jobDescriptionListData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
-
-
-  handleSubmit = (data,action) => {
-    let jobMapId=data.jobMapId;
-    let jobId=this.state.jobId;
-    let candidateId=data.userId;
-    let hrId=this.state.userId;
-    let status= action;
-    let createdBy= this.props.user.userId;
-
-    let dataMap={
+    let dataMap = {
       jobMapId,
       jobId,
       candidateId,
       hrId,
       status,
-      createdBy        
-    }
-    
-    if(jobMapId!=="" || jobMapId!==null){
-        theRapidHireApiService('createJobMap',dataMap)
-        .then(response => {     
-          if (response.data.status === "Success") {
-            this.getUserListForMapping(this.state.jobId);   
+      createdBy
+    };
+
+    if (jobMapId !== '' || jobMapId !== null) {
+      theRapidHireApiService('createJobMap', dataMap)
+        .then(response => {
+          if (response.data.status === 'Success') {
+            this.getUserListForMapping(this.state.jobId);
             //  let jobDescriptionListData= this.state.jobDescriptionListData;
             //  jobDescriptionListData= response.data.result;
-        
+
             //  this.setState({jobDescriptionListData: jobDescriptionListData});
           }
         })
         .catch(err => {
           console.log(err);
         });
-    }else{
-      theRapidHireApiService('updateJobMap',dataMap)
-      .then(response => {     
-        if (response.data.status === "Success") {
-          this.getUserListForMapping(this.state.jobId);   
-          //  let jobDescriptionListData= this.state.jobDescriptionListData;
-          //  jobDescriptionListData= response.data.result;
-      
-          //  this.setState({jobDescriptionListData: jobDescriptionListData});
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    } else {
+      theRapidHireApiService('updateJobMap', dataMap)
+        .then(response => {
+          if (response.data.status === 'Success') {
+            this.getUserListForMapping(this.state.jobId);
+            //  let jobDescriptionListData= this.state.jobDescriptionListData;
+            //  jobDescriptionListData= response.data.result;
+
+            //  this.setState({jobDescriptionListData: jobDescriptionListData});
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-  }
-
-    
-
+  };
 
   contentEditable = () => {
     window.scrollTo(500, 0);
@@ -250,37 +238,38 @@ class Dashboard extends Component {
         name
       });
     }
-  };  
+  };
 
- 
-  joinVideoChat = data => {   
+  joinVideoChat = data => {
     console.log(data);
 
-    let videoKeyClient= data.videoKeyUser;
-    
-    let videoKeySelf= data.videoKeyInterviewer;
-    
+    let videoKeyClient = data.videoKeyUser;
+
+    let videoKeySelf = data.videoKeyInterviewer;
+
     this.props.history.push({
-        pathname: '/js/app',
-        state: { videoKeySelf:videoKeySelf,videoKeyClient:videoKeyClient,slotId:data.slotId}});    
-      
+      pathname: '/interviewer/videoChat',
+      state: {
+        videoKeySelf: videoKeySelf,
+        videoKeyClient: videoKeyClient,
+        slotId: data.slotId
+      }
+    });
   };
 
   editJobDescriptionComponent = jobDescriptionDetail => {
     console.log(jobDescriptionDetail);
     this.setState({
-      jobDescriptionDetail: jobDescriptionDetail ,
-      showJobDescriptionComponent: !this.state.showJobDescriptionComponent    
+      jobDescriptionDetail: jobDescriptionDetail,
+      showJobDescriptionComponent: !this.state.showJobDescriptionComponent
     });
-  }
-
- 
+  };
 
   getProfileData = () => {
     let userId = this.state.userId;
     this.props.actionGetStudentPersonalInfo(userId);
   };
-  
+
   generateSASToken() {
     theRapidHireApiService('getSASToken')
       .then(response => {
@@ -302,30 +291,23 @@ class Dashboard extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-  };  
+  };
 
- 
- 
-  render() {let self= this;
-    return ( 
-    
-    <div className="wrapper">
-     <ToastContainer
+  render() {
+    let self = this;
+    return (
+      <div className="wrapper">
+        <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
-        /> 
-        <Header {...this.props} />     
-          <div className="main-panel">          
-        
-
-        <div className="w3-content main-panel1">
-        
-          <div className="container main">
-           
-
-            {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
+        />
+        <Header {...this.props} />
+        <div className="main-panel">
+          <div className="w3-content main-panel1">
+            <div className="container main">
+              {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
               <button
                 className="btn btn-with-border with-icon smallBtn mr-1"
                 onClick={this.viewSampleProfile}
@@ -340,50 +322,47 @@ class Dashboard extends Component {
                 add student
               </button>
             </div> */}
-            {this.state.bookedSlotData && this.state.bookedSlotData.map(function(data, index) {
-                return (                 
-                     
-                  <div
-                    key={index}
-                    className="suggestion-usd"
-                   
-                  >
-                    <div className="student-img deflt-icon centeredBox flex">
-                       Your Slot has been booked with Rapid Hire Company
-                    </div>
-                    <div className="student-info flex justify-content-space-between">
-                      <div className="flex align-center justify-content-space-bettween p-20-30 stuBgWhite">
-                        <div className="flex-1">
-                          <h3>
-                            {/* {data.firstName
+              {this.state.bookedSlotData &&
+                this.state.bookedSlotData.map(function(data, index) {
+                  return (
+                    <div key={index} className="suggestion-usd">
+                      <div className="student-img deflt-icon centeredBox flex">
+                        Your Slot has been booked with Rapid Hire Company
+                      </div>
+                      <div className="student-info flex justify-content-space-between">
+                        <div className="flex align-center justify-content-space-bettween p-20-30 stuBgWhite">
+                          <div className="flex-1">
+                            <h3>
+                              {/* {data.firstName
                               ? data.firstName +
                                 ' ' +
                                 (data.lastName ? data.lastName : '')
                               : null} */}
-                          </h3>
-                          <p></p>
-                          <p></p>
-                        </div>
+                            </h3>
+                            <p></p>
+                            <p></p>
+                          </div>
 
-                         <div className="flex-1">
-                          <h6>
-                            {moment(parseInt(data.startTimeStamp,10)).format("hh:mm:ss")}                      
-                          </h6>
-                          {moment(parseInt(data.endTimeStamp,10)).format("hh:mm:ss")}
-                        </div>
+                          <div className="flex-1">
+                            <h6>
+                              {moment(parseInt(data.startTimeStamp, 10)).format(
+                                'hh:mm:ss'
+                              )}
+                            </h6>
+                            {moment(parseInt(data.endTimeStamp, 10)).format(
+                              'hh:mm:ss'
+                            )}
+                          </div>
 
-                        <div className="btn-group flex align-center">                 
-                        
-                          <button onClick={self.joinVideoChat.bind(
-                            self,
-                            data                            
-                          )} 
-                            className="btn btn-primary no-round"
-                          //  onClick={self.handleClickProfile.bind(self, data)}
-                          >
-                           Join Video
-                          </button>
-                          {/* {self.state.showVideoComponent ==
+                          <div className="btn-group flex align-center">
+                            <button
+                              onClick={self.joinVideoChat.bind(self, data)}
+                              className="btn btn-primary no-round"
+                              //  onClick={self.handleClickProfile.bind(self, data)}
+                            >
+                              Join Video
+                            </button>
+                            {/* {self.state.showVideoComponent ==
                               true ? (
                                 <ShowVideo
                                   closeShowVideoComponent={
@@ -395,58 +374,57 @@ class Dashboard extends Component {
                                 />
                               ) : (
                                 '')} */}
-                          &nbsp; &nbsp;
-                      
-                          <DropdownButton
-                            className="burger-trigger"
-                            title={<span className="icon-burger" />}
-                            id="1"
-                          >
-                            <MenuItem
+                            &nbsp; &nbsp;
+                            <DropdownButton
+                              className="burger-trigger"
+                              title={<span className="icon-burger" />}
+                              id="1"
+                            >
+                              <MenuItem
                               // onSelect={self.addParentModel.bind(
                               //   this,
                               //   data.userId
                               // )}
-                            >
-                              <i className="m-ico icon-plus" />
-                              Add Parent
-                            </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/parent/list',
-                                  state: { studentData: data }
-                                })
-                              }
-                            >
-                              <i className="m-ico icon-parent" /> Parent List
-                            </MenuItem>
-                            <MenuItem
-                              onSelect={() =>
-                                self.props.history.push({
-                                  pathname: '/student/profilelog',
-                                  state: { profileOwner: data.userId }
-                                })
-                              }
-                            >
-                              <i className="m-ico icon-profile-sharing" />{' '}
-                              Profile Sharing Log
-                            </MenuItem>
+                              >
+                                <i className="m-ico icon-plus" />
+                                Add Parent
+                              </MenuItem>
+                              <MenuItem
+                                onSelect={() =>
+                                  self.props.history.push({
+                                    pathname: '/parent/list',
+                                    state: { studentData: data }
+                                  })
+                                }
+                              >
+                                <i className="m-ico icon-parent" /> Parent List
+                              </MenuItem>
+                              <MenuItem
+                                onSelect={() =>
+                                  self.props.history.push({
+                                    pathname: '/student/profilelog',
+                                    state: { profileOwner: data.userId }
+                                  })
+                                }
+                              >
+                                <i className="m-ico icon-profile-sharing" />{' '}
+                                Profile Sharing Log
+                              </MenuItem>
 
-                            <MenuItem
-                            //   onSelect={self.deleteStudent.bind(
-                            //     this,
-                            //     data.userId,
-                            //     self.props.parent.userId
-                            //   )}
-                            >
-                              <i className="m-ico icon-delete" /> Delete
-                            </MenuItem>
-                          </DropdownButton>
+                              <MenuItem
+                              //   onSelect={self.deleteStudent.bind(
+                              //     this,
+                              //     data.userId,
+                              //     self.props.parent.userId
+                              //   )}
+                              >
+                                <i className="m-ico icon-delete" /> Delete
+                              </MenuItem>
+                            </DropdownButton>
+                          </div>
                         </div>
-                      </div>
 
-                      {/* <div className="flex align-center justify-content-space-bettween tag-wrap">
+                        {/* <div className="flex align-center justify-content-space-bettween tag-wrap">
                         <div className="promo-tag br-light">
                           Skills <span>{data.accomplishment}</span>
                         </div>
@@ -455,27 +433,23 @@ class Dashboard extends Component {
                           Location <span>{data.recommendation}</span>
                         </div>
                       </div> */}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-          </div>         
-          {/* {this.state.addStudentModel ? (
+                  );
+                })}
+            </div>
+            {/* {this.state.addStudentModel ? (
             <AddMoreStudent
               addStudentModel={this.state.addStudentModel}
               closeAddStudentModel={this.addStudentModel}
             />
           ) : null} */}
-        </div></div>
+          </div>
+        </div>
       </div>
-    
-    
-    
-    
-    
-    
-    // </div></div>
-    //   </div>
+
+      // </div></div>
+      //   </div>
     );
   }
 }

@@ -11,7 +11,6 @@ import {
   FormControl
 } from 'react-bootstrap';
 
-//import 'react-datepicker/dist/react-datepicker.css';
 import validation from 'react-validation-mixin';
 import strategy from 'react-validatorjs-strategy';
 import classnames from 'classnames';
@@ -89,8 +88,7 @@ class addEducation extends Component {
   }
 
   componentWillMount() {
-   // this.listOragnization();
-  
+    // this.listOragnization();
   }
 
   componentDidMount() {

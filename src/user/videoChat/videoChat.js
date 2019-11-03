@@ -11,7 +11,7 @@ import classnames from 'classnames';
 import RecordRTC from 'recordrtc';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { gifshot } from 'gifshot';
+//import { gifshot } from 'gifshot';
 //import MultiStreamsMixer from 'multistreamsmixer';
 import $ from 'jquery';
 import Header from '../header/header';

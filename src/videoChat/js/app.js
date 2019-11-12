@@ -53,7 +53,7 @@
 //       skillTag:[]
 //     };
 //     var wRegion = "ap-south-1";
-//     var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
+//     var poolid = '';
 //     var s3bucketName = "ankurself";
 //     var audioPath = "/audio-files";
 //     var s3bucketName = "ankurself";
@@ -62,7 +62,7 @@
 //     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
 //     this.region = "ap-south-1"; //s3 region
-//     this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
+//     this.IdentityPoolId = ''; //identity pool id
 //     this.bucketName = audioStoreWithBucket; //audio file store
 //     this.s3=''; //variable defination for s3
 //     this.dateinfo = new Date();
@@ -194,9 +194,9 @@
 //       AWS.config.update({
 //            region: "ap-south-1",
 //                credentials: new AWS.CognitoIdentityCredentials({
-//                   IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-//                   RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-//                   AccountId: '923146643705' // your AWS account ID
+//                   IdentityPoolId: '',
+//                   RoleArn: '',
+//                   AccountId: '' // your AWS account ID
 
 //                })
 //           });
@@ -775,7 +775,7 @@ class App extends Component {
       skillTag: []
     };
     var wRegion = 'ap-south-1';
-    var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
+    var poolid = '';
     var s3bucketName = 'ankurself';
     var audioPath = '/audio-files';
     var s3bucketName = 'ankurself';
@@ -784,7 +784,7 @@ class App extends Component {
     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
     this.region = 'ap-south-1'; //s3 region
-    this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
+    this.IdentityPoolId = ''; //identity pool id
     this.bucketName = audioStoreWithBucket; //audio file store
     this.s3 = ''; //variable defination for s3
     this.dateinfo = new Date();
@@ -930,9 +930,9 @@ class App extends Component {
     AWS.config.update({
       region: 'ap-south-1',
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-        RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-        AccountId: '923146643705' // your AWS account ID
+        IdentityPoolId: '',
+        RoleArn: '',
+        AccountId: '' // your AWS account ID
       })
     });
 
@@ -945,8 +945,8 @@ class App extends Component {
       logger: console,
       //         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
       // AWSSecretKey=LmFFnFy5dZoAWZYFLTunUlp7wW/S82mrezIRucTS
-      apiVersion: '2006-03-01',
-      params: { Bucket: 'ankurself' }
+      apiVersion: '',
+      params: { Bucket: '' }
     });
 
     console.log('self.s3 -- ', self.s3);

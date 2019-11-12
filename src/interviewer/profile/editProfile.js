@@ -197,7 +197,7 @@ class EditProfile extends Component {
           let skillsListData = this.state.skillsListData;
           let skillsDetail = response.data.result[0];
           console.log('skillsDetail', skillsDetail);
-          skillsListData = skillsDetail.skills;
+          if (skillsDetail.skills) skillsListData = skillsDetail.skills;
           this.setState({ skillsListData, skillsDetail });
         }
       })

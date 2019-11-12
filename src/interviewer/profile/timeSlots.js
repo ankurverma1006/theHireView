@@ -110,16 +110,17 @@ class TimeSlots extends Component {
             hour = launchDate.getHours();
 
             let endDate = new Date(year, month, day, hour, min);
-
-            timeData.push({
-              Subject: item.userId ? 'Booked' : 'Available',
-              slotId: item.slotId,
-              text: 'Photogenic',
-              userId: item.userId,
-              StartTime: startDate,
-              EndTime: endDate,
-              Color: item.userId ? '#1aaa55' : '#7fa900'
-            });
+            if (startDate && endDate) {
+              timeData.push({
+                Subject: item.userId ? 'Booked' : 'Available',
+                slotId: item.slotId,
+                text: 'Photogenic',
+                userId: item.userId,
+                StartTime: startDate,
+                EndTime: endDate,
+                Color: item.userId ? '#1aaa55' : '#7fa900'
+              });
+            }
           });
           this.setState({ timeData: timeData });
         }

@@ -819,6 +819,7 @@ class EditProfile extends Component {
                               {' '}
                               <input
                                 type="file"
+                                accept="application/pdf"
                                 onChange={this.uploadFiles.bind(this)}
                               />
                               <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>

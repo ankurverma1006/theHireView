@@ -117,7 +117,7 @@ class Dashboard extends Component {
   getSlotDetails(userId) {
     theRapidHireApiService('getTimeSlotByUser', { userId })
       .then(response => {
-        if (response.data.status === 'Success') {
+        if (response && response.data && response.data.status === 'Success') {
           console.log(response);
           let bookedSlotData = [];
           bookedSlotData = response.data.result;

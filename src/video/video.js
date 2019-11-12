@@ -16,7 +16,7 @@ import Slider from 'react-slick';
 import _ from 'lodash';
 
 //import Webcam from './Webcam.react';
-import Webcam from "react-webcam";
+import Webcam from 'react-webcam';
 //import  "https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js";
 //import * as AWS from "https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js";
 //import Summary from './summary/addSummary';
@@ -24,7 +24,7 @@ import Webcam from "react-webcam";
 import VideoPlayer from 'react-video-js-player';
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from './../common/cropper/imageCropper';
-import DownloadLink from "react-download-link";
+import DownloadLink from 'react-download-link';
 //import Img from '../../common/cropper/img';
 import {
   showErrorToast,
@@ -47,21 +47,19 @@ import {
   actionUpdateUserInfo,
   actionGetAchievementsData
 } from './../common/core/redux/actions';
-import $ from 'jquery'; 
+import $ from 'jquery';
 import SpiderChart from './../common/spiderChart/spiderChart';
 var AWS = require('aws-sdk');
 
-  //loadScript('https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js')
-
+//loadScript('https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js')
 
 const config = {
   bucketName: 'ankurself',
-  dirName: 'photos', /* optional */
+  dirName: 'photos' /* optional */,
   region: 'ap-south-1', // Put your aws region here
   accessKeyId: 'AKIAJHHM3PCJ25PK6OWQ',
   secretAccessKey: 'fTo0CpSivV7OWo2TrFGNUaA5E6ST1pB9Pwnsp5HB'
-}
-
+};
 
 var settings = {
   dots: false,
@@ -99,66 +97,70 @@ var settings = {
   ]
 };
 
-const hasGetUserMedia = !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia || navigator.msGetUserMedia);
+const hasGetUserMedia = !!(
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia
+);
 
 class Video extends Component {
   constructor(props, context) {
     super(props);
-   
-    this.state = {  
-        video: {
-            src: "http://www.example.com/path/to/video.mp4",
-            poster: "http://www.example.com/path/to/video_poster.jpg"
-        },    
-      showJobDescriptionComponent: false,      
-      jobDescriptionDetail: {},        
-     
+
+    this.state = {
+      video: {
+        src: 'http://www.example.com/path/to/video.mp4',
+        poster: 'http://www.example.com/path/to/video_poster.jpg'
+      },
+      showJobDescriptionComponent: false,
+      jobDescriptionDetail: {},
+
       loader1: false,
-      loader2: false,      
-      jobDescriptionListData: [],     
-      userData:{},     
-      showDropdown: false,     
-      isActive: 'true',     
+      loader2: false,
+      jobDescriptionListData: [],
+      userData: {},
+      showDropdown: false,
+      isActive: 'true',
       contentEditable: false,
       editName: false,
       name: '',
       editTagLine: false,
-      showVideo:false
+      showVideo: false
     };
-    var wRegion = "ap-south-1";
-    var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
-    var s3bucketName = "ankurself";
-    var audioPath = "/audio-files";
-    var s3bucketName = "ankurself";
-    var audioPath = "/audio-files";
-    var audioStoreWithBucket=s3bucketName+audioPath;
+    var wRegion = 'ap-south-1';
+    var poolid = '';
+    var s3bucketName = 'ankurself';
+    var audioPath = '/audio-files';
+    var s3bucketName = 'ankurself';
+    var audioPath = '/audio-files';
+    var audioStoreWithBucket = s3bucketName + audioPath;
     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
-    this.region = "ap-south-1"; //s3 region
-    this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
+    this.region = 'ap-south-1'; //s3 region
+    this.IdentityPoolId = ''; //identity pool id
     this.bucketName = audioStoreWithBucket; //audio file store
-    this.s3=null; //variable defination for s3
+    this.s3 = null; //variable defination for s3
     this.dateinfo = new Date();
     this.timestampData = this.dateinfo.getTime(); //timestamp used for file uniqueness
     this.etag = []; // etag is used to save the parts of the single upload file
     this.recordedChunks = []; //empty Array
     this.booleanStop = false; // this is for final multipart complete
     this.incr = 0; // multipart requires incremetal so that they can merge all parts by ascending order
-    this.filename = this.timestampData.toString() + ".webm"; //unique filename
-    this.uploadId = ""; // upload id is required in multipart
-    this.recorder=null; //initializing recorder variable
-    this.player=null;
+    this.filename = this.timestampData.toString() + '.webm'; //unique filename
+    this.uploadId = ''; // upload id is required in multipart
+    this.recorder = null; //initializing recorder variable
+    this.player = null;
     //To use microphone it shud be {audio: true}
     this.audioConstraints = {
       //  audio: true,
-        video: true
-    };    
+      video: true
+    };
   }
 
   componentWillMount() {
     //let userId = this.props.user.userId;
-    
+
     document.body.classList.add('light-theme');
     document.body.classList.add('absoluteHeader');
     document.body.classList.remove('home');
@@ -173,54 +175,54 @@ class Video extends Component {
   }
 
   componentDidMount() {
-    let user= this.props.user.userId;
+    let user = this.props.user.userId;
     console.log(user);
-     if(!hasGetUserMedia) {
-      alert("Your browser cannot stream from your webcam. Please switch to Chrome or Firefox.");
+    if (!hasGetUserMedia) {
+      alert(
+        'Your browser cannot stream from your webcam. Please switch to Chrome or Firefox.'
+      );
       return;
     }
-    const script = document.createElement("script");
+    const script = document.createElement('script');
 
-    script.src = "https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js";
+    script.src =
+      'https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js';
     script.async = true;
 
-    document.body.appendChild(script)
+    document.body.appendChild(script);
     if (this.props.student.achievementData) {
       console.log(this.props.student.achievementData);
     }
-
   }
 
- 
-
-onPlayerReady(player){
-    console.log("Player is ready: ", player);
+  onPlayerReady(player) {
+    console.log('Player is ready: ', player);
     this.player = player;
-}
+  }
 
-onVideoPlay(duration){
-    console.log("Video played at: ", duration);
-}
+  onVideoPlay(duration) {
+    console.log('Video played at: ', duration);
+  }
 
-onVideoPause(duration){
-    console.log("Video paused at: ", duration);
-}
+  onVideoPause(duration) {
+    console.log('Video paused at: ', duration);
+  }
 
-onVideoTimeUpdate(duration){
-    console.log("Time updated: ", duration);
-}
+  onVideoTimeUpdate(duration) {
+    console.log('Time updated: ', duration);
+  }
 
-onVideoSeeking(duration){
-    console.log("Video seeking: ", duration);
-}
+  onVideoSeeking(duration) {
+    console.log('Video seeking: ', duration);
+  }
 
-onVideoSeeked(from, to){
+  onVideoSeeked(from, to) {
     console.log(`Video seeked from ${from} to ${to}`);
-}
+  }
 
-onVideoEnd(){
-    console.log("Video ended");
-}
+  onVideoEnd() {
+    console.log('Video ended');
+  }
 
   audioStreamInitialize() {
     /*
@@ -228,106 +230,107 @@ onVideoEnd(){
     */
     var self = this;
     AWS.config.update({
-         region: "ap-south-1",
-             credentials: new AWS.CognitoIdentityCredentials({
-                IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-                RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-                AccountId: '923146643705' // your AWS account ID
+      region: 'ap-south-1',
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: '',
+        RoleArn: '',
+        AccountId: '' // your AWS account ID
+      })
+    });
 
-             })
-        });
-
-            AWS.config.credentials.get(function (err) {
-    if (err) console.log(err);
-    else console.log(AWS.config.credentials);
-});
-     /*
+    AWS.config.credentials.get(function(err) {
+      if (err) console.log(err);
+      else console.log(AWS.config.credentials);
+    });
+    /*
         Constructs a service object.
     */
     // self.s3 = new AWS.S3({apiVersion: '2006-03-01',
     //                     params: {Bucket: 'ankurself'},
-     
+
     // }
     // );
-    self.s3 = new AWS.S3({logger:console,
-//         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
-// AWSSecretKey=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
-     apiVersion: '2006-03-01',
-        params: {Bucket: 'ankurself'}
-
-
-})
+    self.s3 = new AWS.S3({
+      logger: console,
+      //         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
+      // AWSSecretKey=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
+      apiVersion: '2006-03-01',
+      params: { Bucket: 'ankurself' }
+    });
     /*
         Feature detecting is a simple check for the existence of "navigator.mediaDevices.getUserMedia"
         To use the microphone. we need to request permission.
         The parameter to getUserMedia() is an object specifying the details and requirements for each type of media you want to access.
         To use microphone it shud be {audio: true}
     */
-    navigator.mediaDevices.getUserMedia(self.audioConstraints)
-        .then(function(stream) {
-            
-            /*
+    navigator.mediaDevices
+      .getUserMedia(self.audioConstraints)
+      .then(function(stream) {
+        /*
                 once we accept the prompt for the audio stream from user's mic we enable the record button.
             */
-            $("#record_q1").removeAttr("disabled");
-            /*
+        $('#record_q1').removeAttr('disabled');
+        /*
                 Creates a new MediaRecorder object, given a MediaStream to record.
             */
-            self.recorder = new MediaRecorder(stream);
-                        //    self.setState({videosrc:stream});
-                             
-            /*
+        self.recorder = new MediaRecorder(stream);
+        //    self.setState({videosrc:stream});
+
+        /*
                 Called to handle the dataavailable event, which is periodically triggered each time timeslice milliseconds of media have been recorded
                 (or when the entire media has been recorded, if timeslice wasn't specified).
                 The event, of type BlobEvent, contains the recorded media in its data property.
                 You can then collect and act upon that recorded media data using this event handler.
             */
-            self.recorder.addEventListener('dataavailable', function(e) {
-                var normalArr = [];
-                /*
+        self.recorder.addEventListener('dataavailable', function(e) {
+          var normalArr = [];
+          /*
                     Here we push the stream data to an array for future use.
                 */
-                self.recordedChunks.push(e.data);
-                normalArr.push(e.data);
+          self.recordedChunks.push(e.data);
+          normalArr.push(e.data);
 
-                /*
+          /*
                     here we create a blob from the stream data that we have received.
                 */
-                var blob = new Blob(normalArr, {
-                    type: 'video/webm'
-                });
-                         
-                /*
+          var blob = new Blob(normalArr, {
+            type: 'video/webm'
+          });
+
+          /*
                     if the length of recordedChunks is 1 then it means its the 1st part of our data.
                     So we createMultipartUpload which will return an upload id.
                     Upload id is used to upload the other parts of the stream
                     else.
                     It Uploads a part in a multipart upload.
                 */
-                if (self.recordedChunks.length == 1) {
-                         console.log(blob.size);
+          if (self.recordedChunks.length == 1) {
+            console.log(blob.size);
 
-
-                    self.startMultiUpload(blob, self.filename)
-                } else {
-                    /*
+            self.startMultiUpload(blob, self.filename);
+          } else {
+            /*
                         self.incr is basically a part number.
                         Part number of part being uploaded. This is a positive integer between 1 and 10,000.
                     */
-                    self.incr = self.incr + 1
-                    self.continueMultiUpload(blob, self.incr, self.uploadId, self.filename, self.bucketName);
-                }
-            })
+            self.incr = self.incr + 1;
+            self.continueMultiUpload(
+              blob,
+              self.incr,
+              self.uploadId,
+              self.filename,
+              self.bucketName
+            );
+          }
         });
-}
+      });
+  }
 
-
-
-startRecording(id) {
+  startRecording(id) {
     var self = this;
-  
-   // self.enableAllButton();
-  //  $("#record_q1").attr("disabled", "disabled");
+
+    // self.enableAllButton();
+    //  $("#record_q1").attr("disabled", "disabled");
     /*
         1800000 is the number of milliseconds to record into each Blob.
         If this parameter isn't included, the entire media duration is recorded into a single Blob unless the requestData()
@@ -338,13 +341,13 @@ startRecording(id) {
     As for multipart upload the minimum breakdown of the file should be 5MB
     */
     //this.recorder.start(1800000);
-    
+
     this.recorder.start(1800000);
     console.log('recprdomg');
-    this.setState({showVideo:true});
-}
+    this.setState({ showVideo: true });
+  }
 
-stopRecording(id) {
+  stopRecording(id) {
     var self = this;
     self.recorder.stop();
     /*
@@ -354,96 +357,95 @@ stopRecording(id) {
     */
     self.booleanStop = true;
     //disable self
-    self.disableAllButton()
-    $("#stop_q1").attr("disabled", "disabled");
+    self.disableAllButton();
+    $('#stop_q1').attr('disabled', 'disabled');
     // add loader
-  //  self.setLoader();
-    this.setState({showVideo:false});
-}
+    //  self.setLoader();
+    this.setState({ showVideo: false });
+  }
 
-pauseRecording(id) {
+  pauseRecording(id) {
     var self = this;
     self.recorder.pause();
-   $("#pause_q1").addClass("hide");
-    $("#resume_q1").removeClass("hide");
-}
- 
+    $('#pause_q1').addClass('hide');
+    $('#resume_q1').removeClass('hide');
+  }
 
-resumeRecording(id) {
+  resumeRecording(id) {
     var self = this;
     self.recorder.resume();
-   $("#resume_q1").addClass("hide");
-    $("#pause_q1").removeClass("hide");
-}
+    $('#resume_q1').addClass('hide');
+    $('#pause_q1').removeClass('hide');
+  }
 
-startMultiUpload(blob, filename) {
+  startMultiUpload(blob, filename) {
     var self = this;
     var audioBlob = blob;
     var params = {
-     
-        Bucket: 'ankurself',
-        Key: filename,
-        ContentType: 'video/webm',
-        ACL: 'public-read'           
+      Bucket: 'ankurself',
+      Key: filename,
+      ContentType: 'video/webm',
+      ACL: 'public-read'
     };
 
-// self.s3.getSignedUrl('postObject', params, function (err, url) {
-//       if(err){
-//         console.log(err);
-//       }
-//       console.log(url);
-//          });
-
+    // self.s3.getSignedUrl('postObject', params, function (err, url) {
+    //       if(err){
+    //         console.log(err);
+    //       }
+    //       console.log(url);
+    //          });
 
     self.s3.createMultipartUpload(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack); // an error occurred
-        } else {
-            self.uploadId = data.UploadId
-            self.incr = 1;
-            self.continueMultiUpload(audioBlob, self.incr, self.uploadId, self.filename, self.bucketName);
-        }
+      if (err) {
+        console.log(err, err.stack); // an error occurred
+      } else {
+        self.uploadId = data.UploadId;
+        self.incr = 1;
+        self.continueMultiUpload(
+          audioBlob,
+          self.incr,
+          self.uploadId,
+          self.filename,
+          self.bucketName
+        );
+      }
     });
-}
- 
+  }
 
- /*
+  /*
        Uploads a part in a multipart upload.
        The following code uploads part of a multipart upload.
        it specifies a file name for the part data. The Upload ID is same that is returned by the initiate multipart upload.
    */
   continueMultiUpload(audioBlob, PartNumber, uploadId, key, bucketName) {
     var self = this;
- 
- 
- 
+
     var params = {
-        Body: audioBlob,
-        Bucket: 'ankurself',
-        Key: key,
-        PartNumber: PartNumber,
-        UploadId: uploadId
+      Body: audioBlob,
+      Bucket: 'ankurself',
+      Key: key,
+      PartNumber: PartNumber,
+      UploadId: uploadId
     };
     console.log(params);
     self.s3.uploadPart(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack)
-        } // an error occurred
-        else {
-            /*
+      if (err) {
+        console.log(err, err.stack);
+      } // an error occurred
+      else {
+        /*
                 Once the part of data is uploaded we get an Entity tag for the uploaded object(ETag).
                 which is used later when we complete our multipart upload.
             */
-            self.etag.push(data.ETag);
-            if (self.booleanStop == true) {
-                self.completeMultiUpload();
-            }
+        self.etag.push(data.ETag);
+        if (self.booleanStop == true) {
+          self.completeMultiUpload();
         }
+      }
     });
-}
+  }
 
-
- /*
+  /*
        Completes a multipart upload by assembling previously uploaded parts.
    */
   completeMultiUpload() {
@@ -453,110 +455,109 @@ startMultiUpload(blob, filename) {
         here we are constructing the Etag data in the required format.
     */
     self.etag.forEach((data, index) => {
-        const obj = {
-            ETag: data,
-            PartNumber: ++index
-        };
-        outputTag.push(obj);
+      const obj = {
+        ETag: data,
+        PartNumber: ++index
+      };
+      outputTag.push(obj);
     });
 
     var params = {
-        Bucket:'ankurself', // required
-        Key: self.filename, // required
-        UploadId: self.uploadId, // required
-        MultipartUpload: {
-            Parts: outputTag
-        }
+      Bucket: 'ankurself', // required
+      Key: self.filename, // required
+      UploadId: self.uploadId, // required
+      MultipartUpload: {
+        Parts: outputTag
+      }
     };
 
     self.s3.completeMultipartUpload(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack)
-        } // an error occurred
-        else {
-            console.log(data.Location);
-            self.saveVideoURL(data.Location);
-            // initialize variable back to normal
-            self.etag = [];
-            self.recordedChunks = [];
-            self.uploadId = "";
-            self.booleanStop = false;
-            self.disableAllButton();
-         //   self.removeLoader();
-            alert("we have successfully saved the questionaire..");
-        }
+      if (err) {
+        console.log(err, err.stack);
+      } // an error occurred
+      else {
+        console.log(data.Location);
+        self.saveVideoURL(data.Location);
+        // initialize variable back to normal
+        self.etag = [];
+        self.recordedChunks = [];
+        self.uploadId = '';
+        self.booleanStop = false;
+        self.disableAllButton();
+        //   self.removeLoader();
+        alert('we have successfully saved the questionaire..');
+      }
     });
-}
+  }
 
-saveVideoURL(videoLink){
-    let data={
-          userId: this.props.user.userId,
-        videoLink
+  saveVideoURL(videoLink) {
+    let data = {
+      userId: this.props.user.userId,
+      videoLink
     };
 
-    theRapidHireApiService('addVideo',data)
-    .then(response => {     
-      if (response.data.statusCode === 200) {
-         let userData= this.state.userData;
-         userData= response.data.resourceData[0];
-         console.log(response.data.resourceData[0]);
-         this.setState({userData: userData});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
+    theRapidHireApiService('addVideo', data)
+      .then(response => {
+        if (response.data.statusCode === 200) {
+          let userData = this.state.userData;
+          userData = response.data.resourceData[0];
+          console.log(response.data.resourceData[0]);
+          this.setState({ userData: userData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
+  disableAllButton() {
+    $('#formdata button[type=button]').attr('disabled', 'disabled');
+  }
 
-disableAllButton() {
-    $("#formdata button[type=button]").attr("disabled", "disabled");
-}
-
-enableAllButton() {
-    $("#formdata button[type=button]").removeAttr("disabled");
-}
+  enableAllButton() {
+    $('#formdata button[type=button]').removeAttr('disabled');
+  }
 
   render() {
     const videoConstraints = {
-        facingMode: "user"
-      };
+      facingMode: 'user'
+    };
     return (
-        <div className="wrapper">
-        <Header {...this.props} />     
-          <div className="main-panel">  
+      <div className="wrapper">
+        <Header {...this.props} />
+        <div className="main-panel">
+          <div className="w3-content main-panel1">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="header">
+                    <div className="content">
+                      <div className="panel-group" id="accordion">
+                        <button onClick={this.startRecording.bind(this)}>
+                          Start Record
+                        </button>
+                        <button onClick={this.stopRecording.bind(this)}>
+                          stop Record
+                        </button>
+                        {this.state.uploading ? <div>Uploading...</div> : null}
 
-        <div className="w3-content main-panel1">     
-        <div className="row">
-    <div className="col-md-12">
-      <div className="card">
-        <div className="header">
-        <div className="content">
-          <div className="panel-group" id="accordion">
-            <button onClick={this.startRecording.bind(this)}>Start Record</button>
-               <button onClick={this.stopRecording.bind(this)}>stop Record</button>
-                {this.state.uploading ?
-            <div>Uploading...</div> : null}           
-          
-       
-                   
-              {this.state.showVideo ?   <Webcam videoConstraints={videoConstraints} />: null} 
-          
-       
-         {/* <video id='video' autoplay muted src={this.state.videosrc}/> */}
-           {/* <button type="button" class="btn kc record" id="record_q1" disabled="disabled" onClick={this.startRecording.bind(this)}>Record</button>
+                        {this.state.showVideo ? (
+                          <Webcam videoConstraints={videoConstraints} />
+                        ) : null}
+
+                        {/* <video id='video' autoplay muted src={this.state.videosrc}/> */}
+                        {/* <button type="button" class="btn kc record" id="record_q1" disabled="disabled" onClick={this.startRecording.bind(this)}>Record</button>
            <button type="button" class="btn kc pause" id="pause_q1" disabled="disabled" onClick={this.pauseRecording.bind(this.id)}>Pause</button>
            <button type="button" class="btn kc resume hide" id="resume_q1" disabled="disabled" onclick={this.resumeRecording.bind(this.id)}>Resume</button>
            <button type="button" class="btn kc stop" id="stop_q1" disabled="disabled" onclick={this.stopRecording.bind(this.id)}>Stop</button> */}
-           </div>  
-            
-        </div>    
-        </div></div>  
-            
-            </div>    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-             </div>
-         </div>
+          </div>
+        </div>
       </div>
     );
   }

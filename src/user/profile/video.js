@@ -129,7 +129,7 @@ class Video extends Component {
       showVideo: false
     };
     var wRegion = 'ap-south-1';
-    var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
+    var poolid = '';
     var s3bucketName = 'ankurself';
     var audioPath = '/audio-files';
     var s3bucketName = 'ankurself';
@@ -138,7 +138,7 @@ class Video extends Component {
     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
     this.region = 'ap-south-1'; //s3 region
-    this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
+    this.IdentityPoolId = ''; //identity pool id
     this.bucketName = audioStoreWithBucket; //audio file store
     this.s3; //variable defination for s3
     this.dateinfo = new Date();
@@ -230,9 +230,9 @@ class Video extends Component {
     AWS.config.update({
       region: 'ap-south-1',
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-        RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-        AccountId: '923146643705' // your AWS account ID
+        IdentityPoolId: '',
+        RoleArn: '',
+        AccountId: '' // your AWS account ID
       })
     });
 
@@ -326,21 +326,7 @@ class Video extends Component {
 
   startRecording(id) {
     var self = this;
-
-    // self.enableAllButton();
-    //  $("#record_q1").attr("disabled", "disabled");
-    /*
-        1800000 is the number of milliseconds to record into each Blob.
-        If this parameter isn't included, the entire media duration is recorded into a single Blob unless the requestData()
-        method is called to obtain the Blob and trigger the creation of a new Blob into which the media continues to be recorded.
-    */
-    /*
-    PLEASE NOTE YOU CAN CHANGE THIS PARAM OF 1800000 but the size should be greater then or equal to 5MB.
-    As for multipart upload the minimum breakdown of the file should be 5MB
-    */
-    //this.recorder.start(1800000);
-
-    this.recorder.start(50000);
+    this.recorder.start(600000);
     console.log('recprdomg');
     this.setState({ showVideo: true });
   }

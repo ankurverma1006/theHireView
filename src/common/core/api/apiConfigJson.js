@@ -551,7 +551,7 @@ export default {
   },
 
   getTimeSlotByInterviewer: {
-    url: '/ui/timeSlot?interviewerId=:interviewerId',
+    url: '/ui/timeSlot?interviewerId=:interviewerId&completed=false',
     method: 'GET',
     data: {},
     showResultMessage: false,
@@ -559,7 +559,7 @@ export default {
   },
 
   getTimeSlotByUser: {
-    url: '/ui/timeSlot?userId=:userId',
+    url: '/ui/timeSlot?userId=:userId&completed=false',
     method: 'GET',
     data: {},
     showResultMessage: false,

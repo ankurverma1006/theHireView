@@ -53,7 +53,7 @@
 //       skillTag:[]
 //     };
 //     var wRegion = "ap-south-1";
-//     var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
+//     var poolid = '';
 //     var s3bucketName = "ankurself";
 //     var audioPath = "/audio-files";
 //     var s3bucketName = "ankurself";
@@ -62,7 +62,7 @@
 //     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
 //     this.region = "ap-south-1"; //s3 region
-//     this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
+//     this.IdentityPoolId = ''; //identity pool id
 //     this.bucketName = audioStoreWithBucket; //audio file store
 //     this.s3=''; //variable defination for s3
 //     this.dateinfo = new Date();
@@ -194,9 +194,9 @@
 //       AWS.config.update({
 //            region: "ap-south-1",
 //                credentials: new AWS.CognitoIdentityCredentials({
-//                   IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-//                   RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-//                   AccountId: '923146643705' // your AWS account ID
+//                   IdentityPoolId: '',
+//                   RoleArn: '',
+//                   AccountId: '' // your AWS account ID
 
 //                })
 //           });
@@ -740,6 +740,8 @@ import { Modal } from 'react-bootstrap';
 import $ from 'jquery';
 import Header from '../header/header';
 import theRapidHireApiService from '../../common/core/api/apiService';
+import StackUtils from 'stack-utils';
+import { decrypt } from '../../common/commonFunctions';
 //import {MediaStreamRecorder} from '/MediaStreamRecorder.js';
 //import MediaStreamRecorder from '../../../node_modules/msr/MediaStreamRecorder.js';
 const hasGetUserMedia = !!(
@@ -749,17 +751,14 @@ const hasGetUserMedia = !!(
   navigator.msGetUserMedia
 );
 
-//loadScript('https://sdk.amazonaws.com/js/aws-sdk-2.2.32.min.js')
-
 var AWS = require('aws-sdk');
 //var multiStreamRecorder;
-const config = {
-  bucketName: 'ankurself',
-  dirName: 'photos' /* optional */,
-  region: 'ap-south-1', // Put your aws region here
-  accessKeyId: 'AKIAJHHM3PCJ25PK6OWQ',
-  secretAccessKey: 'fTo0CpSivV7OWo2TrFGNUaA5E6ST1pB9Pwnsp5HB'
-};
+// const config = {
+//   bucketName: '=',
+//   dirName: 'photos' /* optional */,
+//   region: '', // Put your aws region here
+//
+// };
 
 class VideoChat extends Component {
   constructor(props) {
@@ -775,7 +774,7 @@ class VideoChat extends Component {
       skillTag: []
     };
     var wRegion = 'ap-south-1';
-    var poolid = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c';
+    var poolid = '';
     var s3bucketName = 'ankurself';
     var audioPath = '/audio-files';
     var s3bucketName = 'ankurself';
@@ -784,7 +783,6 @@ class VideoChat extends Component {
     //AudioStream = new AudioStream(wRegion,poolid,s3bucketName+audioPath)
 
     this.region = 'ap-south-1'; //s3 region
-    this.IdentityPoolId = 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c'; //identity pool id
     this.bucketName = audioStoreWithBucket; //audio file store
     this.s3 = ''; //variable defination for s3
     this.dateinfo = new Date();
@@ -816,20 +814,6 @@ class VideoChat extends Component {
             googAudioMirroring: false
           }
         ]
-      },
-      overlay: {
-        image: HTMLImageElement,
-        src:
-          'data:image/png;base64,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',
-
-        text: 'string',
-        fontSize: 'pixels',
-        fontFamily: 'Arial',
-        color: 'foreground-color-for-text',
-        backgroundColor: 'for-text',
-        pageX: 'position-x-of-the-text/logo',
-        pageY: 'position-y-of-the-text/logo',
-        etc: ''
       }
     };
     this.config = null;
@@ -856,13 +840,6 @@ class VideoChat extends Component {
   };
 
   componentWillMount() {
-    //  var script = document.createElement("script");
-
-    // script.src = "../dist/js/app.min.js";
-    //   script.async = true;
-
-    //  document.body.appendChild(script);
-
     this.pc = {};
     if (!hasGetUserMedia) {
       alert(
@@ -897,6 +874,7 @@ class VideoChat extends Component {
         .on('end', this.endCall.bind(this, false))
         .emit('init', videoKeySelf); // self id kept
     }
+    this.getPreSignedURL();
   }
 
   componentWillUnmount() {
@@ -912,16 +890,16 @@ class VideoChat extends Component {
   }
 
   componentDidMount() {
-    this.audioStreamInitialize();
     //   this.setupBeforeUnloadListener();
-    this.getPreSignedURL();
   }
 
   getPreSignedURL(videoLink) {
     theRapidHireApiService('getPreSignedURL')
       .then(response => {
         console.log(response);
-        if (response.data.status === 'Success') {
+        if (response.data.status === 'SUCCESS') {
+          console.log('audioStreamInitialize -- ');
+          this.audioStreamInitialize(response.data.result);
         }
       })
       .catch(err => {
@@ -929,17 +907,17 @@ class VideoChat extends Component {
       });
   }
 
-  audioStreamInitialize() {
+  audioStreamInitialize(result) {
     /*
           Creates a new credentials object, which will allow us to communicate with the aws services.
       */
     var self = this;
     AWS.config.update({
-      region: 'ap-south-1',
+      region: decrypt(result.region),
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'ap-south-1:5075a328-2598-4e55-ba57-d4b60ed9548c',
-        RoleArn: 'arn:aws:iam::923146643705:role/Cognito_TestPoolUnauth_Role',
-        AccountId: '923146643705' // your AWS account ID
+        IdentityPoolId: decrypt(result.IdentityPoolId),
+        RoleArn: decrypt(result.RoleArn),
+        AccountId: decrypt(result.AccountId) // your AWS account ID
       })
     });
 
@@ -947,16 +925,13 @@ class VideoChat extends Component {
       if (err) console.log(err);
       else console.log(AWS.config.credentials);
     });
-
-    self.s3 = new AWS.S3({
+    AWS = self.s3 = new AWS.S3({
       logger: console,
       //         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
       // AWSSecretKey=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
-      apiVersion: '2006-03-01',
-      params: { Bucket: 'ankurself' }
+      apiVersion: decrypt(result.apiVersion),
+      params: { Bucket: decrypt(result.bucket) }
     });
-
-    console.log('self.s3 -- ', self.s3);
 
     const config = { audio: true, video: true };
     this.startCall(true, '', config);
@@ -965,20 +940,12 @@ class VideoChat extends Component {
   startRecording(id) {
     var self = this;
     this.recorder.start(50000);
-    console.log('recprdomg');
     this.setState({ showVideo: true });
   }
 
   stopRecording(id) {
     var self = this;
-    //   self.recorder.stop();
     self.booleanStop = true;
-    //disable self
-
-    //  self.disableAllButton()
-    //  $("#stop_q1").attr("disabled", "disabled");
-    // add loader
-    //  self.setLoader();
     this.setState({ showVideo: false });
   }
 

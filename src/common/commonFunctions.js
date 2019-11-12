@@ -117,7 +117,7 @@ export const renderMessage = message => {
 
 export const encrypt = text => {
   let cryptText = cryptlib.encrypt(text, key, iv);
-  return cryptText.replace(/\//g, '_spike_');
+  return cryptText.replace(/\//g, '_rapid_');
 };
 //  let buff = new Buffer(text);
 //  return buff.toString('base64');
@@ -126,7 +126,7 @@ export const encrypt = text => {
 //};
 
 export const decrypt = text => {
-  let decrptText = text.replace(/_spike_/g, '/');
+  let decrptText = text.replace(/_rapid_/g, '/');
   return cryptlib.decrypt(decrptText, key, iv);
   // let buff = new Buffer(text, 'base64');
   //return buff.toString('ascii');
@@ -166,12 +166,12 @@ export function getAPIURL() {
       break;
 
     default:
-      returnUrl.APIURL = 'therapidhire.herokuapp.com'; //'192.168.2.4';
+      returnUrl.APIURL = 'therapidhire.herokuapp.com'; // 'localhost'       // //'192.168.2.4';
       returnUrl.azureContainer = 'theRapidHire-media-development';
       returnUrl.azureThumbContainer =
         'theRapidHire-media-development-thumbnails';
       returnUrl.httpServer = 'https://';
-      //    returnUrl.APIPort = '3002';
+      //     returnUrl.APIPort = '3002';
       break;
   }
   return returnUrl;

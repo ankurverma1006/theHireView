@@ -165,7 +165,7 @@ class Video extends Component {
     document.body.classList.add('absoluteHeader');
     document.body.classList.remove('home');
     document.body.classList.remove('fixedHeader');
-    this.audioStreamInitialize();
+    this.getPreSignedURL();
   }
 
   componentWillReceiveProps(res) {
@@ -222,17 +222,31 @@ class Video extends Component {
     console.log('Video ended');
   }
 
+  getPreSignedURL(videoLink) {
+    theRapidHireApiService('getPreSignedURL')
+      .then(response => {
+        console.log(response);
+        if (response.data.status === 'SUCCESS') {
+          console.log('audioStreamInitialize -- ');
+          this.audioStreamInitialize(response.data.result);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   audioStreamInitialize() {
     /*
         Creates a new credentials object, which will allow us to communicate with the aws services.
     */
     var self = this;
     AWS.config.update({
-      region: 'ap-south-1',
+      region: decrypt(result.region),
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: '',
-        RoleArn: '',
-        AccountId: '' // your AWS account ID
+        IdentityPoolId: decrypt(result.IdentityPoolId),
+        RoleArn: decrypt(result.RoleArn),
+        AccountId: decrypt(result.AccountId) // your AWS account ID
       })
     });
 
@@ -240,20 +254,12 @@ class Video extends Component {
       if (err) console.log(err);
       else console.log(AWS.config.credentials);
     });
-    /*
-        Constructs a service object.
-    */
-    // self.s3 = new AWS.S3({apiVersion: '2006-03-01',
-    //                     params: {Bucket: 'ankurself'},
-
-    // }
-    // );
-    self.s3 = new AWS.S3({
+    AWS = self.s3 = new AWS.S3({
       logger: console,
       //         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
       // AWSSecretKey=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
-      apiVersion: '2006-03-01',
-      params: { Bucket: 'ankurself' }
+      apiVersion: decrypt(result.apiVersion),
+      params: { Bucket: decrypt(result.bucket) }
     });
     /*
         Feature detecting is a simple check for the existence of "navigator.mediaDevices.getUserMedia"
@@ -326,12 +332,16 @@ class Video extends Component {
 
   startRecording(id) {
     var self = this;
-    this.recorder.start(600000);
-    console.log('recprdomg');
+    this.recorder.start(60000);
+    console.log('sdfasdf');
     this.setState({ showVideo: true });
+    setTimeout(function() {
+      self.stopRecording();
+    }, 60000);
   }
 
   stopRecording(id) {
+    console.log('stop record');
     var self = this;
     self.recorder.stop();
     /*
@@ -378,8 +388,7 @@ class Video extends Component {
     //       }
     //       console.log(url);
     //          });
-
-    self.s3.createMultipartUpload(params, function(err, data) {
+    +self.s3.createMultipartUpload(params, function(err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred
       } else {
@@ -513,11 +522,6 @@ class Video extends Component {
                   <div>
                     <button onClick={this.startRecording.bind(this)}>
                       Start Record
-                    </button>
-                  </div>
-                  <div>
-                    <button onClick={this.stopRecording.bind(this)}>
-                      stop Record
                     </button>
                   </div>
                   {this.state.uploading ? <div>Uploading...</div> : null}

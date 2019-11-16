@@ -14,7 +14,7 @@ import { captureUserMedia } from './AppUtils';
 //import { ToastContainer } from 'react-toastify';
 import Slider from 'react-slick';
 import _ from 'lodash';
-
+import { decrypt } from '../common/commonFunctions';
 //import Webcam from './Webcam.react';
 import Webcam from 'react-webcam';
 //import  "https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js";
@@ -159,19 +159,7 @@ class Video extends Component {
   }
 
   componentWillMount() {
-    //let userId = this.props.user.userId;
-
-    document.body.classList.add('light-theme');
-    document.body.classList.add('absoluteHeader');
-    document.body.classList.remove('home');
-    document.body.classList.remove('fixedHeader');
-    this.audioStreamInitialize();
-  }
-
-  componentWillReceiveProps(res) {
-    // this.setProfileData(res.user);
-    // this.setAchievementData(res.student.achievementData);
-    // this.renderRecommendationsByUserId();
+    this.getPreSignedURL();
   }
 
   componentDidMount() {
@@ -224,17 +212,14 @@ class Video extends Component {
     console.log('Video ended');
   }
 
-  audioStreamInitialize() {
-    /*
-        Creates a new credentials object, which will allow us to communicate with the aws services.
-    */
+  audioStreamInitialize(result) {
     var self = this;
     AWS.config.update({
-      region: 'ap-south-1',
+      region: decrypt(result.region),
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: '',
-        RoleArn: '',
-        AccountId: '' // your AWS account ID
+        IdentityPoolId: decrypt(result.IdentityPoolId),
+        RoleArn: decrypt(result.RoleArn),
+        AccountId: decrypt(result.AccountId) // your AWS account ID
       })
     });
 
@@ -242,77 +227,31 @@ class Video extends Component {
       if (err) console.log(err);
       else console.log(AWS.config.credentials);
     });
-    /*
-        Constructs a service object.
-    */
-    // self.s3 = new AWS.S3({apiVersion: '2006-03-01',
-    //                     params: {Bucket: 'ankurself'},
-
-    // }
-    // );
-    self.s3 = new AWS.S3({
+    AWS = self.s3 = new AWS.S3({
       logger: console,
-      //         AWSAccessKeyId=AKIAJRQYW4X2EL2WE6UQ
-      // AWSSecretKey=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
-      apiVersion: '2006-03-01',
-      params: { Bucket: 'ankurself' }
+      apiVersion: decrypt(result.apiVersion),
+      params: { Bucket: decrypt(result.bucket) }
     });
-    /*
-        Feature detecting is a simple check for the existence of "navigator.mediaDevices.getUserMedia"
-        To use the microphone. we need to request permission.
-        The parameter to getUserMedia() is an object specifying the details and requirements for each type of media you want to access.
-        To use microphone it shud be {audio: true}
-    */
+
     navigator.mediaDevices
       .getUserMedia(self.audioConstraints)
       .then(function(stream) {
-        /*
-                once we accept the prompt for the audio stream from user's mic we enable the record button.
-            */
-        $('#record_q1').removeAttr('disabled');
-        /*
-                Creates a new MediaRecorder object, given a MediaStream to record.
-            */
         self.recorder = new MediaRecorder(stream);
-        //    self.setState({videosrc:stream});
 
-        /*
-                Called to handle the dataavailable event, which is periodically triggered each time timeslice milliseconds of media have been recorded
-                (or when the entire media has been recorded, if timeslice wasn't specified).
-                The event, of type BlobEvent, contains the recorded media in its data property.
-                You can then collect and act upon that recorded media data using this event handler.
-            */
         self.recorder.addEventListener('dataavailable', function(e) {
           var normalArr = [];
-          /*
-                    Here we push the stream data to an array for future use.
-                */
+
           self.recordedChunks.push(e.data);
           normalArr.push(e.data);
-
-          /*
-                    here we create a blob from the stream data that we have received.
-                */
           var blob = new Blob(normalArr, {
             type: 'video/webm'
           });
 
-          /*
-                    if the length of recordedChunks is 1 then it means its the 1st part of our data.
-                    So we createMultipartUpload which will return an upload id.
-                    Upload id is used to upload the other parts of the stream
-                    else.
-                    It Uploads a part in a multipart upload.
-                */
           if (self.recordedChunks.length == 1) {
             console.log(blob.size);
 
             self.startMultiUpload(blob, self.filename);
           } else {
-            /*
-                        self.incr is basically a part number.
-                        Part number of part being uploaded. This is a positive integer between 1 and 10,000.
-                    */
             self.incr = self.incr + 1;
             self.continueMultiUpload(
               blob,
@@ -328,54 +267,44 @@ class Video extends Component {
 
   startRecording(id) {
     var self = this;
-
-    // self.enableAllButton();
-    //  $("#record_q1").attr("disabled", "disabled");
-    /*
-        1800000 is the number of milliseconds to record into each Blob.
-        If this parameter isn't included, the entire media duration is recorded into a single Blob unless the requestData()
-        method is called to obtain the Blob and trigger the creation of a new Blob into which the media continues to be recorded.
-    */
-    /*
-    PLEASE NOTE YOU CAN CHANGE THIS PARAM OF 1800000 but the size should be greater then or equal to 5MB.
-    As for multipart upload the minimum breakdown of the file should be 5MB
-    */
-    //this.recorder.start(1800000);
-
-    this.recorder.start(1800000);
-    console.log('recprdomg');
+    self.recorder.start(60000);
+    console.log('sdfasdf');
     this.setState({ showVideo: true });
+    setTimeout(function() {
+      self.stopRecording();
+    }, 60000);
   }
 
   stopRecording(id) {
     var self = this;
     self.recorder.stop();
-    /*
-        Once the recording is stop we change the flag of self.booleanStop to true.
-        which means we have completed the recording and now we can
-        Completes a multipart upload by assembling previously uploaded parts.
-    */
     self.booleanStop = true;
-    //disable self
     self.disableAllButton();
-    $('#stop_q1').attr('disabled', 'disabled');
-    // add loader
-    //  self.setLoader();
     this.setState({ showVideo: false });
   }
 
   pauseRecording(id) {
     var self = this;
     self.recorder.pause();
-    $('#pause_q1').addClass('hide');
-    $('#resume_q1').removeClass('hide');
   }
 
   resumeRecording(id) {
     var self = this;
     self.recorder.resume();
-    $('#resume_q1').addClass('hide');
-    $('#pause_q1').removeClass('hide');
+  }
+
+  getPreSignedURL(videoLink) {
+    theRapidHireApiService('getPreSignedURL')
+      .then(response => {
+        console.log(response);
+        if (response.data.status === 'SUCCESS') {
+          console.log('audioStreamInitialize -- ');
+          this.audioStreamInitialize(response.data.result);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   startMultiUpload(blob, filename) {
@@ -387,13 +316,6 @@ class Video extends Component {
       ContentType: 'video/webm',
       ACL: 'public-read'
     };
-
-    // self.s3.getSignedUrl('postObject', params, function (err, url) {
-    //       if(err){
-    //         console.log(err);
-    //       }
-    //       console.log(url);
-    //          });
 
     self.s3.createMultipartUpload(params, function(err, data) {
       if (err) {
@@ -412,14 +334,8 @@ class Video extends Component {
     });
   }
 
-  /*
-       Uploads a part in a multipart upload.
-       The following code uploads part of a multipart upload.
-       it specifies a file name for the part data. The Upload ID is same that is returned by the initiate multipart upload.
-   */
   continueMultiUpload(audioBlob, PartNumber, uploadId, key, bucketName) {
     var self = this;
-
     var params = {
       Body: audioBlob,
       Bucket: 'ankurself',
@@ -433,10 +349,6 @@ class Video extends Component {
         console.log(err, err.stack);
       } // an error occurred
       else {
-        /*
-                Once the part of data is uploaded we get an Entity tag for the uploaded object(ETag).
-                which is used later when we complete our multipart upload.
-            */
         self.etag.push(data.ETag);
         if (self.booleanStop == true) {
           self.completeMultiUpload();
@@ -485,7 +397,7 @@ class Video extends Component {
         self.booleanStop = false;
         self.disableAllButton();
         //   self.removeLoader();
-        alert('we have successfully saved the questionaire..');
+        console.log('we have successfully saved the questionaire..');
       }
     });
   }
@@ -535,9 +447,6 @@ class Video extends Component {
                       <div className="panel-group" id="accordion">
                         <button onClick={this.startRecording.bind(this)}>
                           Start Record
-                        </button>
-                        <button onClick={this.stopRecording.bind(this)}>
-                          stop Record
                         </button>
                         {this.state.uploading ? <div>Uploading...</div> : null}
 

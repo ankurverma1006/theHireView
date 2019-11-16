@@ -109,6 +109,7 @@ class TimeSlots extends Component {
             min = launchDate.getMinutes();
             hour = launchDate.getHours();
 
+            console.log('startDate ', startDate);
             let endDate = new Date(year, month, day, hour, min);
             if (startDate && endDate) {
               timeData.push({

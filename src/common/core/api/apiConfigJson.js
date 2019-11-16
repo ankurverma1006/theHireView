@@ -221,12 +221,66 @@ export default {
     showErrorMessage: true
   },
 
+  addEducation: {
+    url: '/ui/education',
+    method: 'POST',
+    data: {
+      educationId: '',
+      organizationId: '',
+      userId: '',
+      logo: '',
+      degree: '',
+      field: '',
+      grade: '',
+      fromYear: '',
+      toYear: '',
+      isActive: '',
+      type: ''
+    },
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
+  editEducation: {
+    url: '/ui/education',
+    method: 'PUT',
+    data: {
+      educationId: '',
+      organizationId: '',
+      userId: '',
+      logo: '',
+      grade: '',
+      fromYear: '',
+      toYear: '',
+      isActive: '',
+      type: ''
+    },
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
+  deleteEducation: {
+    url: 'ui/education?educationId=:educationId',
+    method: 'DELETE',
+    data: {},
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
   deleteEmployment: {
     url: 'ui/employment?employmentId=:employmentId',
     method: 'DELETE',
     data: {},
     showResultMessage: true,
     showErrorMessage: true
+  },
+
+  ListOragnization: {
+    url: 'ui/organization',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
   },
 
   getSkillsListById: {

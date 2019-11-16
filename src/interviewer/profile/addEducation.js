@@ -284,59 +284,11 @@ class addEducation extends Component {
     this.props.validate(function(error) {
       if (!error) {
         self.setState({ isLoading: true });
-        if (self.state.oragnizationFile !== '') {
-          self.uploadOragnizationLogo();
-        } else {
-          self.handleSubmit();
-        }
+
+        self.handleSubmit();
       }
     });
   };
-
-  uploadImageToAzure(file) {
-    if (file) {
-      this.setState({
-        oragnizationPreview: this.state.imageSource,
-        oragnizationFile: file
-      });
-    }
-  }
-
-  uploadOragnizationLogo() {
-    let AzureStorage = window.AzureStorage;
-    let sasToken = this.state.sasToken;
-    let userId = this.state.userId;
-    let fileData = this.state.oragnizationFile;
-    let fileName = generateTimestamp(fileData.name);
-    let uploadPath = `sv_${userId}/${CONSTANTS.oragnizationAlbum}/${fileName}`;
-    let self = this;
-
-    const blobService = AzureStorage.Blob.createBlobServiceWithSas(
-      CONSTANTS.azureBlobURI,
-      sasToken
-    );
-
-    blobService.createBlockBlobFromBrowserFile(
-      CONSTANTS.azureContainer,
-      uploadPath,
-      fileData,
-      (error, result) => {
-        if (result) {
-          self.setState(
-            {
-              oragnizationLogo: uploadPath
-            },
-            () => {
-              self.handleSubmit();
-            }
-          );
-        }
-        if (error) {
-          console.log('error ', error);
-        }
-      }
-    );
-  }
 
   handleSubmit() {
     let organizationId = this.state.organizationId;

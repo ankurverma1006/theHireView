@@ -1,0 +1,33 @@
+.authentication_wrapper{
+   position: relative;
+   min-height: 100vh; 
+   background: url('../images/banner.png');
+   .shadow_box{
+        position: relative;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,.09);
+        background-color: #fff;
+        border-radius: 4px;
+        .nav-tabs{
+            li{
+                margin-right: 0;
+                flex: 1;
+                padding: 0 5px;
+                a{
+                    padding: 8px 10px;
+                    border: 1px solid #28a745 !important;
+                    color: #28a745 !important;
+                    display: block;
+                    border-radius: 4px;
+                    text-align: center;
+                    transition: .5s;
+                }
+                &.active,&:hover{
+                    a{
+                        background: #28a745 !important;
+                        color: #fff !important;
+                    }
+                }
+            }
+        }
+    }
+}

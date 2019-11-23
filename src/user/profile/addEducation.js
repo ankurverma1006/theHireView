@@ -71,17 +71,13 @@ class addEducation extends Component {
     this.validatorTypes = strategy.createSchema(
       {
         instituteName: 'required',
-        city: 'required',
-        fromGrade: 'required',
-        toGrade: 'required',
+
         fromYear: 'required',
         toYear: 'required'
       },
       {
         'required.instituteName': validationMessages.instituteName.required,
-        'required.city': validationMessages.city.required,
-        'required.fromGrade': validationMessages.fromGrade.required,
-        'required.toGrade': validationMessages.toGrade.required,
+
         'required.fromYear': validationMessages.fromYear.required,
         'required.toYear': validationMessages.toYear.required
       }
@@ -212,17 +208,6 @@ class addEducation extends Component {
     }
   };
 
-  handleToGrade = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    console.log('handleToGrade');
-    this.handleCompare(this.state.fromGrade, event.target.value, 1);
-  };
-
-  handleFromGrade = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    this.handleCompare(event.target.value, this.state.toGrade, 1);
-  };
-
   handleToYear = event => {
     let toYear = this.state.educationToYear;
     let DOB =
@@ -282,14 +267,16 @@ class addEducation extends Component {
 
   validateData = () => {
     let self = this;
+    console.log('add education -- ');
+
     this.props.validate(function(error) {
       if (!error) {
         self.setState({ isLoading: true });
-        if (self.state.oragnizationFile !== '') {
-          self.uploadOragnizationLogo();
-        } else {
-          self.handleSubmit();
-        }
+        // if (self.state.oragnizationFile !== '') {
+        //   self.uploadOragnizationLogo();
+        // } else {
+        self.handleSubmit();
+        //   }
       }
     });
   };
@@ -340,13 +327,12 @@ class addEducation extends Component {
   }
 
   handleSubmit() {
+    console.log('handle submit-- ');
+
     let organizationId = this.state.organizationId;
     let educationId = this.state.educationId;
     let userId = this.state.userId;
-    let institute = this.state.instituteName;
-    let city = this.state.city;
-    let fromGrade = this.state.fromGrade;
-    let toGrade = this.state.toGrade;
+    let grade = this.state.grade;
     let fromYear = this.state.fromYear;
     let toYear = this.state.toYear;
     // let fieldOfStudy = this.state.fieldOfStudy;
@@ -360,7 +346,7 @@ class addEducation extends Component {
     //     ? moment(this.state.endDate).format('DD-MMM-YYYY')
     //     : '';
     let description = this.state.description;
-    let isActive = this.state.isActive;
+    let isActive = true;
     let type = CONSTANTS.typeSchool;
     let logo = this.state.oragnizationLogo;
 
@@ -369,18 +355,16 @@ class addEducation extends Component {
       organizationId,
       userId,
       logo,
-      institute,
-      city,
-      fromGrade,
-      toGrade,
+      grade,
       fromYear,
       toYear,
-      description,
       isActive,
       type
     };
 
     let self = this;
+    console.log('this.state.educationId ', this.state.educationId);
+
     if (this.state.educationId === '') {
       theRapidHireApiService('addEducation', data)
         .then(response => {
@@ -664,7 +648,7 @@ class addEducation extends Component {
               </FormGroup>
               <FormGroup
                 controlId="formHorizontalPassword"
-                className={this.getClasses('city')}
+                className={this.getClasses('grade')}
               >
                 <Col componentClass={ControlLabel} sm={3}>
                   City
@@ -672,9 +656,9 @@ class addEducation extends Component {
                 <Col sm={9}>
                   <FormControl
                     type="text"
-                    placeholder="Ex: New york"
-                    name="city"
-                    value={this.state.city}
+                    placeholder="Ex: A"
+                    name="grade"
+                    value={this.state.grade}
                     onChange={this.handleChange}
                     autoComplete="off"
                   />

@@ -52,12 +52,12 @@ class addEmployment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,     
+      isLoading: false,
       startDate: '',
       endDate: '',
-      promptRecommendation: false,    
-      userId: '',     
-      todaysDate: false,    
+      promptRecommendation: false,
+      userId: '',
+      todaysDate: false,
       startYear: moment().format('YYYY'),
       startMonth: moment().format('M') - 1,
       startDay: moment().format('D'),
@@ -67,10 +67,10 @@ class addEmployment extends Component {
       lwdYear: moment().format('YYYY'),
       lwdMonth: moment().format('M') - 1,
       lwdDay: moment().format('D'),
-      designation:'',
-      organisation:'',
-      employmentModal:true,
-      employmentId:''
+      designation: '',
+      organisation: '',
+      employmentModal: true,
+      employmentId: ''
     };
 
     this.getValidatorData = this.getValidatorData.bind(this);
@@ -78,19 +78,17 @@ class addEmployment extends Component {
     this.validatorTypes = strategy.createSchema(
       {
         designation: 'required',
-        organisation: 'required'       
+        organisation: 'required'
       },
       {
         'required.designation': validationMessages.designation.required,
-        'required.organisation': validationMessages.organisation.required        
+        'required.organisation': validationMessages.organisation.required
       }
     );
   }
 
   closeAchievementyModal = status => {
-    
-    this.setState({      
-    });
+    this.setState({});
     // if (status === 'save')
     //   this.props.closeSaveAchievementComponent(this.props.competencyTypeId);
     // else this.props.closeAchievementComponent(this.props.competencyTypeId);
@@ -109,14 +107,12 @@ class addEmployment extends Component {
   componentDidMount() {
     // if(this.props.user){
     //  let userId = this.props.user.userId;
-    // }  
-    console.log('this.props.employmentDetail ',this.props.employmentDetail);
+    // }
+    console.log('this.props.employmentDetail ', this.props.employmentDetail);
     this.setEmploymentData(this.props.employmentDetail);
   }
 
-
   setEmploymentData = data => {
-    
     let startDay = '',
       startMonth = '',
       startYear = '',
@@ -124,8 +120,7 @@ class addEmployment extends Component {
       endMonth = '',
       endYear = '',
       todaysDate = '';
-    if (data) {        
-     
+    if (data) {
       if (data.startDate) {
         startDay = moment(data.startDate).format('D');
         startMonth = Number(moment(data.startDate).format('M')) - 1;
@@ -141,23 +136,23 @@ class addEmployment extends Component {
         todaysDate = '';
       }
 
-      this.setState({      
-        userId:data.userId,
-        designation : data.designation,
-        organisation : data.organisation,
-        currentCompany : data.currentCompany,
-        currentSalary : data.currentSalary,
-        lakh : data.currentSalaryInLakh,
-        thousand : data.currentSalaryInThousand,
-        describe : data.describe,
-        noticePeriod : data.noticePeriod,
-        offeredSalary : data.offeredSalary,
-        offeredSalaryInLakh : data.offeredSalaryInLakh,
-        offeredSalaryInThousand : data.offeredSalaryInThousand,
-        offeredDesignation : data.offeredDesignation,
-        nextEmployer : data.nextEmployer,
+      this.setState({
+        userId: data.userId,
+        designation: data.designation,
+        organisation: data.organisation,
+        currentCompany: data.currentCompany,
+        currentSalary: data.currentSalary,
+        lakh: data.currentSalaryInLakh,
+        thousand: data.currentSalaryInThousand,
+        describe: data.describe,
+        noticePeriod: data.noticePeriod,
+        offeredSalary: data.offeredSalary,
+        offeredSalaryInLakh: data.offeredSalaryInLakh,
+        offeredSalaryInThousand: data.offeredSalaryInThousand,
+        offeredDesignation: data.offeredDesignation,
+        nextEmployer: data.nextEmployer,
         userId: 10,
-        employmentId:  data.employmentId,
+        employmentId: data.employmentId,
         startDay: startDay,
         startMonth: startMonth,
         startYear: startYear,
@@ -166,12 +161,11 @@ class addEmployment extends Component {
         endYear: endYear,
         //startDate: moment(data.fromDate),
         // endDate: data.toDate ? moment(data.toDate) : emptyToDate,
-   
-        todaysDate: data.toDate ? false : true       
-      });     
+
+        todaysDate: data.toDate ? false : true
+      });
     }
   };
-
 
   handleChange = event => {
     const target = event.target;
@@ -218,54 +212,40 @@ class addEmployment extends Component {
 
   validateData = () => {
     let self = this;
-    let today = new Date();  
+    let today = new Date();
 
-    if (this.state.noticePeriod == 6) { // serving notice period === 6
-      this.validatorTypes.rules['offeredDesignation'] = [
-        'required'      
-      ];
+    if (this.state.noticePeriod == 6) {
+      // serving notice period === 6
+      this.validatorTypes.rules['offeredDesignation'] = ['required'];
       this.validatorTypes.messages['required.offeredDesignation'] =
         validationMessages.offeredDesignation.required;
 
-        this.validatorTypes.rules['nextEmployer'] = [
-          'required'      
-        ];
-        this.validatorTypes.messages['required.nextEmployer'] =
-          validationMessages.nextEmployer.required;
+      this.validatorTypes.rules['nextEmployer'] = ['required'];
+      this.validatorTypes.messages['required.nextEmployer'] =
+        validationMessages.nextEmployer.required;
 
-          this.validatorTypes.rules['offeredSalary'] = [
-            'required'      
-          ];
-          this.validatorTypes.messages['required.offeredSalary'] =
-            validationMessages.offeredSalary.required;
-  
-            this.validatorTypes.rules['offeredSalaryInLakh'] = [
-              'required'      
-            ];
-            this.validatorTypes.messages['required.offeredSalaryInLakh'] =
-              validationMessages.offeredSalaryInLakh.required;
-  
-              this.validatorTypes.rules['offeredSalaryInThousand'] = [
-                'required'      
-              ];
-              this.validatorTypes.messages['required.offeredSalaryInThousand'] =
-                validationMessages.offeredSalaryInThousand.required;
-     
-          if (
-            self.state.lwdDate &&
-            self.state.lwdDate > today          
-          ) {
-            showErrorToast(
-              '"From" and "To" date should be less than future date'
-            );
-              self.setState({
-                lwdDay : '',
-                lwdYear : '',
-                lwdMonth : '',
-                lwdDate:''
-              });
-          }  
-    }else{
+      this.validatorTypes.rules['offeredSalary'] = ['required'];
+      this.validatorTypes.messages['required.offeredSalary'] =
+        validationMessages.offeredSalary.required;
+
+      this.validatorTypes.rules['offeredSalaryInLakh'] = ['required'];
+      this.validatorTypes.messages['required.offeredSalaryInLakh'] =
+        validationMessages.offeredSalaryInLakh.required;
+
+      this.validatorTypes.rules['offeredSalaryInThousand'] = ['required'];
+      this.validatorTypes.messages['required.offeredSalaryInThousand'] =
+        validationMessages.offeredSalaryInThousand.required;
+
+      if (self.state.lwdDate && self.state.lwdDate > today) {
+        showErrorToast('"From" and "To" date should be less than future date');
+        self.setState({
+          lwdDay: '',
+          lwdYear: '',
+          lwdMonth: '',
+          lwdDate: ''
+        });
+      }
+    } else {
       this.validatorTypes.rules['offeredDesignation'] = '';
       this.validatorTypes.messages['required.offeredDesignation'] = '';
 
@@ -281,16 +261,14 @@ class addEmployment extends Component {
       this.validatorTypes.rules['offeredSalaryInThousand'] = '';
       this.validatorTypes.messages['required.offeredSalaryInThousand'] = '';
       self.setState({
-        lwdDay : '',
-        lwdYear : '',
-        lwdMonth : '',
-        lwdDate:''
+        lwdDay: '',
+        lwdYear: '',
+        lwdMonth: '',
+        lwdDate: ''
       });
-    } 
+    }
 
-    this.props.validate(function(error) {  
-
-    
+    this.props.validate(function(error) {
       if (!error) {
         if (
           self.state.fromDate &&
@@ -335,11 +313,11 @@ class addEmployment extends Component {
             endMonth: '',
             endDay: ''
           });
-        }else { 
-          self.setState({ isLoading: true });       
-              self.handleSubmit();        
-          }
+        } else {
+          self.setState({ isLoading: true });
+          self.handleSubmit();
         }
+      }
     });
   };
 
@@ -369,34 +347,33 @@ class addEmployment extends Component {
 
   selectLWDDate = (type, value) => {
     if (type === 'lwdYear') {
-      this.setState({ lwdYear: value } ,() => this.selectLwdChange());
+      this.setState({ lwdYear: value }, () => this.selectLwdChange());
     }
     if (type === 'lwdMonth') {
-      this.setState({ lwdMonth: value },() => this.selectLwdChange());
+      this.setState({ lwdMonth: value }, () => this.selectLwdChange());
     }
     if (type === 'lwdDay') {
-      this.setState({ lwdDay: 1 })// () => this.selectDateChange());
-    } 
+      this.setState({ lwdDay: 1 }); // () => this.selectDateChange());
+    }
   };
 
   selectLwdChange = () => {
-    let lwdDate = '';  
+    let lwdDate = '';
     let lwdDay = 1,
-       lwdYear = '',
-       lwdMonth = '';
+      lwdYear = '',
+      lwdMonth = '';
 
-       if (this.state.lwdYear && this.state.lwdMonth) {
-        lwdDay = 1;
-        lwdMonth =
-          this.state.lwdMonth !== '' ? Number(this.state.lwdMonth) + 1 : '';
-          lwdYear = this.state.lwdYear !== '' ? this.state.lwdYear : '';
-          lwdDate = moment(lwdYear + '-' + lwdMonth + '-' + lwdDay);
-      }
-      this.setState({
-        lwdDate
-      });
-  }
-  
+    if (this.state.lwdYear && this.state.lwdMonth) {
+      lwdDay = 1;
+      lwdMonth =
+        this.state.lwdMonth !== '' ? Number(this.state.lwdMonth) + 1 : '';
+      lwdYear = this.state.lwdYear !== '' ? this.state.lwdYear : '';
+      lwdDate = moment(lwdYear + '-' + lwdMonth + '-' + lwdDay);
+    }
+    this.setState({
+      lwdDate
+    });
+  };
 
   selectDateChange = () => {
     let fromDate = '';
@@ -441,7 +418,7 @@ class addEmployment extends Component {
         });
       }
     }
-  }; 
+  };
 
   handleSubmit() {
     let designation = this.state.designation;
@@ -457,11 +434,10 @@ class addEmployment extends Component {
     let offeredSalaryInThousand = this.state.offeredSalaryInThousand;
     let offeredDesignation = this.state.offeredDesignation;
     let nextEmployer = this.state.nextEmployer;
-    let userId= this.props.user.userId;
-    let employmentId=  this.state.employmentId;
-   
-   
-    console.log('this.state.startDay -- ',this.state.startDay);
+    let userId = this.props.user.userId;
+    let employmentId = this.state.employmentId;
+
+    console.log('this.state.startDay -- ', this.state.startDay);
 
     let startDay = 1;
     let startMonth =
@@ -482,19 +458,17 @@ class addEmployment extends Component {
       toDate = moment(endYear + '-' + endMonth + '-' + endDay);
       toDate = moment(toDate).valueOf();
       toDate = this.state.todaysDate ? '' : toDate;
-    }   
+    }
 
-   
     let lwdDay = this.state.lwdDay !== '' ? this.state.lwdDay : '';
     let lwdMonth =
       this.state.lwdMonth !== '' ? Number(this.state.lwdMonth) + 1 : '';
     let lwdYear = this.state.lwdYear !== '' ? this.state.lwdYear : '';
     let lwdDate = '';
-    if(this.state.lwdMonth && this.state.lwdDay && this.state.lwdYear) {
+    if (this.state.lwdMonth && this.state.lwdDay && this.state.lwdYear) {
       lwdDate = moment(lwdYear + '-' + lwdMonth + '-' + lwdDay);
       lwdDate = moment(lwdDate).valueOf();
     }
-  
 
     let data = {
       employmentId,
@@ -511,21 +485,21 @@ class addEmployment extends Component {
       offeredSalaryInLakh,
       offeredSalaryInThousand,
       offeredDesignation,
-      startDate:fromDate,
-      endDate:toDate,
-      lastWorkingDate:lwdDate,
-      nextEmployer    
+      startDate: fromDate,
+      endDate: toDate,
+      lastWorkingDate: lwdDate,
+      nextEmployer
     };
 
     let self = this;
-    console.log('this.state.employmentId -- ',this.state.employmentId);
+    console.log('this.state.employmentId -- ', this.state.employmentId);
     if (!this.state.employmentId || this.state.employmentId === '') {
       theRapidHireApiService('addEmployment', data)
         .then(response => {
-          if (response.data.status === 'Success') {      
+          if (response.data.status === 'Success') {
             self.setState({ isLoading: false });
             self.closeEmploymentModal('save');
-          } 
+          }
         })
         .catch(error => {
           self.setState({ isLoading: false });
@@ -534,7 +508,7 @@ class addEmployment extends Component {
     } else {
       theRapidHireApiService('editEmployment', data)
         .then(response => {
-          if (response.data.status === 'Success') {        
+          if (response.data.status === 'Success') {
             self.closeEmploymentModal('save');
             self.setState({ isLoading: false });
           }
@@ -570,26 +544,18 @@ class addEmployment extends Component {
       this.validatorTypes.messages['required.noticePeriod'] =
         validationMessages.noticePeriod.required;
 
-        this.validatorTypes.rules['currentSalary'] = [
-          'required'      
-        ];
-        this.validatorTypes.messages['required.currentSalary'] =
-          validationMessages.currentSalary.required;
+      this.validatorTypes.rules['currentSalary'] = ['required'];
+      this.validatorTypes.messages['required.currentSalary'] =
+        validationMessages.currentSalary.required;
 
-          this.validatorTypes.rules['lakh'] = [
-            'required'      
-          ];
-          this.validatorTypes.messages['required.lakh'] =
-            validationMessages.lakh.required;
+      this.validatorTypes.rules['lakh'] = ['required'];
+      this.validatorTypes.messages['required.lakh'] =
+        validationMessages.lakh.required;
 
-            this.validatorTypes.rules['thousand'] = [
-              'required'      
-            ];
-            this.validatorTypes.messages['required.thousand'] =
-              validationMessages.thousand.required;
-
+      this.validatorTypes.rules['thousand'] = ['required'];
+      this.validatorTypes.messages['required.thousand'] =
+        validationMessages.thousand.required;
     } else {
-
       this.validatorTypes.rules['noticePeriod'] = '';
       this.validatorTypes.messages['required.noticePeriod'] = '';
 
@@ -619,44 +585,42 @@ class addEmployment extends Component {
         endYear: '',
         endMonth: '',
         endDay: '',
-        currentCompany: true     
+        currentCompany: true
       });
-    }   
+    }
   };
 
-
   deleteEmployment = event => {
-    let employmentId= this.state.employmentId,self= this;
-    theRapidHireApiService('deleteEmployment', {employmentId})
-    .then(response => {
-      if (response.data.status === 'Success') {        
-        self.closeEmploymentModal('save');
+    let employmentId = this.state.employmentId,
+      self = this;
+    theRapidHireApiService('deleteEmployment', { employmentId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          self.closeEmploymentModal('save');
+          self.setState({ isLoading: false });
+        }
+      })
+      .catch(error => {
         self.setState({ isLoading: false });
-      }
-    })
-    .catch(error => {
-      self.setState({ isLoading: false });
-      console.log(error);
-    });
-  }
+        console.log(error);
+      });
+  };
 
-  closeEmploymentModal = status => {   
+  closeEmploymentModal = status => {
     this.setState({
       employmentModal: false
-      
-    });   
+    });
     this.props.closeEmploymentComponent();
   };
 
-  render() {   
+  render() {
     const CalendarContainer = ({ children }) => {
       const el = document.getElementById('calendar-portal');
       return <Portal container={el}>{children}</Portal>;
     };
 
     return (
-      <div>   
-
+      <div>
         <Modal
           bsSize="large"
           show={this.state.employmentModal}
@@ -671,7 +635,7 @@ class addEmployment extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle ">
               {!this.state.EmploymentId || this.state.EmploymentId === ''
                 ? 'Add Employment'
                 : 'Edit Employment'}
@@ -696,11 +660,12 @@ class addEmployment extends Component {
                       autoComplete="off"
                       maxLength="100"
                     />
-                    {renderMessage(this.props.getValidationMessages('designation'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('designation')
+                    )}
                   </Col>
                 </FormGroup>
 
-           
                 <FormGroup
                   controlId="formControlsTextarea"
                   className={this.getClasses('organisation')}
@@ -717,43 +682,45 @@ class addEmployment extends Component {
                       autoComplete="off"
                       maxLength="100"
                     />
-                    {renderMessage(this.props.getValidationMessages('organisation'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('organisation')
+                    )}
                   </Col>
-                </FormGroup>              
+                </FormGroup>
 
                 <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      Is this your current company ?
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="currentCompany"
-                          className="radio-primary"
-                          value={true}
-                          checked={
-                            this.state.currentCompany === true ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Yes
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="currentCompany"
-                          className="radio-primary"
-                          value={false}
-                          checked={
-                            this.state.currentCompany === false ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          No
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                  </FormGroup>
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Is this your current company ?
+                  </Col>
+                  <Col sm={9}>
+                    <div className="flex">
+                      <Radio
+                        name="currentCompany"
+                        className="radio-primary"
+                        value={true}
+                        checked={
+                          this.state.currentCompany === true ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Yes
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="currentCompany"
+                        className="radio-primary"
+                        value={false}
+                        checked={
+                          this.state.currentCompany === false ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        No
+                        <div className="check" />
+                      </Radio>{' '}
+                    </div>
+                  </Col>
+                </FormGroup>
 
                 <FormGroup className="addDateInput">
                   <Col componentClass={ControlLabel} sm={3}>
@@ -789,8 +756,8 @@ class addEmployment extends Component {
                             this.selectStartDate('startMonth', month)
                           }
                         />
-                      </div>                     
-                    </div>                  
+                      </div>
+                    </div>
                   </Col>
                 </FormGroup>
 
@@ -828,13 +795,15 @@ class addEmployment extends Component {
                             this.selectEndDate('endMonth', month)
                           }
                         />
-                      </div>                     
+                      </div>
                     </div>
                     <div className="text-right">
                       <Checkbox
                         className="checkbox-primary "
                         onClick={this.currentCheckBox.bind(this)}
-                        defaultChecked={this.state.currentCompany ? true : false}
+                        defaultChecked={
+                          this.state.currentCompany ? true : false
+                        }
                       >
                         Are you working here now
                         <span className="check" />
@@ -844,111 +813,119 @@ class addEmployment extends Component {
                   </Col>
                 </FormGroup>
 
-                {this.state.todaysDate === true ? <div>
-                <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      Current Salary
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="currentSalary"
-                          className="radio-primary"
-                          value="indian"
-                          checked={
-                            this.state.currentSalary === 'indian' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Indian
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="currentSalary"
-                          className="radio-primary"
-                          value="dollar"
-                          checked={
-                            this.state.currentSalary === 'dollar' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Dollars
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                    {renderMessage(
-                          this.props.getValidationMessages('currentSalary')
-                        )}
-                  </FormGroup>
-
-                <FormGroup className="addDateInput"> 
-                <Col componentClass={ControlLabel} sm={3}>
-                       Salary
-                </Col>                
-                  <Col sm={9}>                
-                  <div className="dob">
-                      <div className="form-group">                     
-                      <FormControl
-                          componentClass="select"
-                          placeholder="lakh"
-                          name="lakh"
-                          value={this.state.lakh}                          
-                          onChange={this.handleChange}
-                          autoComplete="off"
-                          maxLength="1000"
-                        >                        
-                       <option value="">lakh</option>
-                       <option value={1}>1 lakh</option>
-                       <option value={2}>2 lakh</option>
-                       <option value={3}>3 lakh</option>
-                       <option value={4}>4 lakh</option>
-                       <option value={5}>5 lakh</option>    
-                       <option value={6}>6 lakh</option>        
-                       <option value={7}>7 lakh</option>
-                       <option value={8}>8 lakh</option>
-                       <option value={9}>9 lakh</option>
-                       <option value={10}>10 lakh</option>
-                       <option value={11}>11 lakh</option>    
-                       <option value={12}>12 lakh</option>                                      
-                      </FormControl>
-                        {renderMessage(
-                          this.props.getValidationMessages('lakh')
-                        )}
-                      </div>              
-                     <div className="form-group">                                              
-                      <FormControl
-                          componentClass="select"
-                          placeholder="thousand"
-                          name="thousand"
-                          value={this.state.thousand}
-                          onChange={this.handleChange}
-                          autoComplete="off"
-                          maxLength="1000"
-                        >      
-                        <option value="">thousand</option>
-                       <option value={1}>1 thousand</option>
-                       <option value={2}>2 thousand</option>
-                       <option value={3}>3 thousand</option>
-                       <option value={4}>4 thousand</option>
-                       <option value={5}>5 thousand</option>    
-                       <option value={6}>6 thousand</option>        
-                       <option value={7}>7 thousand</option>
-                       <option value={8}>8 thousand</option>
-                       <option value={9}>9 thousand</option>
-                       <option value={10}>10 thousand</option>
-                       <option value={11}>11 thousand</option>    
-                       <option value={12}>12 thousand</option>                                      
-                      </FormControl>      
+                {this.state.todaysDate === true ? (
+                  <div>
+                    <FormGroup controlId="formHorizontalPassword">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Current Salary
+                      </Col>
+                      <Col sm={9}>
+                        <div className="flex">
+                          <Radio
+                            name="currentSalary"
+                            className="radio-primary"
+                            value="indian"
+                            checked={
+                              this.state.currentSalary === 'indian'
+                                ? true
+                                : false
+                            }
+                            onChange={this.handleChange}
+                          >
+                            Indian
+                            <div className="check" />
+                          </Radio>{' '}
+                          <Radio
+                            name="currentSalary"
+                            className="radio-primary"
+                            value="dollar"
+                            checked={
+                              this.state.currentSalary === 'dollar'
+                                ? true
+                                : false
+                            }
+                            onChange={this.handleChange}
+                          >
+                            Dollars
+                            <div className="check" />
+                          </Radio>{' '}
+                        </div>
+                      </Col>
                       {renderMessage(
-                          this.props.getValidationMessages('thousand')
-                        )}           
-                      </div>                                    
-                      </div>                   
-                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
-                  </Col>
-                </FormGroup>
-                </div>:''}
+                        this.props.getValidationMessages('currentSalary')
+                      )}
+                    </FormGroup>
+
+                    <FormGroup className="addDateInput">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Salary
+                      </Col>
+                      <Col sm={9}>
+                        <div className="dob">
+                          <div className="form-group">
+                            <FormControl
+                              componentClass="select"
+                              placeholder="lakh"
+                              name="lakh"
+                              value={this.state.lakh}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="1000"
+                            >
+                              <option value="">lakh</option>
+                              <option value={1}>1 lakh</option>
+                              <option value={2}>2 lakh</option>
+                              <option value={3}>3 lakh</option>
+                              <option value={4}>4 lakh</option>
+                              <option value={5}>5 lakh</option>
+                              <option value={6}>6 lakh</option>
+                              <option value={7}>7 lakh</option>
+                              <option value={8}>8 lakh</option>
+                              <option value={9}>9 lakh</option>
+                              <option value={10}>10 lakh</option>
+                              <option value={11}>11 lakh</option>
+                              <option value={12}>12 lakh</option>
+                            </FormControl>
+                            {renderMessage(
+                              this.props.getValidationMessages('lakh')
+                            )}
+                          </div>
+                          <div className="form-group">
+                            <FormControl
+                              componentClass="select"
+                              placeholder="thousand"
+                              name="thousand"
+                              value={this.state.thousand}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="1000"
+                            >
+                              <option value="">thousand</option>
+                              <option value={1}>1 thousand</option>
+                              <option value={2}>2 thousand</option>
+                              <option value={3}>3 thousand</option>
+                              <option value={4}>4 thousand</option>
+                              <option value={5}>5 thousand</option>
+                              <option value={6}>6 thousand</option>
+                              <option value={7}>7 thousand</option>
+                              <option value={8}>8 thousand</option>
+                              <option value={9}>9 thousand</option>
+                              <option value={10}>10 thousand</option>
+                              <option value={11}>11 thousand</option>
+                              <option value={12}>12 thousand</option>
+                            </FormControl>
+                            {renderMessage(
+                              this.props.getValidationMessages('thousand')
+                            )}
+                          </div>
+                        </div>
+                        {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                      </Col>
+                    </FormGroup>
+                  </div>
+                ) : (
+                  ''
+                )}
 
                 <FormGroup
                   controlId="formControlsTextarea"
@@ -973,243 +950,256 @@ class addEmployment extends Component {
                   </Col>
                 </FormGroup>
 
-              {this.state.todaysDate === true ? 
-                <FormGroup>
-                  <Col componentClass={ControlLabel} sm={3}>
-                    Notice Period
-                  </Col>
-                  <Col sm={9}>
-                    <div className="custom-select">
-                      <span className="icon-down_arrow selectIcon" />
-                      <FormControl
-                        componentClass="select"
-                        placeholder="Select Notice Period"
-                        name="noticePeriod"
-                        value={this.state.noticePeriod}
-                        onChange={this.handleChange}
-                        onClick={this.handleChange}
-                        inputRef={element => {
-                          this.competencyDropdown = element;
-                        }}
-                      > 
-                       <option value="">Select Achievement Level</option>
-                       <option value={1}>15 days or less</option>
-                       <option value={2}>1 month</option>
-                       <option value={3}>2 month</option>
-                       <option value={4}>3 month</option>
-                       <option value={5}>more than 3 month</option>    
-                       <option value={6}>Serving notice period</option>                                      
-                      </FormControl>
-                    </div>                   
-                  </Col>
-                </FormGroup>
-              :''}
-             {this.state.noticePeriod == 6 ? <div>
-                   <FormGroup className="addDateInput">
-                  <Col componentClass={ControlLabel} sm={3}>
-                    Last Working Days
-                  </Col>
-                  <Col sm={9}>
-                    <div className="dob">
-                      <div className="form-group">
-                        <YearPicker
-                          id="year"
-                          name="lwdYear"
-                          classes="form-control"
-                          defaultValue="Year"
-                          end={moment().year()}
-                          reverse
-                          value={this.state.lwdYear}
-                          onChange={year =>
-                            this.selectLWDDate('lwdYear', year)
-                          }
-                        />
-                      </div>
-                      <div className="form-group">
-                        <MonthPicker
-                          id="month"
-                          name="lwdMonth"
-                          classes="form-control"
-                          defaultValue={'Month'}
-                          short
-                          endYearGiven
-                          year={this.state.lwdYear}
-                          value={this.state.lwdMonth}
-                          onChange={month =>
-                            this.selectLWDDate('lwdYear', month)
-                          }
-                        />
-                      </div>
-                      <div className="form-group">
-                        <DayPicker
-                          defaultValue="Day"
-                          id="day"
-                          name="lwdDay"
-                          classes="form-control"
-                          year={this.state.lwdYear}
-                          month={this.state.lwdMonth}
-                          endYearGiven
-                          value={this.state.lwdDay}
-                          onChange={day =>
-                            this.selectLWDDate('lwdDay', day)
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
-                  </Col>
-                </FormGroup> 
-
-                <FormGroup controlId="formHorizontalPassword">
+                {this.state.todaysDate === true ? (
+                  <FormGroup>
                     <Col componentClass={ControlLabel} sm={3}>
-                      Offered Salary
+                      Notice Period
                     </Col>
                     <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="offeredSalary"
-                          className="radio-primary"
-                          value="indian"
-                          checked={
-                            this.state.offeredSalary === 'indian' ? true : false
-                          }
+                      <div className="custom-select">
+                        <span className="icon-down_arrow selectIcon" />
+                        <FormControl
+                          componentClass="select"
+                          placeholder="Select Notice Period"
+                          name="noticePeriod"
+                          value={this.state.noticePeriod}
                           onChange={this.handleChange}
+                          onClick={this.handleChange}
+                          inputRef={element => {
+                            this.competencyDropdown = element;
+                          }}
                         >
-                          Indian
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="offeredSalary"
-                          className="radio-primary"
-                          value="dollar"
-                          checked={
-                            this.state.offeredSalary === 'dollar' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Dollars
-                          <div className="check" />
-                        </Radio>{' '}
+                          <option value="">Select Achievement Level</option>
+                          <option value={1}>15 days or less</option>
+                          <option value={2}>1 month</option>
+                          <option value={3}>2 month</option>
+                          <option value={4}>3 month</option>
+                          <option value={5}>more than 3 month</option>
+                          <option value={6}>Serving notice period</option>
+                        </FormControl>
                       </div>
-                      {renderMessage(
-                          this.props.getValidationMessages('offeredSalary')
-                        )}
                     </Col>
                   </FormGroup>
+                ) : (
+                  ''
+                )}
+                {this.state.noticePeriod == 6 ? (
+                  <div>
+                    <FormGroup className="addDateInput">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Last Working Days
+                      </Col>
+                      <Col sm={9}>
+                        <div className="dob">
+                          <div className="form-group">
+                            <YearPicker
+                              id="year"
+                              name="lwdYear"
+                              classes="form-control"
+                              defaultValue="Year"
+                              end={moment().year()}
+                              reverse
+                              value={this.state.lwdYear}
+                              onChange={year =>
+                                this.selectLWDDate('lwdYear', year)
+                              }
+                            />
+                          </div>
+                          <div className="form-group">
+                            <MonthPicker
+                              id="month"
+                              name="lwdMonth"
+                              classes="form-control"
+                              defaultValue={'Month'}
+                              short
+                              endYearGiven
+                              year={this.state.lwdYear}
+                              value={this.state.lwdMonth}
+                              onChange={month =>
+                                this.selectLWDDate('lwdYear', month)
+                              }
+                            />
+                          </div>
+                          <div className="form-group">
+                            <DayPicker
+                              defaultValue="Day"
+                              id="day"
+                              name="lwdDay"
+                              classes="form-control"
+                              year={this.state.lwdYear}
+                              month={this.state.lwdMonth}
+                              endYearGiven
+                              value={this.state.lwdDay}
+                              onChange={day =>
+                                this.selectLWDDate('lwdDay', day)
+                              }
+                            />
+                          </div>
+                        </div>
 
-                <FormGroup className="addDateInput"> 
-                <Col componentClass={ControlLabel} sm={3}>
-                       Salary
-                </Col>                
-                  <Col sm={9}>
-                    <div className="dob">
-                      <div className="form-group">
-                      <FormControl
-                          componentClass="select"
-                          placeholder="lakh"
-                          name="offeredSalaryInLakh"
-                          value={this.state.offeredSalaryInLakh}
+                        {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                      </Col>
+                    </FormGroup>
+
+                    <FormGroup controlId="formHorizontalPassword">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Offered Salary
+                      </Col>
+                      <Col sm={9}>
+                        <div className="flex">
+                          <Radio
+                            name="offeredSalary"
+                            className="radio-primary"
+                            value="indian"
+                            checked={
+                              this.state.offeredSalary === 'indian'
+                                ? true
+                                : false
+                            }
+                            onChange={this.handleChange}
+                          >
+                            Indian
+                            <div className="check" />
+                          </Radio>{' '}
+                          <Radio
+                            name="offeredSalary"
+                            className="radio-primary"
+                            value="dollar"
+                            checked={
+                              this.state.offeredSalary === 'dollar'
+                                ? true
+                                : false
+                            }
+                            onChange={this.handleChange}
+                          >
+                            Dollars
+                            <div className="check" />
+                          </Radio>{' '}
+                        </div>
+                        {renderMessage(
+                          this.props.getValidationMessages('offeredSalary')
+                        )}
+                      </Col>
+                    </FormGroup>
+
+                    <FormGroup className="addDateInput">
+                      <Col componentClass={ControlLabel} sm={3}>
+                        Salary
+                      </Col>
+                      <Col sm={9}>
+                        <div className="dob">
+                          <div className="form-group">
+                            <FormControl
+                              componentClass="select"
+                              placeholder="lakh"
+                              name="offeredSalaryInLakh"
+                              value={this.state.offeredSalaryInLakh}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="1000"
+                            >
+                              <option value="">lakh</option>
+                              <option value={1}>1 lakh</option>
+                              <option value={2}>2 lakh</option>
+                              <option value={3}>3 lakh</option>
+                              <option value={4}>4 lakh</option>
+                              <option value={5}>5 lakh</option>
+                              <option value={6}>6 lakh</option>
+                              <option value={7}>7 lakh</option>
+                              <option value={8}>8 lakh</option>
+                              <option value={9}>9 lakh</option>
+                              <option value={10}>10 lakh</option>
+                              <option value={11}>11 lakh</option>
+                              <option value={12}>12 lakh</option>
+                            </FormControl>
+                            {renderMessage(
+                              this.props.getValidationMessages(
+                                'offeredSalaryInLakh'
+                              )
+                            )}
+                          </div>
+                          <div className="form-group">
+                            <FormControl
+                              componentClass="select"
+                              placeholder="thousand"
+                              name="offeredSalaryInThousand"
+                              value={this.state.offeredSalaryInThousand}
+                              onChange={this.handleChange}
+                              autoComplete="off"
+                              maxLength="1000"
+                            >
+                              <option value="">thousand</option>
+                              <option value={1}>1 thousand</option>
+                              <option value={2}>2 thousand</option>
+                              <option value={3}>3 thousand</option>
+                              <option value={4}>4 thousand</option>
+                              <option value={5}>5 thousand</option>
+                              <option value={6}>6 thousand</option>
+                              <option value={7}>7 thousand</option>
+                              <option value={8}>8 thousand</option>
+                              <option value={9}>9 thousand</option>
+                              <option value={10}>10 thousand</option>
+                              <option value={11}>11 thousand</option>
+                              <option value={12}>12 thousand</option>
+                            </FormControl>
+                            {renderMessage(
+                              this.props.getValidationMessages(
+                                'offeredSalaryInThousand'
+                              )
+                            )}
+                          </div>
+                        </div>
+                        {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                      </Col>
+                    </FormGroup>
+
+                    <FormGroup
+                      controlId="formControlsTextarea"
+                      className={this.getClasses('offeredDesignation')}
+                    >
+                      <Col componentClass={ControlLabel} sm={3}>
+                        <ControlLabel>Offered Designation</ControlLabel>
+                      </Col>
+                      <Col sm={9}>
+                        <FormControl
+                          placeholder="Add a Designation"
+                          name="offeredDesignation"
+                          value={this.state.offeredDesignation}
                           onChange={this.handleChange}
                           autoComplete="off"
-                          maxLength="1000"
-                        >
-                        <option value="">lakh</option>
-                       <option value={1}>1 lakh</option>
-                       <option value={2}>2 lakh</option>
-                       <option value={3}>3 lakh</option>
-                       <option value={4}>4 lakh</option>
-                       <option value={5}>5 lakh</option>    
-                       <option value={6}>6 lakh</option>        
-                       <option value={7}>7 lakh</option>
-                       <option value={8}>8 lakh</option>
-                       <option value={9}>9 lakh</option>
-                       <option value={10}>10 lakh</option>
-                       <option value={11}>11 lakh</option>    
-                       <option value={12}>12 lakh</option>                                      
-                      </FormControl>      
+                          maxLength="100"
+                        />
+                      </Col>
                       {renderMessage(
-                          this.props.getValidationMessages('offeredSalaryInLakh')
-                        )}               
-                      </div>
-                      <div className="form-group">
-                      <FormControl
-                          componentClass="select"
-                          placeholder="thousand"
-                          name="offeredSalaryInThousand"
-                          value={this.state.offeredSalaryInThousand}
+                        this.props.getValidationMessages('offeredDesignation')
+                      )}
+                    </FormGroup>
+
+                    <FormGroup
+                      controlId="formControlsTextarea"
+                      className={this.getClasses('nextEmployer')}
+                    >
+                      <Col componentClass={ControlLabel} sm={3}>
+                        <ControlLabel>Next Employer</ControlLabel>
+                      </Col>
+                      <Col sm={9}>
+                        <FormControl
+                          placeholder="Add your next employer"
+                          name="nextEmployer"
+                          value={this.state.nextEmployer}
                           onChange={this.handleChange}
                           autoComplete="off"
-                          maxLength="1000"
-                        >  
-                         <option value="">thousand</option>
-                       <option value={1}>1 thousand</option>
-                       <option value={2}>2 thousand</option>
-                       <option value={3}>3 thousand</option>
-                       <option value={4}>4 thousand</option>
-                       <option value={5}>5 thousand</option>    
-                       <option value={6}>6 thousand</option>        
-                       <option value={7}>7 thousand</option>
-                       <option value={8}>8 thousand</option>
-                       <option value={9}>9 thousand</option>
-                       <option value={10}>10 thousand</option>
-                       <option value={11}>11 thousand</option>    
-                       <option value={12}>12 thousand</option>                                      
-                      </FormControl>  
+                          maxLength="100"
+                        />
+                      </Col>
                       {renderMessage(
-                          this.props.getValidationMessages('offeredSalaryInThousand')
-                        )}                                
-                      </div>                     
-                    </div>                   
-                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
-                  </Col>
-                </FormGroup>
-
-                <FormGroup
-                  controlId="formControlsTextarea"  
-                  className={this.getClasses('offeredDesignation')}                
-                >
-                  <Col componentClass={ControlLabel} sm={3}>
-                    <ControlLabel>Offered Designation</ControlLabel>
-                  </Col>
-                  <Col sm={9}>
-                    <FormControl
-                      placeholder="Add a Designation"
-                      name="offeredDesignation"
-                      value={this.state.offeredDesignation}
-                      onChange={this.handleChange}
-                      autoComplete="off"
-                      maxLength="100"
-                    />                    
-                  </Col>
-                  {renderMessage(
-                      this.props.getValidationMessages('offeredDesignation')
-                  )}
-                </FormGroup>
-
-
-                <FormGroup
-                  controlId="formControlsTextarea" 
-                  className={this.getClasses('nextEmployer')}               
-                >
-                  <Col componentClass={ControlLabel} sm={3}>
-                    <ControlLabel>Next Employer</ControlLabel>
-                  </Col>
-                  <Col sm={9}>
-                    <FormControl
-                      placeholder="Add your next employer"
-                      name="nextEmployer"
-                      value={this.state.nextEmployer}
-                      onChange={this.handleChange}
-                      autoComplete="off"
-                      maxLength="100"
-                    />                  
-                  </Col>
-                  {renderMessage(
-                      this.props.getValidationMessages('nextEmployer')
-                  )}
-                </FormGroup>
-              </div>:''} 
+                        this.props.getValidationMessages('nextEmployer')
+                      )}
+                    </FormGroup>
+                  </div>
+                ) : (
+                  ''
+                )}
               </Col>
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
@@ -1218,7 +1208,7 @@ class addEmployment extends Component {
             <Button
               bsStyle="default"
               className="no-bold no-round"
-              onClick={this.deleteEmployment.bind(this)}              
+              onClick={this.deleteEmployment.bind(this)}
             >
               Delete
             </Button>
@@ -1234,7 +1224,7 @@ class addEmployment extends Component {
             <Button
               bsStyle="default"
               className="no-bold no-round"
-              onClick={this.closeEmploymentModal.bind(this, 'close')}              
+              onClick={this.closeEmploymentModal.bind(this, 'close')}
             >
               Close
             </Button>
@@ -1251,8 +1241,7 @@ class addEmployment extends Component {
               Photos Gallery
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>            
-          </Modal.Body>
+          <Modal.Body></Modal.Body>
           <Modal.Footer>
             {/* <Button bsStyle="primary no-bold no-round">Save</Button> */}
             <Button bstyle="default no-round" onClick={this.closeImageModal}>
@@ -1268,7 +1257,7 @@ addEmployment = validation(strategy)(addEmployment);
 
 const mapStateToProps = state => {
   return {
-  //  user: state.User.userData    
+    //  user: state.User.userData
   };
 };
 

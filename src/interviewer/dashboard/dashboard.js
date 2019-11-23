@@ -308,21 +308,6 @@ class Dashboard extends Component {
           <div className="w3-content main-panel1">
             <div className="container main">
               <p>shivam</p>
-              {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
-              <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.viewSampleProfile}
-              >
-                View Sample Profile
-              </button>             
-              <button
-                className="btn btn-with-border with-icon smallBtn"
-                onClick={this.addStudentModel}
-              >
-                <span className="icon-plus" />
-                add student
-              </button>
-            </div> */}
               {this.state.bookedSlotData &&
                 this.state.bookedSlotData.map(function(data, index) {
                   return (

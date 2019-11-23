@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../header/header';
 import {
+  Breadcrumb,
   Button,
   Media,
   Row,
@@ -625,14 +626,18 @@ class EditProfile extends Component {
     return (
       <div className="wrapper">
         <Header {...this.props} />
-        <div className="main-panel">
+        <main>
           {/* <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />  */}
-          <div className="">
+          <div className="container">
+            <Breadcrumb>
+              <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+              <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+            </Breadcrumb>
             {this.state.imageSource ? (
               <ImageCropper
                 imageSource={this.state.imageSource}
@@ -646,35 +651,29 @@ class EditProfile extends Component {
               />
             ) : null}
 
-            <div className="w3-content main-panel1">
-              <div className="w3-row-padding">
-                <div className="w3-third">
-                  <div className="w3-white w3-text-grey w3-card-4">
-                    <div
-                      className="w3-display-container "
-                      style={{ overflow: 'hidden' }}
-                    >
-                      <img
-                        src={this.state.profileImage}
-                        style={{ width: '100%', 'padding-right': '132px' }}
-                        alt="Avatar"
-                      />
-
-                      <div className="">
-                        <div className="">
-                          <div className="">
-                            <input
-                              type="file"
-                              onChange={this.handleImageChange.bind(this, 1)}
-                              accept="image/*"
-                              value=""
-                            />
-                            <span className="icon-camera icon" />
-                          </div>{' '}
-                        </div>{' '}
+            <div className="">
+              <div className="row">
+                <div className="col-sm-4">
+                  <div className="card">
+                    <div className="card_head pb-0 border-bottom-0 text-center">
+                      <div className="img_viewer">
+                        <img
+                          className="img-responsive"
+                          src={this.state.profileImage}
+                          alt="Avatar"
+                        />
+                        <div className="edit_icon">
+                          <input
+                            type="file"
+                            onChange={this.handleImageChange.bind(this, 1)}
+                            accept="image/*"
+                            value=""
+                          />
+                          <span className="icon-camera icon" />
+                        </div>
                       </div>
                     </div>
-                    <div className="w3-container">
+                    <div className="card_body">
                       <p>
                         <i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
                         {this.state.firstName} {this.state.lastName}
@@ -731,331 +730,314 @@ class EditProfile extends Component {
                           ''
                         )}
                       </p>
-                      {/* <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
-        <p>Adobe Photoshop</p>
-        <div className="w3-light-grey w3-round-xlarge w3-small">
-          <div className="w3-container w3-center w3-round-xlarge w3-teal" style={{width:"90%"}}>90%</div>
-        </div>
-        <p>Photography</p>
-        <div className="w3-light-grey w3-round-xlarge w3-small">
-          <div className="w3-container w3-center w3-round-xlarge w3-teal" style={{width:"80%"}}>
-            <div className="w3-center w3-text-white">80%</div>
-          </div>
-        </div>
-        <p>Illustrator</p>
-        <div className="w3-light-grey w3-round-xlarge w3-small">
-          <div className="w3-container w3-center w3-round-xlarge w3-teal" style={{width:"75%"}}>75%</div>
-        </div>
-        <p>Media</p>
-        <div className="w3-light-grey w3-round-xlarge w3-small">
-          <div className="w3-container w3-center w3-round-xlarge w3-teal" style={{width:"50%"}}>50%</div>
-        </div>
-        className
-  
-        <p className="w3-large w3-text-theme"><b><i className="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-        <p>English</p>
-        <div className="w3-light-grey w3-round-xlarge">
-          <div className="w3-round-xlarge w3-teal" style={{height:"24px",width:"100%"}}></div>
-        </div>
-        <p>Spanish</p>
-        <div className="w3-light-grey w3-round-xlarge">
-          <div className="w3-round-xlarge w3-teal" style={{height:"24px",width:"55%"}}></div>
-        </div>
-        <p>German</p>
-        <div className="w3-light-grey w3-round-xlarge">
-          <div className="w3-round-xlarge w3-teal" style={{height:"24px",width:"25%"}}></div>
-        </div>
-        className
-      </div> */}
                     </div>
                   </div>
                 </div>
 
-                <div className="w3-twothird">
-                  <div className="w3-container w3-card w3-white w3-margin-bottom">
-                    <h2 className="w3-text-grey">Resume</h2>
-                    <div className="centerButton">
-                      <ul style={{ 'list-style': 'none' }}>
-                        <li>
-                          <p>
-                            {' '}
-                            <div style={{ 'padding-left': '150px' }}>
-                              {' '}
-                              <input
-                                type="file"
-                                onChange={this.uploadFiles.bind(this)}
-                              />
-                              <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
-                            </div>{' '}
-                          </p>
-                        </li>
-                        <li>
-                          <p>
-                            <a>{this.state.resumeName}</a>
-                          </p>{' '}
-                        </li>{' '}
-                      </ul>
+                <div className="col-sm-8">
+                  <div className="card">
+                    <div className="card_head">
+                      <h4>Resume</h4>
                     </div>
-                    {/* <div className="centerButton">
-      <input type="file" onChange={this.uploadFiles.bind(this)} /> </div> */}
-                    <div className="w3-container">
-                      <h5 className="w3-opacity">
-                        <b>
-                          {this.state.resumeURL ? (
-                            <DownloadLink
-                              filename={this.state.resumeURL}
-                              exportFile={() => 'My cached data'}
-                            >
-                              Link to download
-                            </DownloadLink>
-                          ) : null}{' '}
-                        </b>
-                      </h5>
-                      <p>
-                        {this.state.resumeURL ? (
-                          <a onClick={this.DeleteFile.bind(this)}>
-                            Delete Resume
-                          </a>
-                        ) : null}
-                        <br></br>
-                      </p>
+
+                    <div className="card_body">
+                      <div className="upload_file">
+                        <div className="upload_icon">
+                          <input
+                            type="file"
+                            onChange={this.uploadFiles.bind(this)}
+                          />
+                          <i className="fa fa-cloud-upload fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                        </div>
+                        <div>
+                          <a>{this.state.resumeName}</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card_footer">
+                      {this.state.resumeURL ? (
+                        <DownloadLink
+                          className="btn btn-success"
+                          filename={this.state.resumeURL}
+                          exportFile={() => 'My cached data'}
+                        >
+                          Link to download
+                        </DownloadLink>
+                      ) : null}{' '}
+                      {this.state.resumeURL ? (
+                        <a
+                          className="btn btn-danger"
+                          onClick={this.DeleteFile.bind(this)}
+                        >
+                          Delete Resume
+                        </a>
+                      ) : null}
                     </div>
                   </div>
 
                   {/* Education */}
-                  <div className="w3-container w3-card w3-white w3-margin-bottom">
-                    <h2 className="w3-text-grey">Education</h2>
-                    <div className="centerButton">
-                      <Button
-                        bsStyle="primary no-bold no-round mr-1"
-                        className="no-bold no-round"
-                        // disabled={isLoading}
-                        onClick={this.showEducationComponent.bind(this)}
-                      >
-                        {' '}
-                        Add Education
-                      </Button>
-                      {this.state.showEducationComponent == true ? (
-                        <Education
-                          closeEducationComponent={this.showEducationComponent}
-                          user={this.state.user}
-                          educationMode={this.state.educationDetail}
-                        />
-                      ) : (
-                        ''
-                      )}
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Education</h4>
+                        <div className="pull-right">
+                          <Button
+                            bsStyle="primary"
+                            className="no-bold no-round"
+                            // disabled={isLoading}
+                            onClick={this.showEducationComponent.bind(this)}
+                          >
+                            {' '}
+                            Add Education
+                          </Button>
+                          {this.state.showEducationComponent == true ? (
+                            <Education
+                              closeEducationComponent={
+                                this.showEducationComponent
+                              }
+                              user={this.state.user}
+                              educationMode={this.state.educationDetail}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    {this.state.employmentListDeducationListDataata &&
-                      this.state.educationListData.map((data, index) => (
-                        <div className="w3-container">
-                          <h5 className="w3-opacity">
-                            <b></b>
-                            <a
-                              onClick={this.editEducationComponent.bind(
-                                this,
-                                data
-                              )}
-                            >
-                              <span className="pe-7s-pen" />
-                            </a>
-                          </h5>
-                          <h6 className="w3-text-teal">
-                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                            {moment(parseInt(data.startDate, 10)).format(
-                              'DD-MMM-YYYY'
-                            ) + ' '}{' '}
-                            to
-                            {data.endDate ? (
-                              ' ' +
-                              moment(parseInt(data.endDate, 10)).format(
-                                'DD-MMM-YYYY'
-                              )
-                            ) : (
-                              <span className="w3-tag w3-teal w3-round">
-                                Present
-                              </span>
-                            )}
-                          </h6>
-                          <p>Lorem ipsum dolor sit amet.</p>
-                        </div>
-                      ))}
+                    <div className="card_body">
+                      <ul className="list-unstyled mb-0">
+                        {this.state.employmentListDeducationListDataata &&
+                          this.state.educationListData.map((data, index) => (
+                            <li className="w3-container">
+                              <h5 className="w3-opacity">
+                                <b></b>
+                                <a
+                                  onClick={this.editEducationComponent.bind(
+                                    this,
+                                    data
+                                  )}
+                                >
+                                  <span className="pe-7s-pen" />
+                                </a>
+                              </h5>
+                              <h6 className="w3-text-teal">
+                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                {moment(parseInt(data.startDate, 10)).format(
+                                  'DD-MMM-YYYY'
+                                ) + ' '}{' '}
+                                to
+                                {data.endDate ? (
+                                  ' ' +
+                                  moment(parseInt(data.endDate, 10)).format(
+                                    'DD-MMM-YYYY'
+                                  )
+                                ) : (
+                                  <span className="w3-tag w3-teal w3-round">
+                                    Present
+                                  </span>
+                                )}
+                              </h6>
+                              <p>Lorem ipsum dolor sit amet.</p>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
 
                   {/* Experience */}
-                  <div className="w3-container w3-card w3-white w3-margin-bottom">
-                    <div className="centerButton">
-                      <Button
-                        bsStyle="primary no-bold no-round mr-1"
-                        className="no-bold no-round"
-                        // disabled={isLoading}
-                        onClick={this.showEmploymentComponent.bind(this)}
-                      >
-                        {' '}
-                        Add Experience
-                      </Button>
-                      {this.state.showEmploymentComponent == true ? (
-                        <AddEmployment
-                          closeEmploymentComponent={
-                            this.showEmploymentComponent
-                          }
-                          user={this.state.user}
-                          employmentDetail={this.state.employmentDetail}
-                        />
-                      ) : (
-                        ''
-                      )}
-                    </div>
-                    <h2 className="w3-text-grey">Work Experience</h2>
-                    {this.state.employmentListData &&
-                      this.state.employmentListData.map((data, index) => (
-                        <div className="w3-container">
-                          <h5 className="w3-opacity">
-                            <b>
-                              {data.designation} / {data.organisation}
-                            </b>
-                            <a
-                              onClick={this.editEmploymentComponent.bind(
-                                this,
-                                data
-                              )}
-                            >
-                              <span className="pe-7s-pen" />
-                            </a>
-                          </h5>
-                          <h6 className="w3-text-teal">
-                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                            {moment(parseInt(data.startDate, 10)).format(
-                              'DD-MMM-YYYY'
-                            ) + ' '}{' '}
-                            to
-                            {data.endDate ? (
-                              ' ' +
-                              moment(parseInt(data.endDate, 10)).format(
-                                'DD-MMM-YYYY'
-                              )
-                            ) : (
-                              <span className="w3-tag w3-teal w3-round">
-                                Present
-                              </span>
-                            )}
-                          </h6>
-                          <p></p>
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Work Experience</h4>
+                        <div className="pull-right">
+                          <Button
+                            bsStyle="primary"
+                            // disabled={isLoading}
+                            onClick={this.showEmploymentComponent.bind(this)}
+                          >
+                            {' '}
+                            Add Experience
+                          </Button>
+                          {this.state.showEmploymentComponent == true ? (
+                            <AddEmployment
+                              closeEmploymentComponent={
+                                this.showEmploymentComponent
+                              }
+                              user={this.state.user}
+                              employmentDetail={this.state.employmentDetail}
+                            />
+                          ) : (
+                            ''
+                          )}
                         </div>
-                      ))}
+                      </div>
+                    </div>
+                    <div className="card_body">
+                      <ul className="features_listing list-unstyled mb-0">
+                        {this.state.employmentListData &&
+                          this.state.employmentListData.map((data, index) => (
+                            <li className="">
+                              <div>
+                                <b>Designaation :</b>{' '}
+                                <span>{data.designation}</span>
+                              </div>
+                              <div>
+                                <b>Organisation :</b>{' '}
+                                <span>{data.organisation}</span>
+                              </div>
+                              <a
+                                onClick={this.editEmploymentComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="pe-7s-pen" />
+                              </a>
+                              <h6 className="w3-text-teal">
+                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                {moment(parseInt(data.startDate, 10)).format(
+                                  'DD-MMM-YYYY'
+                                ) + ' '}{' '}
+                                to
+                                {data.endDate ? (
+                                  ' ' +
+                                  moment(parseInt(data.endDate, 10)).format(
+                                    'DD-MMM-YYYY'
+                                  )
+                                ) : (
+                                  <span className="w3-tag w3-teal w3-round">
+                                    Present
+                                  </span>
+                                )}
+                              </h6>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
 
                   {/* Skills */}
-                  <div className="w3-container w3-card w3-white w3-margin-bottom">
-                    <div className="centerButton">
-                      <Button
-                        bsStyle="primary no-bold no-round mr-1"
-                        className="no-bold no-round"
-                        // disabled={isLoading}
-                        onClick={this.showSkillsComponent.bind(this)}
-                      >
-                        {' '}
-                        Add Skills
-                      </Button>
-                      {this.state.showSkillsComponent == true ? (
-                        <AddSkills
-                          closeSkillsComponent={this.showSkillsComponent}
-                          user={this.state.user}
-                          skillsDetail={this.state.skillsDetail}
-                        />
-                      ) : (
-                        ''
-                      )}
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Skills</h4>
+                        <div className="pull-right">
+                          <Button
+                            bsStyle="primary no-bold no-round mr-1"
+                            className="no-bold no-round"
+                            // disabled={isLoading}
+                            onClick={this.showSkillsComponent.bind(this)}
+                          >
+                            {' '}
+                            Add Skills
+                          </Button>
+                          {this.state.showSkillsComponent == true ? (
+                            <AddSkills
+                              closeSkillsComponent={this.showSkillsComponent}
+                              user={this.state.user}
+                              skillsDetail={this.state.skillsDetail}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    <h2 className="w3-text-grey">
-                      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
-                      Skills
-                    </h2>
-                    {this.state.skillsListData &&
-                      this.state.skillsListData.map((data, index) => (
-                        <div className="w3-container">
-                          <h5 className="w3-opacity">
-                            <b>
-                              {data.skillName} / {data.rating}
-                            </b>
-                            <a
-                              onClick={this.editSkillsComponent.bind(
-                                this,
-                                data
-                              )}
-                            >
-                              <span className="pe-7s-pen" />
-                            </a>
-                          </h5>
-                          <p>Lorem ipsum dolor sit amet.</p>
-                        </div>
-                      ))}
+                    <div className="card_body">
+                      <ul className="list-unstyled mb-0">
+                        {this.state.skillsListData &&
+                          this.state.skillsListData.map((data, index) => (
+                            <li className="w3-container">
+                              <h5 className="w3-opacity">
+                                <b>
+                                  {data.skillName} / {data.rating}
+                                </b>
+                                <a
+                                  onClick={this.editSkillsComponent.bind(
+                                    this,
+                                    data
+                                  )}
+                                >
+                                  <span className="pe-7s-pen" />
+                                </a>
+                              </h5>
+                              <p>Lorem ipsum dolor sit amet.</p>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
 
                   {/* Project */}
-                  <div className="w3-container w3-card w3-white w3-margin-bottom">
-                    <div className="centerButton">
-                      <Button
-                        bsStyle="primary no-bold no-round mr-1"
-                        className="no-bold no-round"
-                        // disabled={isLoading}
-                        onClick={this.showProjectComponent.bind(this)}
-                      >
-                        {' '}
-                        Add Project
-                      </Button>
-                      {this.state.showProjectComponent == true ? (
-                        <AddProject
-                          closeProjectComponent={this.showProjectComponent}
-                          user={this.state.user}
-                          projectDetail={this.state.projectDetail}
-                        />
-                      ) : (
-                        ''
-                      )}
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Project</h4>
+                        <div className="pull-right">
+                          <Button
+                            bsStyle="primary no-bold no-round mr-1"
+                            className="no-bold no-round"
+                            // disabled={isLoading}
+                            onClick={this.showProjectComponent.bind(this)}
+                          >
+                            {' '}
+                            Add Project
+                          </Button>
+                          {this.state.showProjectComponent == true ? (
+                            <AddProject
+                              closeProjectComponent={this.showProjectComponent}
+                              user={this.state.user}
+                              projectDetail={this.state.projectDetail}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    <h2 className="w3-text-grey">
-                      <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
-                      Project
-                    </h2>
-                    {this.state.projectListData &&
-                      this.state.projectListData.map((data, index) => (
-                        <div className="w3-container">
-                          <h5 className="w3-opacity">
-                            <b>
-                              {data.projectName} / {data.associatedWith}
-                            </b>
-                            <a
-                              onClick={this.editProjectComponent.bind(
-                                this,
-                                data
-                              )}
-                            >
-                              <span className="pe-7s-pen" />
-                            </a>
-                          </h5>
-                          <h6 className="w3-text-teal">
-                            <i className="fa fa-calendar fa-fw w3-margin-right"></i>
-                            {moment(parseInt(data.startDate, 10)).format(
-                              'DD-MMM-YYYY'
-                            ) + ' '}{' '}
-                            to
-                            {data.endDate ? (
-                              ' ' +
-                              moment(parseInt(data.endDate, 10)).format(
-                                'DD-MMM-YYYY'
-                              )
-                            ) : (
-                              <span className="w3-tag w3-teal w3-round">
-                                Present
-                              </span>
-                            )}
-                          </h6>
-                          <p>Lorem ipsum dolor sit amet.</p>
-                        </div>
-                      ))}
+                    <div className="card_body">
+                      <ul className="list-unstyled">
+                        {this.state.projectListData &&
+                          this.state.projectListData.map((data, index) => (
+                            <li className="w3-container">
+                              <h5 className="w3-opacity">
+                                <b>
+                                  {data.projectName} / {data.associatedWith}
+                                </b>
+                                <a
+                                  onClick={this.editProjectComponent.bind(
+                                    this,
+                                    data
+                                  )}
+                                >
+                                  <span className="pe-7s-pen" />
+                                </a>
+                              </h5>
+                              <h6 className="w3-text-teal">
+                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                {moment(parseInt(data.startDate, 10)).format(
+                                  'DD-MMM-YYYY'
+                                ) + ' '}{' '}
+                                to
+                                {data.endDate ? (
+                                  ' ' +
+                                  moment(parseInt(data.endDate, 10)).format(
+                                    'DD-MMM-YYYY'
+                                  )
+                                ) : (
+                                  <span className="w3-tag w3-teal w3-round">
+                                    Present
+                                  </span>
+                                )}
+                              </h6>
+                              <p>Lorem ipsum dolor sit amet.</p>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
                   </div>
 
                   {/* Desired Career Profile */}
@@ -1124,7 +1106,7 @@ class EditProfile extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }

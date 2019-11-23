@@ -47,20 +47,18 @@ let mediaImgArray = [];
 let mediaImgPreview = [];
 const emptyToDate = '10000000';
 
-
-
 class addSkills extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,         
-      promptRecommendation: false,    
-      userId: '',       
-      skillsModal:true,
-      skillId:'',
-      rating:'',
-      skillsList:[],
-      availableSkills:[]      
+      isLoading: false,
+      promptRecommendation: false,
+      userId: '',
+      skillsModal: true,
+      skillId: '',
+      rating: '',
+      skillsList: [],
+      availableSkills: []
     };
 
     this.getValidatorData = this.getValidatorData.bind(this);
@@ -79,8 +77,8 @@ class addSkills extends Component {
         // email: 'email'
       },
       {
-        'required.skills': validationMessages.skills.required,        
-         'required.rating': validationMessages.rating.required
+        'required.skills': validationMessages.skills.required,
+        'required.rating': validationMessages.rating.required
         // 'required.skills': validationMessages.skills.required,
         // 'required.importance': validationMessages.importance.required,
         // //  'required.startDate': validationMessages.startDate.required,
@@ -103,46 +101,51 @@ class addSkills extends Component {
   };
 
   componentDidMount() {
-    let userId= null;
-    if(this.props.user){
+    let userId = null;
+    if (this.props.user) {
       userId = this.props.user.userId;
-      this.setState({userId: userId});
-    }    
+      this.setState({ userId: userId });
+    }
     this.setSkillsData(this.props.skillsDetail);
     // this.getAssociatedListData(10);
     this.getKeySkillsList();
   }
 
-  getKeySkillsList(userId){
+  getKeySkillsList(userId) {
     theRapidHireApiService('getKeySkillsList')
-    .then(response => {     
-      if (response.data.status === 'Success') {
-         let skillsList= this.state.skillsList;
-         let availableSkills= this.props.skillsDetail && this.props.skillsDetail.skills ?this.props.skillsDetail.skills:[] ;
-         response.data.result.forEach(function(data){
-           let availIndex= availableSkills.findIndex(todo => todo.skillId == data.skillId);
-          if(availIndex === -1)
-            skillsList.push({label: data.skillName,value:data.skillId })
-        })    
-        console.log(skillsList);    
-         this.setState({skillsList: skillsList});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let skillsList = this.state.skillsList;
+          let availableSkills =
+            this.props.skillsDetail && this.props.skillsDetail.skills
+              ? this.props.skillsDetail.skills
+              : [];
+          response.data.result.forEach(function(data) {
+            let availIndex = availableSkills.findIndex(
+              todo => todo.skillId == data.skillId
+            );
+            if (availIndex === -1)
+              skillsList.push({ label: data.skillName, value: data.skillId });
+          });
+          console.log(skillsList);
+          this.setState({ skillsList: skillsList });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  setSkillsData = data => { 
+  setSkillsData = data => {
     console.log(data);
-    if(data){ 
-      this.setState({      
-          userId:data.userId,
-          availableSkills : data.skills,         
-          userProfileId: data.userProfileId
-        });     
-      }; 
-  }
+    if (data) {
+      this.setState({
+        userId: data.userId,
+        availableSkills: data.skills,
+        userProfileId: data.userProfileId
+      });
+    }
+  };
 
   handleChange = event => {
     const target = event.target;
@@ -189,42 +192,48 @@ class addSkills extends Component {
 
   validateData = () => {
     let self = this;
-    this.props.validate(function(error) {      
+    this.props.validate(function(error) {
       if (!error) {
-        self.setState({ isLoading: true });       
-            self.handleSubmit();        
-        }   
+        self.setState({ isLoading: true });
+        self.handleSubmit();
+      }
     });
-  };  
+  };
 
-  handleSubmit() {   
-   let rating = this.state.rating;  
-   let availableSkills = this.props.skillsDetail.skills;
-   let skills = this.state.skills;  
-    console.log(this.state.skills);  
-   
-    availableSkills.push({'skillId':skills.value,'skillName':skills.label,'rating':rating});   
+  handleSubmit() {
+    let rating = this.state.rating;
+    let availableSkills = this.props.skillsDetail.skills;
+    let skills = this.state.skills;
+    console.log(this.state.skills);
+
+    availableSkills.push({
+      skillId: skills.value,
+      skillName: skills.label,
+      rating: rating
+    });
 
     let userId = this.props.user.userId;
-    let skillId=  this.state.skillId;   
-    let userProfileId= this.props.skillsDetail.userProfileId ?this.props.skillsDetail.userProfileId:"";
-    
-    console.log('userProfileId',userProfileId);
+    let skillId = this.state.skillId;
+    let userProfileId = this.props.skillsDetail.userProfileId
+      ? this.props.skillsDetail.userProfileId
+      : '';
+
+    console.log('userProfileId', userProfileId);
     let data = {
       userProfileId,
       userId,
-      skills:availableSkills     
+      skills: availableSkills
     };
 
     let self = this;
-   
+
     if (!this.state.userProfileId || this.state.userProfileId === '') {
       theRapidHireApiService('addUserSkills', data)
         .then(response => {
-          if (response.data.status === 'Success') {      
+          if (response.data.status === 'Success') {
             self.setState({ isLoading: false });
             self.closeSkillsModal('save');
-          } 
+          }
         })
         .catch(error => {
           self.setState({ isLoading: false });
@@ -233,7 +242,7 @@ class addSkills extends Component {
     } else {
       theRapidHireApiService('editUserSkills', data)
         .then(response => {
-          if (response.data.status === 'Success') {        
+          if (response.data.status === 'Success') {
             self.closeSkillsModal('save');
             self.setState({ isLoading: false });
           }
@@ -251,22 +260,20 @@ class addSkills extends Component {
     });
   };
 
-
   handleSkillsChange = newValue => {
     this.setState({
       skills: newValue
     });
   };
-  
 
-  closeSkillsModal = status => {   
+  closeSkillsModal = status => {
     this.setState({
-      skillsModal: false      
-    });   
+      skillsModal: false
+    });
     this.props.closeSkillsComponent();
   };
 
-  render() {    
+  render() {
     const CalendarContainer = ({ children }) => {
       const el = document.getElementById('calendar-portal');
       return <Portal container={el}>{children}</Portal>;
@@ -289,10 +296,9 @@ class addSkills extends Component {
         ) : null} */}
 
         <Modal
-          bsSize="large"
+          Size="lg"
           show={this.state.skillsModal}
           onHide={this.closeSkillsModal.bind(this, 'close')}
-          backdrop="static"
           keyboard={false}
         >
           <ToastContainer
@@ -308,11 +314,10 @@ class addSkills extends Component {
                 : 'Edit Career Profile'}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>   
-            
+          <Modal.Body>
             <Form horizontal className="lightBgForm">
-              <Col sm={10}>               
-                 <FormGroup className={this.getClasses('skills')}>
+              <Col sm={10}>
+                <FormGroup className={this.getClasses('skills')}>
                   <Col componentClass={ControlLabel} sm={3}>
                     Add Skills
                   </Col>
@@ -320,7 +325,7 @@ class addSkills extends Component {
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
                       <Select
-                        className="form-control"                        
+                        className="form-control"
                         name="skills"
                         value={this.state.skills}
                         onChange={this.handleSkillsChange}
@@ -332,37 +337,36 @@ class addSkills extends Component {
                   </Col>
                 </FormGroup>
 
-              <FormGroup>
+                <FormGroup>
                   <Col componentClass={ControlLabel} sm={3}>
                     Role
                   </Col>
                   <Col sm={9}>
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
-                <FormControl
-                          componentClass="select"
-                          placeholder="rating"
-                          name="rating"
-                          value={this.state.rating}  
-                          defaultValue={parseInt(this.state.rating,10)}                   
-                          onChange={this.handleChange}
-                          autoComplete="off"
-                          maxLength="1000"
-                        >                        
-                       <option value="">skills rating</option>
-                       <option value={1}>1</option>
-                       <option value={2}>2</option>
-                       <option value={3}>3</option>
-                       <option value={4}>4</option>  
-                       <option value={5}>5</option>                                                       
-                </FormControl>              
-                {renderMessage(
-                          this.props.getValidationMessages('rating')
-                        )}
-               </div>                   
+                      <FormControl
+                        componentClass="select"
+                        placeholder="rating"
+                        name="rating"
+                        value={this.state.rating}
+                        defaultValue={parseInt(this.state.rating, 10)}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="1000"
+                      >
+                        <option value="">skills rating</option>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                      </FormControl>
+                      {renderMessage(
+                        this.props.getValidationMessages('rating')
+                      )}
+                    </div>
                   </Col>
                 </FormGroup>
-                 
               </Col>
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
@@ -379,7 +383,7 @@ class addSkills extends Component {
             <Button
               bsStyle="default"
               className="no-bold no-round"
-              onClick={this.closeSkillsModal.bind(this, 'close')}              
+              onClick={this.closeSkillsModal.bind(this, 'close')}
             >
               Close
             </Button>
@@ -396,8 +400,7 @@ class addSkills extends Component {
               Photos Gallery
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>            
-          </Modal.Body>
+          <Modal.Body></Modal.Body>
           <Modal.Footer>
             {/* <Button bsStyle="primary no-bold no-round">Save</Button> */}
             <Button bstyle="default no-round" onClick={this.closeImageModal}>
@@ -412,7 +415,7 @@ class addSkills extends Component {
 addSkills = validation(strategy)(addSkills);
 const mapStateToProps = state => {
   return {
-  //  user: state.User.userData    
+    //  user: state.User.userData
   };
 };
 

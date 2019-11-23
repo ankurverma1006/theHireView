@@ -635,8 +635,8 @@ class addEmployment extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
-              <Col sm={10}>
+            <Form horizontal className="lightBgForm clearfix">
+              <Col sm={12}>
                 <FormGroup
                   controlId="formControlsTextarea"
                   className={this.getClasses('title')}
@@ -686,32 +686,30 @@ class addEmployment extends Component {
                     Is this your current company ?
                   </Col>
                   <Col sm={9}>
-                    <div className="flex">
-                      <Radio
-                        name="currentCompany"
-                        className="radio-primary"
-                        value={true}
-                        checked={
-                          this.state.currentCompany === true ? true : false
-                        }
-                        onChange={this.handleChange}
-                      >
-                        Yes
-                        <div className="check" />
-                      </Radio>{' '}
-                      <Radio
-                        name="currentCompany"
-                        className="radio-primary"
-                        value={false}
-                        checked={
-                          this.state.currentCompany === false ? true : false
-                        }
-                        onChange={this.handleChange}
-                      >
-                        No
-                        <div className="check" />
-                      </Radio>{' '}
-                    </div>
+                    <Radio
+                      name="currentCompany"
+                      className="radio_primary"
+                      value={true}
+                      checked={
+                        this.state.currentCompany === true ? true : false
+                      }
+                      onChange={this.handleChange}
+                    >
+                      Yes
+                      <div className="check" />
+                    </Radio>{' '}
+                    <Radio
+                      name="currentCompany"
+                      className="radio_primary"
+                      value={false}
+                      checked={
+                        this.state.currentCompany === false ? true : false
+                      }
+                      onChange={this.handleChange}
+                    >
+                      No
+                      <div className="check" />
+                    </Radio>{' '}
                   </Col>
                 </FormGroup>
 
@@ -720,8 +718,8 @@ class addEmployment extends Component {
                     Date From
                   </Col>
                   <Col sm={9}>
-                    <div className="dob">
-                      <div className="form-group">
+                    <div className="row">
+                      <div className="form-group col-sm-6">
                         <YearPicker
                           id="year"
                           name="startYear"
@@ -735,7 +733,7 @@ class addEmployment extends Component {
                           }
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group col-sm-6">
                         <MonthPicker
                           id="month"
                           name="startMonth"
@@ -759,8 +757,8 @@ class addEmployment extends Component {
                     Date To
                   </Col>
                   <Col sm={9}>
-                    <div className="dob">
-                      <div className="form-group">
+                    <div className="row">
+                      <div className="form-group col-sm-6">
                         <YearPicker
                           id="year"
                           name="endYear"
@@ -773,7 +771,7 @@ class addEmployment extends Component {
                           onChange={year => this.selectEndDate('endYear', year)}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group col-sm-6">
                         <MonthPicker
                           id="month"
                           name="endMonth"
@@ -792,7 +790,7 @@ class addEmployment extends Component {
                     </div>
                     <div className="text-right">
                       <Checkbox
-                        className="checkbox-primary "
+                        className="checkbox_primary "
                         onClick={this.currentCheckBox.bind(this)}
                         defaultChecked={
                           this.state.currentCompany ? true : false
@@ -813,36 +811,30 @@ class addEmployment extends Component {
                         Current Salary
                       </Col>
                       <Col sm={9}>
-                        <div className="flex">
-                          <Radio
-                            name="currentSalary"
-                            className="radio-primary"
-                            value="indian"
-                            checked={
-                              this.state.currentSalary === 'indian'
-                                ? true
-                                : false
-                            }
-                            onChange={this.handleChange}
-                          >
-                            Indian
-                            <div className="check" />
-                          </Radio>{' '}
-                          <Radio
-                            name="currentSalary"
-                            className="radio-primary"
-                            value="dollar"
-                            checked={
-                              this.state.currentSalary === 'dollar'
-                                ? true
-                                : false
-                            }
-                            onChange={this.handleChange}
-                          >
-                            Dollars
-                            <div className="check" />
-                          </Radio>{' '}
-                        </div>
+                        <Radio
+                          name="currentSalary"
+                          className="radio_primary"
+                          value="indian"
+                          checked={
+                            this.state.currentSalary === 'indian' ? true : false
+                          }
+                          onChange={this.handleChange}
+                        >
+                          Indian
+                          <div className="check" />
+                        </Radio>{' '}
+                        <Radio
+                          name="currentSalary"
+                          className="radio_primary"
+                          value="dollar"
+                          checked={
+                            this.state.currentSalary === 'dollar' ? true : false
+                          }
+                          onChange={this.handleChange}
+                        >
+                          Dollars
+                          <div className="check" />
+                        </Radio>{' '}
                       </Col>
                       {renderMessage(
                         this.props.getValidationMessages('currentSalary')
@@ -1198,25 +1190,19 @@ class addEmployment extends Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              bsStyle="default"
-              className="no-bold no-round"
-              onClick={this.deleteEmployment.bind(this)}
-            >
+            <Button bsStyle="danger" onClick={this.deleteEmployment.bind(this)}>
               Delete
             </Button>
 
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closeEmploymentModal.bind(this, 'close')}
             >
               Close

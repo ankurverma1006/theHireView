@@ -225,10 +225,10 @@ class Login extends Component {
           <div className="overlay"></div>
           <div className="container">
             <div className="row">
-              <div className="col-md-6 offset-md-6">
-                <div className="shadow_box p-3 p-md-5">
+              <div className="col-sm-6 col-sm-offset-6">
+                <div className="shadow_box p-5">
                   <h3 className="h4login text-center">Quick Login</h3>
-                  <form className="form-horizontal">
+                  <form>
                     <div className="form-group">
                       <label className="form-label">Email</label>
                       <FormGroup className={this.getClasses('email')}>

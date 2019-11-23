@@ -89,8 +89,7 @@ class addEducation extends Component {
   }
 
   componentWillMount() {
-   // this.listOragnization();
-  
+    // this.listOragnization();
   }
 
   componentDidMount() {
@@ -597,29 +596,6 @@ class addEducation extends Component {
     return gradeList;
   }
 
-  // handleFromClick = () => {
-  //   let fromYear = this.state.educationFromYear;
-  //   let DOB =
-  //     this.props.user && this.props.user.dob
-  //       ? moment(this.props.user.dob).format('YYYY')
-  //       : '';
-
-  //   if (DOB == 0 || DOB === null) {
-  //     let current_year = moment().format('YYYY') - 30;
-  //     DOB = current_year;
-  //   }
-  //   if (fromYear && this.props.educationMode === 2) {
-  //     var x = document.getElementById('mySelect');
-  //     var selectedValue = x.value;
-  //     if (
-  //       selectedValue == fromYear &&
-  //       parseInt(DOB, 10) > parseInt(fromYear, 10)
-  //     ) {
-  //       x.remove(x.selectedIndex);
-  //     }
-  //   }
-  // };
-
   render() {
     const { isLoading } = this.state;
     return (
@@ -655,7 +631,7 @@ class addEducation extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form horizontal className="lightBgForm">
+          <Form horizontal className="lightBgForm clearfix">
             <Col sm={9}>
               <FormGroup
                 controlId="formHorizontalEmail"
@@ -681,14 +657,6 @@ class addEducation extends Component {
                     searchText={this.state.searchText}
                     defaultInputValue={this.state.instituteName}
                   />
-                  {/* <FormControl
-                    type="text"
-                    placeholder="Golden Leaf School"
-                    name="instituteName"
-                    value={this.state.instituteName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  /> */}
                   {renderMessage(
                     this.props.getValidationMessages('instituteName')
                   )}
@@ -713,21 +681,6 @@ class addEducation extends Component {
                   {renderMessage(this.props.getValidationMessages('city'))}
                 </Col>
               </FormGroup>
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  Field of study
-                </Col>
-                <Col sm={9}>
-                  <FormControl
-                    type="text"
-                    placeholder="Enter field of study"
-                    name="fieldOfStudy"
-                    value={this.state.fieldOfStudy}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </Col>
-              </FormGroup> */}
 
               <FormGroup controlId="formHorizontalPassword">
                 <Col componentClass={ControlLabel} sm={3}>
@@ -840,68 +793,6 @@ class addEducation extends Component {
                 </Col>
               </FormGroup>
 
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  Grade
-                </Col>
-                <Col sm={9}>
-                  <FormControl
-                    type="text"
-                    placeholder="Enter grade"
-                    name="grade"
-                    value={this.state.grade}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </Col>
-              </FormGroup> */}
-
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  From to Date
-                </Col>
-                <Col sm={9} className={this.getClasses('startDate')}>
-                  <div className="flex row ">
-                    <Col sm={6}>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.startDate}
-                        selectsStart
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeStart}
-                        readOnly={true}
-                        placeholderText="Date"
-                        showYearDropdown
-                        dateFormat="DD-MMM-YYYY"
-                        isClearable={false}
-                      />
-                      {renderMessage(
-                        this.props.getValidationMessages('startDate')
-                      )}
-                    </Col>
-                    <Col sm={6} className={this.getClasses('endDate')}>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.endDate}
-                        selectsEnd
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeEnd}
-                        readOnly={true}
-                        placeholderText="Date"
-                        showYearDropdown
-                        dateFormat="DD-MMM-YYYY"
-                        isClearable={false}
-                      />
-                      {renderMessage(
-                        this.props.getValidationMessages('endDate')
-                      )}
-                    </Col>
-                  </div>
-                </Col>
-              </FormGroup> */}
-
               <FormGroup controlId="formHorizontalPassword">
                 <Col componentClass={ControlLabel} sm={3}>
                   Description
@@ -920,7 +811,7 @@ class addEducation extends Component {
               </FormGroup>
             </Col>
             <Col sm={3}>
-              <div className="box flex flex-column flex-center">
+              <div className="modal-file-upload-box d-flex align-items-center justify-content-center">
                 <input
                   type="file"
                   onChange={this.handleImageChange.bind(this)}
@@ -934,7 +825,7 @@ class addEducation extends Component {
                   ) : (
                     <img src={this.state.oragnizationPreview} alt="" />
                   )}
-                  <div className="hover-section">
+                  <div className="hover-section d-flex align-items-center justify-content-center">
                     <input
                       type="file"
                       onChange={this.handleImageChange.bind(this)}
@@ -956,7 +847,6 @@ class addEducation extends Component {
               {this.state.educationId !== '' ? (
                 <Button
                   bsStyle="danger"
-                  className="no-bold no-round btn btn-danger"
                   onClick={this.deleteEducation.bind(
                     this,
                     this.state.educationId
@@ -971,7 +861,6 @@ class addEducation extends Component {
             <div className="right flex align-center">
               <Button
                 bsStyle="primary"
-                className="no-bold no-round"
                 disabled={isLoading}
                 onClick={!isLoading ? this.validateData : null}
               >
@@ -979,8 +868,7 @@ class addEducation extends Component {
               </Button>
 
               <Button
-                bsStyle="default"
-                className="no-bold no-round"
+                className="btn btn-secondary"
                 onClick={this.closeEducationModal}
               >
                 Close

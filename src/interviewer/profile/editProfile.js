@@ -23,6 +23,7 @@ import AddEmployment from '../profile/addEmployment';
 import AddProject from '../profile/addProject';
 import AddCareerProfile from '../profile/addCareerProfile';
 import AddPersonalProfile from '../profile/addPersonalProfile';
+import AddAccomplishment from '../profile/addAccomplishment';
 import AddSkills from '../profile/addSkills';
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
@@ -90,7 +91,8 @@ class EditProfile extends Component {
       name: '',
       editTagLine: false,
       profileRoleList: [],
-      userProfile: {}
+      userProfile: {},
+      accomplishmentName: ''
     };
     // this.textInput = React.createRef();
   }
@@ -356,6 +358,18 @@ class EditProfile extends Component {
     });
 
     if (!this.state.showCareerProfileComponent) {
+      this.setState({ careerProfileDetail: null });
+      this.getCareerProfileData(this.state.userId);
+    }
+  };
+
+  showAccomplishmentComponent = (event, status) => {
+    this.setState({
+      showAccomplishmentComponent: !this.state.showAccomplishmentComponent,
+      accomplishmentName: status
+    });
+
+    if (!this.state.showAccomplishmentComponent) {
       this.setState({ careerProfileDetail: null });
       this.getCareerProfileData(this.state.userId);
     }
@@ -1037,6 +1051,88 @@ class EditProfile extends Component {
                             </li>
                           ))}
                       </ul>
+                    </div>
+                  </div>
+
+                  {/* Accomplishment */}
+                  <div
+                    className="w3-container w3-card w3-white"
+                    style={{ 'margin-bottom': '200px' }}
+                  >
+                    <div className="centerButton">
+                      {this.state.careerProfileListData ? null : (
+                        <Button
+                          bsStyle="primary no-bold no-round mr-1"
+                          className="no-bold no-round"
+                          // disabled={isLoading}
+                          onClick={this.showAccomplishmentComponent.bind(
+                            this,
+                            'onlineProfile'
+                          )}
+                        >
+                          {' '}
+                          Add Online
+                        </Button>
+                      )}
+                      <div className="centerButton">
+                        {this.state.careerProfileListData ? null : (
+                          <Button
+                            bsStyle="primary no-bold no-round mr-1"
+                            className="no-bold no-round"
+                            // disabled={isLoading}
+                            onClick={this.showAccomplishmentComponent.bind(
+                              this,
+                              'certification'
+                            )}
+                          >
+                            {' '}
+                            Add Certification
+                          </Button>
+                        )}
+                        {this.state.showAccomplishmentComponent == true ? (
+                          <AddAccomplishment
+                            closeAccomplishmentComponent={
+                              this.showAccomplishmentComponent
+                            }
+                            accomplishmentName={this.state.accomplishmentName}
+                            user={this.state.user}
+                            careerProfileDetail={this.state.careerProfileDetail}
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                      <div>
+                        <span
+                          style={{
+                            'font-weight': 600,
+                            'font-size': '20px',
+                            color: '#333'
+                          }}
+                        >
+                          <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                          Accomplishment
+                        </span>
+                        <span class="edit icon" tabindex="0">
+                          <a
+                            onClick={this.editCareerProfileComponent.bind(
+                              this,
+                              this.state.careerProfileListData
+                            )}
+                          >
+                            <span className="pe-7s-pen" />
+                          </a>
+                        </span>
+                      </div>{' '}
+                    </div>
+
+                    <div className="w3-container">
+                      <h5 className="w3-opacity">
+                        <b>
+                          {this.state.careerProfileListData &&
+                            this.state.careerProfileListData.desiredLocation}
+                        </b>
+                      </h5>
                     </div>
                   </div>
 

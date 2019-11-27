@@ -468,6 +468,47 @@ export default {
     showErrorMessage: true
   },
 
+  getAccomplishment: {
+    url: '/ui/accomplishment?userId=:userId',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
+  addAccomplishment: {
+    url: '/ui/accomplishment',
+    method: 'POST',
+    data: {
+      userId: '',
+      publication: [],
+      presentation: [],
+      patent: [],
+      certification: [],
+      workSample: [],
+      onlineProfile: []
+    },
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
+  editAccomplishment: {
+    url: '/ui/accomplishment',
+    method: 'PUT',
+    data: {
+      accomplishmentId: '',
+      userId: '',
+      publication: [],
+      presentation: [],
+      patent: [],
+      certification: [],
+      workSample: [],
+      onlineProfile: []
+    },
+    showResultMessage: true,
+    showErrorMessage: true
+  },
+
   addUserSkills: {
     url: '/ui/userProfile',
     method: 'POST',

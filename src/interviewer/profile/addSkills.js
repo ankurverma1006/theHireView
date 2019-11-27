@@ -16,15 +16,11 @@ import {
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { YearPicker, MonthPicker, DayPicker } from 'react-dropdown-date';
-//import DatePicker from 'react-datepicker';
-//import DatePicker from '../../../../assets/react-datepicker/es/index';
-import moment from 'moment';
+
 import validation from 'react-validation-mixin';
 import strategy from 'react-validatorjs-strategy';
 import classnames from 'classnames';
-import ImageCropper from '../../common/cropper/imageCropper';
-import achievementDefaultImage from '../../assets/img/default_achievement.jpg';
+
 import _ from 'lodash';
 
 import CONSTANTS from '../../common/core/config/appConfig';
@@ -35,17 +31,8 @@ import {
   generateTimestamp
 } from '../../common/commonFunctions';
 import theRapidHireApiService from '../../common/core/api/apiService';
-//import MediaList from '../mediaList';
 
 let validationMessages = CONSTANTS.validationMessages;
-let regExpressions = CONSTANTS.regExpressions;
-let badgeImgArray = [];
-let badgeImgPreview = [];
-let certificateImgArray = [];
-let certificateImgPreview = [];
-let mediaImgArray = [];
-let mediaImgPreview = [];
-const emptyToDate = '10000000';
 
 class addSkills extends Component {
   constructor(props) {
@@ -67,25 +54,10 @@ class addSkills extends Component {
       {
         skills: 'required',
         rating: 'required'
-        // level3Competency: 'required',
-        // skills: 'required',
-        // importance: 'required',
-        // //   startDate: 'required',
-        // //  endDate: 'required',
-        // firstName: ['regex:' + regExpressions.alphaOnly],
-        // lastName: ['regex:' + regExpressions.alphaOnly],
-        // email: 'email'
       },
       {
         'required.skills': validationMessages.skills.required,
         'required.rating': validationMessages.rating.required
-        // 'required.skills': validationMessages.skills.required,
-        // 'required.importance': validationMessages.importance.required,
-        // //  'required.startDate': validationMessages.startDate.required,
-        // //  'required.endDate': validationMessages.endDate.required,
-        // 'email.email': validationMessages.email.invalid,
-        // 'regex.firstName': validationMessages.firstName.alphaOnly,
-        // 'regex.lastName': validationMessages.lastName.alphaOnly
       }
     );
   }
@@ -176,19 +148,6 @@ class addSkills extends Component {
     }
     this.setState({ startDate, endDate });
   };
-
-  generateSASToken() {
-    theRapidHireApiService('getSASToken')
-      .then(response => {
-        if (response.data.status === 'Success') {
-          let sasToken = response.data.result.sasToken;
-          this.setState({ sasToken });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
 
   validateData = () => {
     let self = this;
@@ -281,20 +240,6 @@ class addSkills extends Component {
 
     return (
       <div>
-        {/* {this.state.imageSource ? (
-          <ImageCropper
-            imageSource={this.state.imageSource}
-            imageName={this.state.imageName}
-            imageType={this.state.imageType}
-            aspectRatio={this.state.action === 1 ? 1 / 1 : 16 / 9}
-            modalSize={'medium'}
-            cropBoxWidth={this.state.action === 1 ? '300' : '700'}
-            cropBoxHeight={this.state.action === 1 ? '300' : '700'}
-            uploadImageToAzure={this.handleMediaChange.bind(this)}
-            labelName={'ADD_MEDIA'}
-          />
-        ) : null} */}
-
         <Modal
           Size="lg"
           show={this.state.skillsModal}

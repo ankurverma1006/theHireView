@@ -626,18 +626,26 @@ class EditProfile extends Component {
     return (
       <div className="wrapper">
         <Header {...this.props} />
-        <main>
+        <main className="inner_main">
           {/* <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />  */}
+          <section className="top-banner">
+            <div className="banner_overlay"></div>
+            <div className="container content_inner">
+              <div className="banner-title">
+                <h1 className="m-0">Profile</h1>
+              </div>
+              <Breadcrumb>
+                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+          </section>
           <div className="container">
-            <Breadcrumb>
-              <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-              <Breadcrumb.Item active>Profile</Breadcrumb.Item>
-            </Breadcrumb>
             {this.state.imageSource ? (
               <ImageCropper
                 imageSource={this.state.imageSource}
@@ -675,27 +683,26 @@ class EditProfile extends Component {
                     </div>
                     <div className="card_body">
                       <p>
-                        <i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-user mr-2 text-success fa-fw mr-3"></i>
                         {this.state.firstName} {this.state.lastName}
                       </p>
                       <p>
-                        <i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-briefcase mr-2 text-success fa-fw mr-3"></i>
                         {this.state.profileRole}
                       </p>
                       <p>
-                        <i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-home mr-2 text-success fa-fw mr-3"></i>
                         London, UK
                       </p>
                       <p>
-                        <i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-envelope mr-2 text-success fa-fw mr-3"></i>
                         {this.state.email}
                       </p>
                       <p>
-                        <i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-phone mr-2 text-success fa-fw mr-3"></i>
                         {this.state.mobileNo}
                       </p>
                       <p>
-                        <i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
                         {this.state.profileRole ? (
                           <Button
                             bsStyle="primary no-bold no-round mr-1"
@@ -806,23 +813,24 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled mb-0">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.employmentListDeducationListDataata &&
                           this.state.educationListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editEducationComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
                                 <b></b>
-                                <a
-                                  onClick={this.editEducationComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
+                              </div>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar fa-fw mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -878,6 +886,15 @@ class EditProfile extends Component {
                         {this.state.employmentListData &&
                           this.state.employmentListData.map((data, index) => (
                             <li className="">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editEmploymentComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
                               <div>
                                 <b>Designaation :</b>{' '}
                                 <span>{data.designation}</span>
@@ -886,16 +903,8 @@ class EditProfile extends Component {
                                 <b>Organisation :</b>{' '}
                                 <span>{data.organisation}</span>
                               </div>
-                              <a
-                                onClick={this.editEmploymentComponent.bind(
-                                  this,
-                                  data
-                                )}
-                              >
-                                <span className="pe-7s-pen" />
-                              </a>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -946,24 +955,25 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled mb-0">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.skillsListData &&
                           this.state.skillsListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
-                                <b>
-                                  {data.skillName} / {data.rating}
-                                </b>
-                                <a
-                                  onClick={this.editSkillsComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
-                              <p>Lorem ipsum dolor sit amet.</p>
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editSkillsComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
+                                <b>{data.skillName}</b>
+                              </div>
+                              <div>
+                                <b>Rating :</b> <span>{data.rating}</span>
+                              </div>
                             </li>
                           ))}
                       </ul>
@@ -999,25 +1009,26 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.projectListData &&
                           this.state.projectListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editProjectComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
                                 <b>
                                   {data.projectName} / {data.associatedWith}
                                 </b>
-                                <a
-                                  onClick={this.editProjectComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
+                              </div>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar fa-fw mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -1083,12 +1094,13 @@ class EditProfile extends Component {
                       </span>
                       <span class="edit icon" tabindex="0">
                         <a
+                          className="btn btn-outline-success btn-edit pull-right"
                           onClick={this.editCareerProfileComponent.bind(
                             this,
                             this.state.careerProfileListData
                           )}
                         >
-                          <span className="pe-7s-pen" />
+                          <span className="fa fa-pencil-square-o" />
                         </a>
                       </span>
                     </div>

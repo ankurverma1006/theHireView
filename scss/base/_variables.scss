@@ -6,6 +6,7 @@ $main-bg:                    #f7f9fc;
 $none:                       0   !default;
 $border-thin:                1px !default;
 $border-thick:               2px !default;
+$border-color:               #E5E5E5;
 
 $form-control-focus:         #66afe9;
 $white-color:                #FFFFFF !default;
@@ -34,9 +35,10 @@ $primary-bg:                 #904799 !default;
 $primary-states-color:       #1D62F0 !default;
 
 $secondary-color:            #444444;
+$secondary-bg:            #444444;
 
-$success-color:              #87CB16 !default;
-$success-bg:                 #87CB16 !default;
+$success-color:              #06b590 !default;
+$success-bg:                 #06b590 !default;
 $success-states-color:       #049F0C !default;
 
 $info-color:                 #1DC7EA !default;

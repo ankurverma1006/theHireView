@@ -27,26 +27,6 @@
     }
   }
 
-
-  &.btn-fill {
-    color: $white-color;
-    background-color: $btn-color;
-    @include opacity(1);
-
-    &:hover,
-    &:focus,
-    &:active,
-    &.active,
-    .open > &.dropdown-toggle{
-        background-color: $btn-states-color;
-        color: $white-color;
-    }
-
-    .caret{
-        border-top-color: $white-color;
-    }
-  }
-
   .caret{
       border-top-color: $btn-color;
   }
@@ -68,19 +48,19 @@
 }
 
 .btn{
-  color: $white-color;
+  color: $white-color !important;
   border-width: $border-thin;
   font-weight: $font-weight-normal;
   box-shadow: $btn-shadow;
   border-radius: 0;
-  @include opacity(.8);
   padding: $padding-base-vertical $padding-base-horizontal;
   transition: 0.5s ease-in-out;
+  margin-top: 0 !important;
   &:hover,
   &:focus{
       @include opacity(1);
       background: $white-color;
-      color: $btn-hover-color;
+      color: $btn-hover-color !important;
       transition: 0.5s ease-in-out;
   }
   &:active,
@@ -100,12 +80,27 @@
 //.btn-default { @include btn-styles($default-color, $default-states-color); }
 .btn-primary {
   background-color: $primary-bg;
+  border-color: $primary-color;
 }
 .btn-secondary{
-  background-color: $secondary-color;
+  background-color: $secondary-bg;
+  border-color: $secondary-bg;
 }
 .btn-success {
   background-color: $success-bg;
+  border-color: $success-bg;
+}
+.btn-outline-success{
+  color: $success-color !important;
+  border: 1px solid $success-color;
+  &:hover{
+    background: $success-bg;
+    color: $white-color !important;
+  }
+}
+.btn.btn-edit{
+  padding: 4px 10px;
+  border-radius: 4px;
 }
 .btn-info    {
   background-color: $info-bg;
@@ -115,6 +110,7 @@
 }
 .btn-danger  {
   background-color: $danger-bg;
+  border-color: $danger-bg;
 }
 .btn-neutral {
   @include btn-styles($white-color, $white-color);

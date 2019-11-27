@@ -313,14 +313,14 @@ class addPersonalProfile extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.userProfileId || this.state.userProfileId === ''
                 ? 'Add Profile'
                 : 'Edit Profile'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
+            <Form horizontal className="lightBgForm clearfix">
               <Col sm={10}>
                 <FormGroup className="addDateInput">
                   <Col componentClass={ControlLabel} sm={3}>
@@ -482,16 +482,14 @@ class addPersonalProfile extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closePersonalProfileModal.bind(this, 'close')}
             >
               Close

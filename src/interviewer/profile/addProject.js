@@ -11,7 +11,7 @@ import {
   ControlLabel,
   FormControl,
   InputGroup,
-  Radio  
+  Radio
 } from 'react-bootstrap';
 
 import Select from 'react-select';
@@ -46,18 +46,16 @@ let mediaImgArray = [];
 let mediaImgPreview = [];
 const emptyToDate = '10000000';
 
-
-
 class addProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,     
+      isLoading: false,
       startDate: '',
       endDate: '',
-      promptRecommendation: false,    
-      userId: '',     
-      todaysDate: false,    
+      promptRecommendation: false,
+      userId: '',
+      todaysDate: false,
       startYear: moment().format('YYYY'),
       startMonth: moment().format('M') - 1,
       startDay: moment().format('D'),
@@ -67,10 +65,10 @@ class addProject extends Component {
       lwdYear: moment().format('YYYY'),
       lwdMonth: moment().format('M') - 1,
       lwdDay: moment().format('D'),
-      designation:'',
-      organisation:'',
-      projectModal:true,
-      projectId:'',
+      designation: '',
+      organisation: '',
+      projectModal: true,
+      projectId: '',
       associateList: []
     };
 
@@ -78,10 +76,10 @@ class addProject extends Component {
     this.getClasses = this.getClasses.bind(this);
     this.validatorTypes = strategy.createSchema(
       {
-        projectName: 'required'       
+        projectName: 'required'
       },
       {
-        'required.projectName': validationMessages.projectName.required       
+        'required.projectName': validationMessages.projectName.required
       }
     );
   }
@@ -94,36 +92,34 @@ class addProject extends Component {
     return classnames({
       error: !this.props.isValid(field)
     });
-  }; 
+  };
 
   componentDidMount() {
-    let userId= null;
-    if(this.props.user){
+    let userId = null;
+    if (this.props.user) {
       userId = this.props.user.userId;
-      this.setState({userId: userId});
-    } 
-   
+      this.setState({ userId: userId });
+    }
+
     this.setProjectData(this.props.projectDetail);
     this.getAssociatedListData(userId);
   }
 
-  getAssociatedListData(userId){
-    theRapidHireApiService('getAssociatedListDataByUserId',{userId})
-    .then(response => {     
-      if (response.data.statusCode === 200) {
-         let associateList= this.state.associateList;
-         associateList= response.data.resourceData[0];
-         this.setState({associateList: associateList});
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  getAssociatedListData(userId) {
+    theRapidHireApiService('getAssociatedListDataByUserId', { userId })
+      .then(response => {
+        if (response.data.statusCode === 200) {
+          let associateList = this.state.associateList;
+          associateList = response.data.resourceData[0];
+          this.setState({ associateList: associateList });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-
   setProjectData = data => {
-    
     let startDay = '',
       startMonth = '',
       startYear = '',
@@ -131,8 +127,7 @@ class addProject extends Component {
       endMonth = '',
       endYear = '',
       todaysDate = '';
-    if (data) {        
-     
+    if (data) {
       if (data.startDate) {
         startDay = moment(data.startDate).format('D');
         startMonth = Number(moment(data.startDate).format('M')) - 1;
@@ -148,14 +143,14 @@ class addProject extends Component {
         todaysDate = '';
       }
 
-      this.setState({      
-        userId:data.userId,
-        projectName : data.projectName,
-        projectURL : data.projectURL,
-        associatedWith : data.associatedWith,
-        projectFinished : data.projectFinished,       
-        description : data.description,     
-        projectId:  data.projectId,
+      this.setState({
+        userId: data.userId,
+        projectName: data.projectName,
+        projectURL: data.projectURL,
+        associatedWith: data.associatedWith,
+        projectFinished: data.projectFinished,
+        description: data.description,
+        projectId: data.projectId,
         startDay: startDay,
         startMonth: startMonth,
         startYear: startYear,
@@ -163,12 +158,11 @@ class addProject extends Component {
         endMonth: endMonth,
         endYear: endYear,
         //startDate: moment(data.fromDate),
-        // endDate: data.toDate ? moment(data.toDate) : emptyToDate,   
-        todaysDate: data.toDate ? false : true       
-      });     
+        // endDate: data.toDate ? moment(data.toDate) : emptyToDate,
+        todaysDate: data.toDate ? false : true
+      });
     }
   };
-
 
   handleChange = event => {
     const target = event.target;
@@ -188,7 +182,7 @@ class addProject extends Component {
     this.handleDateChange({ endDate });
   };
 
-  handleDateChange = ({ startDate, endDate }) => {  
+  handleDateChange = ({ startDate, endDate }) => {
     startDate = startDate || this.state.startDate;
     endDate = endDate || this.state.endDate;
     if (startDate && endDate) {
@@ -214,8 +208,8 @@ class addProject extends Component {
 
   validateData = () => {
     let self = this;
-    let today = new Date();  
-    this.props.validate(function(error) {     
+    let today = new Date();
+    this.props.validate(function(error) {
       if (!error) {
         if (
           self.state.fromDate &&
@@ -260,11 +254,11 @@ class addProject extends Component {
             endMonth: '',
             endDay: ''
           });
-        }else { 
-          self.setState({ isLoading: true });       
-              self.handleSubmit();        
-          }
-        }    
+        } else {
+          self.setState({ isLoading: true });
+          self.handleSubmit();
+        }
+      }
     });
   };
 
@@ -291,7 +285,7 @@ class addProject extends Component {
     //   this.setState({ endDay: 1 }, () => this.selectDateChange());
     // }
   };
- 
+
   selectDateChange = () => {
     let fromDate = '';
     let toDate = '';
@@ -319,7 +313,7 @@ class addProject extends Component {
     }
 
     if (toDate && fromDate) {
-      if (fromDate.isAfter(toDate)) {      
+      if (fromDate.isAfter(toDate)) {
         this.setState({
           endDay: startDay,
           endMonth: startMonth - 1,
@@ -334,20 +328,19 @@ class addProject extends Component {
         });
       }
     }
-  }; 
+  };
 
-  handleSubmit() {  
-
+  handleSubmit() {
     let projectName = this.state.projectName;
     let projectURL = this.state.projectURL;
     let associatedWith = this.state.associatedWith;
     let projectFinished = this.state.projectFinished;
     let description = this.state.description;
- 
+
     let userId = this.props.user.userId;
-    let projectId=  this.state.projectId;   
-   
-    console.log('this.state.startDay -- ',this.state.startDay);
+    let projectId = this.state.projectId;
+
+    console.log('this.state.startDay -- ', this.state.startDay);
 
     let startDay = 1;
     let startMonth =
@@ -368,8 +361,8 @@ class addProject extends Component {
       toDate = moment(endYear + '-' + endMonth + '-' + endDay);
       toDate = moment(toDate).valueOf();
       toDate = this.state.todaysDate ? '' : toDate;
-    }    
-  
+    }
+
     let data = {
       projectId,
       userId,
@@ -377,20 +370,20 @@ class addProject extends Component {
       projectURL,
       associatedWith,
       projectFinished,
-      description, 
-      startDate:fromDate,
-      endDate:toDate      
+      description,
+      startDate: fromDate,
+      endDate: toDate
     };
 
     let self = this;
-   
+
     if (!this.state.projectId || this.state.projectId === '') {
       theRapidHireApiService('addProject', data)
         .then(response => {
-          if (response.data.status === 'Success') {      
+          if (response.data.status === 'Success') {
             self.setState({ isLoading: false });
-           self.closeProjectModal('save');
-          } 
+            self.closeProjectModal('save');
+          }
         })
         .catch(error => {
           self.setState({ isLoading: false });
@@ -399,8 +392,8 @@ class addProject extends Component {
     } else {
       theRapidHireApiService('editProject', data)
         .then(response => {
-          if (response.data.status === 'Success') {        
-           self.closeProjectModal('save');
+          if (response.data.status === 'Success') {
+            self.closeProjectModal('save');
             self.setState({ isLoading: false });
           }
         })
@@ -427,7 +420,7 @@ class addProject extends Component {
         endYear: moment().format('YYYY'),
         endMonth: moment().format('M') - 1,
         endDay: moment().format('D'),
-        projectFinished:false
+        projectFinished: false
       });
     }
     // let endDate = null;
@@ -436,17 +429,15 @@ class addProject extends Component {
     // this.setState({ todaysDate: !todaysDate, endDate: endDate });
   };
 
-  closeProjectModal = status => {   
+  closeProjectModal = status => {
     this.setState({
       projectModal: false
-      
-    });   
+    });
     this.props.closeProjectComponent();
   };
 
   render() {
-
-    console.log('this.props.employmentDetail ',this.props.projectDetail);
+    console.log('this.props.employmentDetail ', this.props.projectDetail);
     const CalendarContainer = ({ children }) => {
       const el = document.getElementById('calendar-portal');
       return <Portal container={el}>{children}</Portal>;
@@ -482,14 +473,14 @@ class addProject extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.ProjectId || this.state.ProjectId === ''
                 ? 'Add Project'
                 : 'Edit Project'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
+            <Form horizontal className="lightBgForm clearfix">
               <Col sm={10}>
                 <FormGroup
                   controlId="formControlsTextarea"
@@ -507,10 +498,11 @@ class addProject extends Component {
                       autoComplete="off"
                       maxLength="100"
                     />
-                    {renderMessage(this.props.getValidationMessages('projectName'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('projectName')
+                    )}
                   </Col>
-                </FormGroup>                     
-               
+                </FormGroup>
 
                 <FormGroup className="addDateInput">
                   <Col componentClass={ControlLabel} sm={3}>
@@ -546,7 +538,7 @@ class addProject extends Component {
                             this.selectStartDate('startMonth', month)
                           }
                         />
-                      </div>                 
+                      </div>
                     </div>
                     {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
                   </Col>
@@ -604,9 +596,11 @@ class addProject extends Component {
                     </div>
                     <div className="text-right">
                       <Checkbox
-                        className="checkbox-primary "
+                        className="checkbox_primary "
                         onClick={this.currentCheckBox.bind(this)}
-                        defaultChecked={this.state.projectFinished ? true : false}
+                        defaultChecked={
+                          this.state.projectFinished ? true : false
+                        }
                       >
                         Is project going on?
                         <span className="check" />
@@ -667,9 +661,9 @@ class addProject extends Component {
                       this.props.getValidationMessages('description')
                     )}
                   </Col>
-                </FormGroup>    
+                </FormGroup>
 
-                 <FormGroup
+                <FormGroup
                   controlId="formControlsTextarea"
                   className={this.getClasses('title')}
                 >
@@ -685,27 +679,26 @@ class addProject extends Component {
                       autoComplete="off"
                       maxLength="100"
                     />
-                    {renderMessage(this.props.getValidationMessages('projectURL'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('projectURL')
+                    )}
                   </Col>
-                </FormGroup>         
-               
+                </FormGroup>
               </Col>
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
-              onClick={this.closeProjectModal.bind(this, 'close')}              
+              className="btn btn-secondary"
+              onClick={this.closeProjectModal.bind(this, 'close')}
             >
               Close
             </Button>
@@ -722,8 +715,7 @@ class addProject extends Component {
               Photos Gallery
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>            
-          </Modal.Body>
+          <Modal.Body></Modal.Body>
           <Modal.Footer>
             {/* <Button bsStyle="primary no-bold no-round">Save</Button> */}
             <Button bstyle="default no-round" onClick={this.closeImageModal}>
@@ -739,7 +731,7 @@ addProject = validation(strategy)(addProject);
 
 const mapStateToProps = state => {
   return {
-  //  user: state.User.userData    
+    //  user: state.User.userData
   };
 };
 

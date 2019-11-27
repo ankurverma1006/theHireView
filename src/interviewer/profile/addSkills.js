@@ -308,24 +308,22 @@ class addSkills extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.profileId || this.state.profiletId === ''
                 ? 'Add Career Profile'
                 : 'Edit Career Profile'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
-              <Col sm={10}>
+            <Form horizontal className="lightBgForm clearfix">
+              <Col sm={12}>
                 <FormGroup className={this.getClasses('skills')}>
                   <Col componentClass={ControlLabel} sm={3}>
                     Add Skills
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <div className="custom-select">
-                      <span className="icon-down_arrow selectIcon" />
                       <Select
-                        className="form-control"
                         name="skills"
                         value={this.state.skills}
                         onChange={this.handleSkillsChange}
@@ -341,7 +339,7 @@ class addSkills extends Component {
                   <Col componentClass={ControlLabel} sm={3}>
                     Role
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
                       <FormControl
@@ -373,16 +371,14 @@ class addSkills extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closeSkillsModal.bind(this, 'close')}
             >
               Close

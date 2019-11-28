@@ -1113,7 +1113,7 @@ class EditProfile extends Component {
                   <div className="card">
                     <div className="card_head">
                       <div className="clearfix">
-                        <h4 className="pull-left">Project</h4>
+                        <h4 className="pull-left">Accomplishment</h4>
                         <div className="pull-right">
                           {this.state.careerProfileListData ? null : (
                             <Button
@@ -1439,7 +1439,6 @@ class EditProfile extends Component {
                           }}
                         >
                           <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
-                          Accomplishment
                         </span>
                         <span class="edit icon" tabindex="0">
                           <a

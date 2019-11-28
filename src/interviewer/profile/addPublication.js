@@ -33,30 +33,34 @@ import theRapidHireApiService from '../../common/core/api/apiService';
 
 let validationMessages = CONSTANTS.validationMessages;
 
-class addAccomplishment extends Component {
+class addPublication extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
       promptRecommendation: false,
       userId: '',
-      skillsModal: true,
+      publicationModal: true,
       skillId: '',
       rating: '',
       certificationList: [],
-      availableSkills: []
+      availableSkills: [],
+      accomplishmentData: {}
     };
 
     this.getValidatorData = this.getValidatorData.bind(this);
     this.getClasses = this.getClasses.bind(this);
     this.validatorTypes = strategy.createSchema(
       {
-        skills: 'required',
-        rating: 'required'
+        publicationTitle: 'required',
+        url: 'required',
+        description: 'required'
       },
       {
-        'required.skills': validationMessages.skills.required,
-        'required.rating': validationMessages.rating.required
+        'required.publicationTitle':
+          validationMessages.publicationTitle.required,
+        'required.url': validationMessages.url.required,
+        'required.description': validationMessages.description.required
       }
     );
   }
@@ -79,18 +83,21 @@ class addAccomplishment extends Component {
     }
 
     // this.getAssociatedListData(10);
-    this.addAccomplishment();
+    console.log(this.props.accomplishmentData);
+    this.setState({ accomplishmentData: this.props.accomplishmentData });
+    // this.addAccomplishment();
+    this.setAccomplishmentData(this.props.accomplishmentDetail);
   }
 
   addAccomplishment(userId) {
     theRapidHireApiService('getAccomplishment')
       .then(response => {
         if (response.data.status === 'Success') {
-          let certificationList = this.state.certificationList;
-          let availableSkills =
-            this.props.skillsDetail && this.props.skillsDetail.skills
-              ? this.props.skillsDetail.skills
-              : [];
+          // let certificationList = this.state.certificationList;
+          // let availableSkills =
+          //   this.props.skillsDetail && this.props.skillsDetail.skills
+          //     ? this.props.skillsDetail.skills
+          //     : [];
         }
       })
       .catch(err => {
@@ -98,17 +105,16 @@ class addAccomplishment extends Component {
       });
   }
 
-  setSkillsData = data => {
+  setAccomplishmentData = data => {
     console.log(data);
     if (data) {
       this.setState({
-        userId: data.userId,
-        availableSkills: data.skills,
-        userProfileId: data.userProfileId
+        publicationTitle: data.publicationTitle,
+        url: data.url,
+        description: data.description
       });
     }
   };
-
   handleChange = event => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -150,38 +156,48 @@ class addAccomplishment extends Component {
   };
 
   handleSubmit() {
-    let rating = this.state.rating;
-    let availableSkills = this.props.skillsDetail.skills;
-    let skills = this.state.skills;
-    console.log(this.state.skills);
-
-    availableSkills.push({
-      skillId: skills.value,
-      skillName: skills.label,
-      rating: rating
-    });
+    let accomplishmentData = this.state.accomplishmentData
+      ? this.state.accomplishmentData
+      : {};
 
     let userId = this.props.user.userId;
-    let skillId = this.state.skillId;
-    let userProfileId = this.props.skillsDetail.userProfileId
-      ? this.props.skillsDetail.userProfileId
-      : '';
+    let accomplishmentId =
+      accomplishmentData && accomplishmentData.accomplishmentId
+        ? accomplishmentData.accomplishmentId
+        : '';
 
-    console.log('userProfileId', userProfileId);
-    let data = {
-      userProfileId,
-      userId,
-      skills: availableSkills
-    };
+    let publicationTitle = this.state.publicationTitle;
+    let url = this.state.url;
+    let description = this.state.description;
+
+    let publication = [];
+    if (accomplishmentId) publication = accomplishmentData.publication;
+
+    publication.push({
+      publicationTitle,
+      url,
+      description
+    });
+
+    accomplishmentData.publication = publication;
+
+    accomplishmentData.userId = userId;
+
+    console.log('userProfileId', accomplishmentId);
+    // let data = {
+    //   accomplishmentId,
+    //   userId,
+    //   certification
+    // };
 
     let self = this;
 
-    if (!this.state.userProfileId || this.state.userProfileId === '') {
-      theRapidHireApiService('addAccomplishment', data)
+    if (!accomplishmentId || accomplishmentId === '') {
+      theRapidHireApiService('addAccomplishment', accomplishmentData)
         .then(response => {
           if (response.data.status === 'Success') {
             self.setState({ isLoading: false });
-            self.closeSkillsModal('save');
+            self.closeAccomplishmentModal('save');
           }
         })
         .catch(error => {
@@ -189,10 +205,10 @@ class addAccomplishment extends Component {
           console.log(error);
         });
     } else {
-      theRapidHireApiService('editAccomplishment', data)
+      theRapidHireApiService('editAccomplishment', accomplishmentData)
         .then(response => {
           if (response.data.status === 'Success') {
-            self.closeSkillsModal('save');
+            self.closeAccomplishmentModal('save');
             self.setState({ isLoading: false });
           }
         })
@@ -209,11 +225,11 @@ class addAccomplishment extends Component {
     });
   };
 
-  closeSkillsModal = status => {
+  closeAccomplishmentModal = status => {
     this.setState({
-      skillsModal: false
+      publicationModal: false
     });
-    this.props.closeSkillsComponent();
+    this.props.closeAccomplishmentComponent();
   };
 
   render() {
@@ -226,8 +242,8 @@ class addAccomplishment extends Component {
       <div>
         <Modal
           Size="lg"
-          show={this.state.skillsModal}
-          onHide={this.closeSkillsModal.bind(this, 'close')}
+          show={this.state.publicationModal}
+          onHide={this.closeAccomplishmentModal.bind(this, 'close')}
           keyboard={false}
         >
           <ToastContainer
@@ -238,9 +254,9 @@ class addAccomplishment extends Component {
           />
           <Modal.Header closeButton>
             <Modal.Title className="subtitle text-center">
-              {this.props.accomplishmentName === 'certification'
-                ? 'Add Certification'
-                : 'Edit Certification'}
+              {this.props.accomplishmentName === 'publication'
+                ? 'Add Publication'
+                : 'Edit Publication'}
 
               {this.state.accomplishmentName === 'onlineProfile'
                 ? 'Online Profiles'
@@ -252,44 +268,64 @@ class addAccomplishment extends Component {
               <Col sm={10}>
                 <FormGroup
                   controlId="formControlsTextarea"
-                  className={this.getClasses('certificationName')}
+                  className={this.getClasses('publicationTitle')}
                 >
                   <Col componentClass={ControlLabel} sm={3}>
-                    <ControlLabel>Certification Name</ControlLabel>
+                    <ControlLabel>Publication Title</ControlLabel>
                   </Col>
                   <Col sm={9}>
                     <FormControl
-                      placeholder="Enter Certification Name"
-                      name="certificationName"
-                      value={this.state.certificationName}
+                      placeholder="Enter Publication Title"
+                      name="publicationTitle"
+                      value={this.state.publicationTitle}
                       onChange={this.handleChange}
                       autoComplete="off"
                       maxLength="100"
                     />
                     {renderMessage(
-                      this.props.getValidationMessages('certificationName')
+                      this.props.getValidationMessages('publicationTitle')
                     )}
                   </Col>
                 </FormGroup>
 
                 <FormGroup
                   controlId="formControlsTextarea"
-                  className={this.getClasses('certificationBody')}
+                  className={this.getClasses('url')}
                 >
                   <Col componentClass={ControlLabel} sm={3}>
                     <ControlLabel>Certification Body</ControlLabel>
                   </Col>
                   <Col sm={9}>
                     <FormControl
-                      placeholder="Enter Certification Body"
-                      name="certificationBody"
-                      value={this.state.certificationBody}
+                      placeholder="Enter URL"
+                      name="url"
+                      value={this.state.url}
+                      onChange={this.handleChange}
+                      autoComplete="off"
+                      maxLength="100"
+                    />
+                    {renderMessage(this.props.getValidationMessages('url'))}
+                  </Col>
+                </FormGroup>
+
+                <FormGroup
+                  controlId="formControlsTextarea"
+                  className={this.getClasses('description')}
+                >
+                  <Col componentClass={ControlLabel} sm={3}>
+                    <ControlLabel>Description</ControlLabel>
+                  </Col>
+                  <Col sm={9}>
+                    <FormControl
+                      placeholder="Type Here"
+                      name="description"
+                      value={this.state.description}
                       onChange={this.handleChange}
                       autoComplete="off"
                       maxLength="100"
                     />
                     {renderMessage(
-                      this.props.getValidationMessages('certificationBody')
+                      this.props.getValidationMessages('description')
                     )}
                   </Col>
                 </FormGroup>
@@ -310,7 +346,7 @@ class addAccomplishment extends Component {
             <Button
               bsStyle="default"
               className="no-bold no-round"
-              onClick={this.closeSkillsModal.bind(this, 'close')}
+              onClick={this.closeAccomplishmentModal.bind(this, 'close')}
             >
               Close
             </Button>
@@ -339,7 +375,7 @@ class addAccomplishment extends Component {
     );
   }
 }
-addAccomplishment = validation(strategy)(addAccomplishment);
+addPublication = validation(strategy)(addPublication);
 const mapStateToProps = state => {
   return {
     //  user: state.User.userData
@@ -349,4 +385,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   null
-)(addAccomplishment);
+)(addPublication);

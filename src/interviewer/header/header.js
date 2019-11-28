@@ -86,7 +86,7 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar className="mb-0">
+      <Navbar className="mb-0 navbar-fixed-top">
         <Navbar.Header>
           <Navbar.Brand>
             <a href="#brand">

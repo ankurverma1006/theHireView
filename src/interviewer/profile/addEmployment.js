@@ -628,7 +628,7 @@ class addEmployment extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.EmploymentId || this.state.EmploymentId === ''
                 ? 'Add Employment'
                 : 'Edit Employment'}
@@ -644,7 +644,7 @@ class addEmployment extends Component {
                   <Col componentClass={ControlLabel} sm={3}>
                     <ControlLabel>Designation</ControlLabel>
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <FormControl
                       placeholder="Add a designation"
                       name="designation"
@@ -666,7 +666,7 @@ class addEmployment extends Component {
                   <Col componentClass={ControlLabel} sm={3}>
                     <ControlLabel>Organisation</ControlLabel>
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <FormControl
                       placeholder="Add a organisation"
                       name="organisation"
@@ -681,7 +681,7 @@ class addEmployment extends Component {
                   </Col>
                 </FormGroup>
 
-                <FormGroup controlId="formHorizontalPassword">
+                {/* <FormGroup controlId="formHorizontalPassword">
                   <Col componentClass={ControlLabel} sm={3}>
                     Is this your current company ?
                   </Col>
@@ -711,13 +711,13 @@ class addEmployment extends Component {
                       <div className="check" />
                     </Radio>{' '}
                   </Col>
-                </FormGroup>
+                </FormGroup> */}
 
                 <FormGroup className="addDateInput">
                   <Col componentClass={ControlLabel} sm={3}>
                     Date From
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <div className="row">
                       <div className="form-group col-sm-6">
                         <YearPicker
@@ -756,7 +756,7 @@ class addEmployment extends Component {
                   <Col componentClass={ControlLabel} sm={3}>
                     Date To
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <div className="row">
                       <div className="form-group col-sm-6">
                         <YearPicker
@@ -810,7 +810,7 @@ class addEmployment extends Component {
                       <Col componentClass={ControlLabel} sm={3}>
                         Current Salary
                       </Col>
-                      <Col sm={9}>
+                      <Col sm={7}>
                         <Radio
                           name="currentSalary"
                           className="radio_primary"
@@ -845,7 +845,7 @@ class addEmployment extends Component {
                       <Col componentClass={ControlLabel} sm={3}>
                         Salary
                       </Col>
-                      <Col sm={9}>
+                      <Col sm={7}>
                         <div className="dob">
                           <div className="form-group">
                             <FormControl
@@ -919,7 +919,7 @@ class addEmployment extends Component {
                   <Col componentClass={ControlLabel} sm={3}>
                     <ControlLabel>Describe</ControlLabel>
                   </Col>
-                  <Col sm={9}>
+                  <Col sm={7}>
                     <FormControl
                       componentClass="textarea"
                       placeholder="Tell us how this made you unique"
@@ -940,7 +940,7 @@ class addEmployment extends Component {
                     <Col componentClass={ControlLabel} sm={3}>
                       Notice Period
                     </Col>
-                    <Col sm={9}>
+                    <Col sm={7}>
                       <div className="custom-select">
                         <span className="icon-down_arrow selectIcon" />
                         <FormControl
@@ -1034,7 +1034,7 @@ class addEmployment extends Component {
                         <div className="flex">
                           <Radio
                             name="offeredSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="indian"
                             checked={
                               this.state.offeredSalary === 'indian'
@@ -1048,7 +1048,7 @@ class addEmployment extends Component {
                           </Radio>{' '}
                           <Radio
                             name="offeredSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="dollar"
                             checked={
                               this.state.offeredSalary === 'dollar'

@@ -452,14 +452,14 @@ class addProject extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.ProjectId || this.state.ProjectId === ''
                 ? 'Add Project'
                 : 'Edit Project'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
+            <Form horizontal className="lightBgForm clearfix">
               <Col sm={10}>
                 <FormGroup
                   controlId="formControlsTextarea"
@@ -575,7 +575,7 @@ class addProject extends Component {
                     </div>
                     <div className="text-right">
                       <Checkbox
-                        className="checkbox-primary "
+                        className="checkbox_primary "
                         onClick={this.currentCheckBox.bind(this)}
                         defaultChecked={
                           this.state.projectFinished ? true : false
@@ -669,16 +669,14 @@ class addProject extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closeProjectModal.bind(this, 'close')}
             >
               Close

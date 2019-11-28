@@ -327,14 +327,14 @@ class addCareerProfile extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.profileId || this.state.profiletId === ''
                 ? 'Add Career Profile'
                 : 'Edit Career Profile'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
+            <Form horizontal className="lightBgForm clearfix">
               <Col sm={10}>
                 <FormGroup>
                   <Col componentClass={ControlLabel} sm={3}>
@@ -422,7 +422,7 @@ class addCareerProfile extends Component {
                     <div className="flex">
                       <Radio
                         name="jobType"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="permanent"
                         checked={
                           this.state.jobType === 'permanent' ? true : false
@@ -434,7 +434,7 @@ class addCareerProfile extends Component {
                       </Radio>{' '}
                       <Radio
                         name="jobType"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="dollar"
                         checked={
                           this.state.jobType === 'contractual' ? true : false
@@ -456,7 +456,7 @@ class addCareerProfile extends Component {
                     <div className="flex">
                       <Radio
                         name="employmentType"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="full"
                         checked={
                           this.state.employmentType === 'full' ? true : false
@@ -468,7 +468,7 @@ class addCareerProfile extends Component {
                       </Radio>{' '}
                       <Radio
                         name="employmentType"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="part"
                         checked={
                           this.state.employmentType === 'part' ? true : false
@@ -490,7 +490,7 @@ class addCareerProfile extends Component {
                     <div className="flex">
                       <Radio
                         name="desiredShift"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="day"
                         checked={
                           this.state.desiredShift === 'day' ? true : false
@@ -502,7 +502,7 @@ class addCareerProfile extends Component {
                       </Radio>{' '}
                       <Radio
                         name="desiredShift"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="night"
                         checked={
                           this.state.desiredShift === 'night' ? true : false
@@ -514,7 +514,7 @@ class addCareerProfile extends Component {
                       </Radio>{' '}
                       <Radio
                         name="desiredShift"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="flexible"
                         checked={
                           this.state.desiredShift === 'flexible' ? true : false
@@ -536,7 +536,7 @@ class addCareerProfile extends Component {
                     <div className="flex">
                       <Radio
                         name="expectedSalary"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="indian"
                         checked={
                           this.state.expectedSalary === 'indian' ? true : false
@@ -548,7 +548,7 @@ class addCareerProfile extends Component {
                       </Radio>{' '}
                       <Radio
                         name="expectedSalary"
-                        className="radio-primary"
+                        className="radio_primary"
                         value="dollar"
                         checked={
                           this.state.expectedSalary === 'dollar' ? true : false
@@ -568,9 +568,7 @@ class addCareerProfile extends Component {
                   </Col>
                   <Col sm={9}>
                     <div className="custom-select">
-                      <span className="icon-down_arrow selectIcon" />
                       <Select
-                        className="form-control"
                         multi
                         name="desiredLocation"
                         value={this.state.desiredLocation}
@@ -591,9 +589,7 @@ class addCareerProfile extends Component {
                   </Col>
                   <Col sm={9}>
                     <div className="custom-select">
-                      <span className="icon-down_arrow selectIcon" />
                       <Select
-                        className="form-control"
                         multi
                         name="desiredIndustry"
                         value={this.state.desiredIndustry}
@@ -613,16 +609,14 @@ class addCareerProfile extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closeCareerProfileModal.bind(this, 'close')}
             >
               Close

@@ -691,27 +691,26 @@ class EditProfile extends Component {
                     </div>
                     <div className="card_body">
                       <p>
-                        <i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-user fa-fw mr-3"></i>
                         {this.state.firstName} {this.state.lastName}
                       </p>
                       <p>
-                        <i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-briefcase fa-fw mr-3"></i>
                         {this.state.profileRole}
                       </p>
                       <p>
-                        <i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-home fa-fw mr-3"></i>
                         London, UK
                       </p>
                       <p>
-                        <i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-envelope fa-fw mr-3"></i>
                         {this.state.email}
                       </p>
                       <p>
-                        <i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-phone fa-fw mr-3"></i>
                         {this.state.mobileNo}
                       </p>
                       <p>
-                        <i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
                         {this.state.profileRole ? (
                           <Button
                             bsStyle="primary no-bold no-round mr-1"

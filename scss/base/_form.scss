@@ -50,6 +50,16 @@
   position: relative;
   display: flex;
   align-items: center;
+  .Select{
+    width: 100%;
+    .Select-control{
+      border-radius: 0;
+      height: calc(1.5em + .75rem + 10px);
+      .Select-placeholder{
+        line-height: 40px;
+      }
+    }
+  }
   .form-control{
     -webkit-appearance: none;
   }
@@ -178,11 +188,10 @@
         display: none;
       }
     }
-    // &:hover{
-    //   input ~ .check{
-    //     background-color: #ccc;
-    //   }
-    // }
   }
+}
+
+.error{
+  color: $danger-color;
 }
 

@@ -696,7 +696,7 @@ class addEmployment extends Component {
                     <div className="flex">
                       <Radio
                         name="currentCompany"
-                        className="radio-primary"
+                        className="radio_primary"
                         value={true}
                         checked={
                           this.state.currentCompany === true ? true : false
@@ -708,7 +708,7 @@ class addEmployment extends Component {
                       </Radio>{' '}
                       <Radio
                         name="currentCompany"
-                        className="radio-primary"
+                        className="radio_primary"
                         value={false}
                         checked={
                           this.state.currentCompany === false ? true : false
@@ -823,7 +823,7 @@ class addEmployment extends Component {
                         <div className="flex">
                           <Radio
                             name="currentSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="indian"
                             checked={
                               this.state.currentSalary === 'indian'
@@ -837,7 +837,7 @@ class addEmployment extends Component {
                           </Radio>{' '}
                           <Radio
                             name="currentSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="dollar"
                             checked={
                               this.state.currentSalary === 'dollar'
@@ -1049,7 +1049,7 @@ class addEmployment extends Component {
                         <div className="flex">
                           <Radio
                             name="offeredSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="indian"
                             checked={
                               this.state.offeredSalary === 'indian'
@@ -1063,7 +1063,7 @@ class addEmployment extends Component {
                           </Radio>{' '}
                           <Radio
                             name="offeredSalary"
-                            className="radio-primary"
+                            className="radio_primary"
                             value="dollar"
                             checked={
                               this.state.offeredSalary === 'dollar'

@@ -48,18 +48,16 @@ let mediaImgArray = [];
 let mediaImgPreview = [];
 const emptyToDate = '10000000';
 
-
-
 class addCareerProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,     
+      isLoading: false,
       startDate: '',
       endDate: '',
-      promptRecommendation: false,    
-      userId: '',     
-      todaysDate: false,    
+      promptRecommendation: false,
+      userId: '',
+      todaysDate: false,
       startYear: moment().format('YYYY'),
       startMonth: moment().format('M') - 1,
       startDay: moment().format('D'),
@@ -69,53 +67,60 @@ class addCareerProfile extends Component {
       lwdYear: moment().format('YYYY'),
       lwdMonth: moment().format('M') - 1,
       lwdDay: moment().format('D'),
-      designation:'',
-      organisation:'',
-      careerProfileModal:true,
-      profileId:'',
+      designation: '',
+      organisation: '',
+      careerProfileModal: true,
+      profileId: '',
       associateList: [],
-      locationList: [{
-              value: 1 ,
-              label: 'Indore'},
-              {
-                value: 2 ,
-                label: 'Bhopal'},
-                {
-                  value: 2 ,
-                  label: 'Dewas'}
-              ],
-      desiredIndustryList:[{
-        value: 1 ,
-        label: 'Agriculture'},
+      locationList: [
         {
-          value: 2 ,
-          label: 'IT'},
-          {
-            value: 2 ,
-            label: 'Admin'}
-        ]      
+          value: 1,
+          label: 'Indore'
+        },
+        {
+          value: 2,
+          label: 'Bhopal'
+        },
+        {
+          value: 2,
+          label: 'Dewas'
+        }
+      ],
+      desiredIndustryList: [
+        {
+          value: 1,
+          label: 'Agriculture'
+        },
+        {
+          value: 2,
+          label: 'IT'
+        },
+        {
+          value: 2,
+          label: 'Admin'
+        }
+      ]
     };
 
     this.getValidatorData = this.getValidatorData.bind(this);
     this.getClasses = this.getClasses.bind(this);
     this.validatorTypes = strategy.createSchema(
       {
-        industry: 'required',       
+        industry: 'required',
         functionalArea: 'required',
         role: 'required',
         desiredLocation: 'required',
-        desiredIndustry: 'required',
-       
+        desiredIndustry: 'required'
       },
       {
-        'required.industry': validationMessages.industry.required,        
-         'required.functionalArea': validationMessages.functionalArea.required,
+        'required.industry': validationMessages.industry.required,
+        'required.functionalArea': validationMessages.functionalArea.required,
         'required.role': validationMessages.role.required,
         'required.desiredLocation': validationMessages.desiredLocation.required,
-        'required.desiredIndustry': validationMessages.desiredIndustry.required,
+        'required.desiredIndustry': validationMessages.desiredIndustry.required
       }
     );
-  }  
+  }
 
   getValidatorData = () => {
     return this.state;
@@ -130,32 +135,31 @@ class addCareerProfile extends Component {
   componentDidMount() {
     // if(this.props.user){
     //  let userId = this.props.user.userId;
-    // }  
-    console.log('this.props.employmentDetail ',this.props.careerProfileDetail);
+    // }
+    console.log('this.props.employmentDetail ', this.props.careerProfileDetail);
     this.setCareerProfileData(this.props.careerProfileDetail);
-   // this.getAssociatedListData(10);
+    // this.getAssociatedListData(10);
   }
 
-
-  setCareerProfileData = data => { 
-    if(data){ 
-      this.setState({      
-          userId:data.userId,
-          industry : data.industry,
-          functionalArea : data.functionalArea,
-          role : data.role,
-          jobType : data.jobType, 
-          profileId: data.profileId,      
-          employmentType : data.employmentType,     
-          desiredShift:  data.desiredShift,
-          expectedSalary : data.expectedSalary,       
-          expectedSalaryInLakh : data.expectedSalaryInLakh,     
-          expectedSalaryInThousand:  data.expectedSalaryInThousand,          
-          desiredLocation : data.desiredLocation,       
-          desiredIndustry : data.desiredIndustry       
-        });     
-      }; 
-  }
+  setCareerProfileData = data => {
+    if (data) {
+      this.setState({
+        userId: data.userId,
+        industry: data.industry,
+        functionalArea: data.functionalArea,
+        role: data.role,
+        jobType: data.jobType,
+        profileId: data.profileId,
+        employmentType: data.employmentType,
+        desiredShift: data.desiredShift,
+        expectedSalary: data.expectedSalary,
+        expectedSalaryInLakh: data.expectedSalaryInLakh,
+        expectedSalaryInThousand: data.expectedSalaryInThousand,
+        desiredLocation: data.desiredLocation,
+        desiredIndustry: data.desiredIndustry
+      });
+    }
+  };
 
   handleChange = event => {
     const target = event.target;
@@ -208,37 +212,35 @@ class addCareerProfile extends Component {
       };
 
       if (!error) {
-        self.setState({ isLoading: true });       
-            self.handleSubmit();        
-        }    
+        self.setState({ isLoading: true });
+        self.handleSubmit();
+      }
     });
-  };  
+  };
 
   handleSubmit() {
-   
-   let industry = this.state.industry;
-   let functionalArea = this.state.functionalArea;
-   let role = this.state.role;
-   let jobType = this.state.jobType; 
-        
-   let employmentType = this.state.employmentType;    
-   let desiredShift =  this.state.desiredShift;
-   let expectedSalary = this.state.expectedSalary;     
-   let expectedSalaryInLakh = this.state.expectedSalaryInLakh;    
-   let expectedSalaryInThousand =  this.state.expectedSalaryInThousand;
-   let desiredLocation= [];
-   this.state.desiredLocation.forEach(function(item){
-    desiredLocation.push(item.label);
-   })    
-   let desiredIndustry = [];     
-   this.state.desiredIndustry.forEach(function(item){
-    desiredIndustry.push(item.label);
-   })
- 
-    let userId = this.props.user.userId;
-    let profileId=  this.state.profileId;   
+    let industry = this.state.industry;
+    let functionalArea = this.state.functionalArea;
+    let role = this.state.role;
+    let jobType = this.state.jobType;
 
-   
+    let employmentType = this.state.employmentType;
+    let desiredShift = this.state.desiredShift;
+    let expectedSalary = this.state.expectedSalary;
+    let expectedSalaryInLakh = this.state.expectedSalaryInLakh;
+    let expectedSalaryInThousand = this.state.expectedSalaryInThousand;
+    let desiredLocation = [];
+    this.state.desiredLocation.forEach(function(item) {
+      desiredLocation.push(item.label);
+    });
+    let desiredIndustry = [];
+    this.state.desiredIndustry.forEach(function(item) {
+      desiredIndustry.push(item.label);
+    });
+
+    let userId = this.props.user.userId;
+    let profileId = this.state.profileId;
+
     let data = {
       profileId,
       userId,
@@ -246,7 +248,7 @@ class addCareerProfile extends Component {
       functionalArea,
       role,
       jobType,
-      employmentType, 
+      employmentType,
       desiredShift,
       expectedSalary,
       expectedSalaryInLakh,
@@ -256,14 +258,14 @@ class addCareerProfile extends Component {
     };
 
     let self = this;
-   
+
     if (!this.state.profileId || this.state.profileId === '') {
       theRapidHireApiService('addCareerProfile', data)
         .then(response => {
-          if (response.data.status === 'Success') {      
+          if (response.data.status === 'Success') {
             self.setState({ isLoading: false });
             self.closeCareerProfileModal('save');
-          } 
+          }
         })
         .catch(error => {
           self.setState({ isLoading: false });
@@ -272,7 +274,7 @@ class addCareerProfile extends Component {
     } else {
       theRapidHireApiService('editDesiredProfileData', data)
         .then(response => {
-          if (response.data.status === 'Success') {        
+          if (response.data.status === 'Success') {
             self.closeCareerProfileModal('save');
             self.setState({ isLoading: false });
           }
@@ -290,7 +292,6 @@ class addCareerProfile extends Component {
     });
   };
 
- 
   handleLocationChange = newValue => {
     this.setState({
       desiredLocation: newValue
@@ -303,26 +304,22 @@ class addCareerProfile extends Component {
     });
   };
 
-  
-
-  closeCareerProfileModal = status => {   
+  closeCareerProfileModal = status => {
     this.setState({
       careerProfileModal: false
-      
-    });   
+    });
     this.props.closeCareerProfileComponent();
   };
 
   render() {
-
-    console.log('this.props.employmentDetail ',this.props.careerProfileDetail);
+    console.log('this.props.employmentDetail ', this.props.careerProfileDetail);
     const CalendarContainer = ({ children }) => {
       const el = document.getElementById('calendar-portal');
       return <Portal container={el}>{children}</Portal>;
     };
 
     return (
-      <div>  
+      <div>
         <Modal
           bsSize="large"
           show={this.state.careerProfileModal}
@@ -343,11 +340,10 @@ class addCareerProfile extends Component {
                 : 'Edit Career Profile'}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>   
-            
+          <Modal.Body>
             <Form horizontal className="lightBgForm">
               <Col sm={10}>
-               <FormGroup>
+                <FormGroup>
                   <Col componentClass={ControlLabel} sm={3}>
                     Industry
                   </Col>
@@ -355,21 +351,21 @@ class addCareerProfile extends Component {
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
                       <FormControl
-                              componentClass="select"
-                              placeholder="industry"
-                              name="industry"
-                              value={this.state.industry}                          
-                              onChange={this.handleChange}
-                              autoComplete="off"
-                              maxLength="1000"
-                            >                        
-                          <option value="">industry</option>
-                          <option value={1}>IT</option>                                                     
-                    </FormControl>              
-                {renderMessage(
-                          this.props.getValidationMessages('industry')
-                        )}
-                </div>                   
+                        componentClass="select"
+                        placeholder="industry"
+                        name="industry"
+                        value={this.state.industry}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="1000"
+                      >
+                        <option value="">industry</option>
+                        <option value={1}>IT</option>
+                      </FormControl>
+                      {renderMessage(
+                        this.props.getValidationMessages('industry')
+                      )}
+                    </div>
                   </Col>
                 </FormGroup>
                 <FormGroup>
@@ -379,23 +375,22 @@ class addCareerProfile extends Component {
                   <Col sm={9}>
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
-                <FormControl
-                          componentClass="select"
-                          placeholder="functionalArea"
-                          name="functionalArea"
-                          value={this.state.functionalArea}                          
-                          onChange={this.handleChange}
-                          autoComplete="off"
-                          maxLength="1000"
-                        >                        
-                       <option value="">functionalArea</option>
-                       <option value={1}>IT Specialization</option>
-                                                   
-                </FormControl>              
-                {renderMessage(
-                          this.props.getValidationMessages('functionalArea')
-                        )}
-                  </div>                   
+                      <FormControl
+                        componentClass="select"
+                        placeholder="functionalArea"
+                        name="functionalArea"
+                        value={this.state.functionalArea}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="1000"
+                      >
+                        <option value="">functionalArea</option>
+                        <option value={1}>IT Specialization</option>
+                      </FormControl>
+                      {renderMessage(
+                        this.props.getValidationMessages('functionalArea')
+                      )}
+                    </div>
                   </Col>
                 </FormGroup>
 
@@ -406,180 +401,175 @@ class addCareerProfile extends Component {
                   <Col sm={9}>
                     <div className="custom-select">
                       <span className="icon-down_arrow selectIcon" />
-                <FormControl
-                          componentClass="select"
-                          placeholder="role"
-                          name="role"
-                          value={this.state.role}                          
-                          onChange={this.handleChange}
-                          autoComplete="off"
-                          maxLength="1000"
-                        >                        
-                       <option value="">role</option>
-                       <option value={1}>Software Developer</option>
-                       <option value={2}>Team Lead</option>
-                       <option value={3}>IT Analyst</option>
-                       <option value={4}>Recruiter</option>                                                       
-                </FormControl>              
-                {renderMessage(
-                          this.props.getValidationMessages('role')
-                        )}
-               </div>                   
+                      <FormControl
+                        componentClass="select"
+                        placeholder="role"
+                        name="role"
+                        value={this.state.role}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="1000"
+                      >
+                        <option value="">role</option>
+                        <option value={1}>Software Developer</option>
+                        <option value={2}>Team Lead</option>
+                        <option value={3}>IT Analyst</option>
+                        <option value={4}>Recruiter</option>
+                      </FormControl>
+                      {renderMessage(this.props.getValidationMessages('role'))}
+                    </div>
                   </Col>
                 </FormGroup>
-        
 
-      
                 <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      JOB Type
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="jobType"
-                          className="radio-primary"
-                          value="permanent"
-                          checked={
-                            this.state.jobType === 'permanent' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Permanet
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="jobType"
-                          className="radio-primary"
-                          value="dollar"
-                          checked={
-                            this.state.jobType === 'contractual' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Contractual
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                  </FormGroup>
+                  <Col componentClass={ControlLabel} sm={3}>
+                    JOB Type
+                  </Col>
+                  <Col sm={9}>
+                    <div className="flex">
+                      <Radio
+                        name="jobType"
+                        className="radio_primary"
+                        value="permanent"
+                        checked={
+                          this.state.jobType === 'permanent' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Permanet
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="jobType"
+                        className="radio_primary"
+                        value="dollar"
+                        checked={
+                          this.state.jobType === 'contractual' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Contractual
+                        <div className="check" />
+                      </Radio>{' '}
+                    </div>
+                  </Col>
+                </FormGroup>
 
-                   <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      Employment Type
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="employmentType"
-                          className="radio-primary"
-                          value="full"
-                          checked={
-                            this.state.employmentType === 'full' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Full Time
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="employmentType"
-                          className="radio-primary"
-                          value="part"
-                          checked={
-                            this.state.employmentType === 'part' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Part Time
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                  </FormGroup>
+                <FormGroup controlId="formHorizontalPassword">
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Employment Type
+                  </Col>
+                  <Col sm={9}>
+                    <div className="flex">
+                      <Radio
+                        name="employmentType"
+                        className="radio_primary"
+                        value="full"
+                        checked={
+                          this.state.employmentType === 'full' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Full Time
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="employmentType"
+                        className="radio_primary"
+                        value="part"
+                        checked={
+                          this.state.employmentType === 'part' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Part Time
+                        <div className="check" />
+                      </Radio>{' '}
+                    </div>
+                  </Col>
+                </FormGroup>
 
+                <FormGroup controlId="formHorizontalPassword">
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Preffered Shift
+                  </Col>
+                  <Col sm={9}>
+                    <div className="flex">
+                      <Radio
+                        name="desiredShift"
+                        className="radio_primary"
+                        value="day"
+                        checked={
+                          this.state.desiredShift === 'day' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Day
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="desiredShift"
+                        className="radio_primary"
+                        value="night"
+                        checked={
+                          this.state.desiredShift === 'night' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Night
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="desiredShift"
+                        className="radio_primary"
+                        value="flexible"
+                        checked={
+                          this.state.desiredShift === 'flexible' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Flexible
+                        <div className="check" />
+                      </Radio>{' '}
+                    </div>
+                  </Col>
+                </FormGroup>
 
-                  <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      Preffered Shift 
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="desiredShift"
-                          className="radio-primary"
-                          value="day"
-                          checked={
-                            this.state.desiredShift === 'day' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Day
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="desiredShift"
-                          className="radio-primary"
-                          value="night"
-                          checked={
-                            this.state.desiredShift === 'night' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Night
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="desiredShift"
-                          className="radio-primary"
-                          value="flexible"
-                          checked={
-                            this.state.desiredShift === 'flexible' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Flexible
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                  </FormGroup>
+                <FormGroup controlId="formHorizontalPassword">
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Expected Salary
+                  </Col>
+                  <Col sm={9}>
+                    <div className="flex">
+                      <Radio
+                        name="expectedSalary"
+                        className="radio_primary"
+                        value="indian"
+                        checked={
+                          this.state.expectedSalary === 'indian' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Indian
+                        <div className="check" />
+                      </Radio>{' '}
+                      <Radio
+                        name="expectedSalary"
+                        className="radio_primary"
+                        value="dollar"
+                        checked={
+                          this.state.expectedSalary === 'dollar' ? true : false
+                        }
+                        onChange={this.handleChange}
+                      >
+                        Dollar
+                        <div className="check" />
+                      </Radio>{' '}
+                    </div>
+                  </Col>
+                </FormGroup>
 
-                      <FormGroup controlId="formHorizontalPassword">
-                    <Col componentClass={ControlLabel} sm={3}>
-                      Expected Salary
-                    </Col>
-                    <Col sm={9}>
-                      <div className="flex">
-                        <Radio
-                          name="expectedSalary"
-                          className="radio-primary"
-                          value="indian"
-                          checked={
-                            this.state.expectedSalary === 'indian' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Indian
-                          <div className="check" />
-                        </Radio>{' '}
-                        <Radio
-                          name="expectedSalary"
-                          className="radio-primary"
-                          value="dollar"
-                          checked={
-                            this.state.expectedSalary === 'dollar' ? true : false
-                          }
-                          onChange={this.handleChange}
-                        >
-                          Dollar
-                          <div className="check" />
-                        </Radio>{' '}
-                      </div>
-                    </Col>
-                  </FormGroup>             
-
-                 <FormGroup className={this.getClasses('desiredLocation')}>
+                <FormGroup className={this.getClasses('desiredLocation')}>
                   <Col componentClass={ControlLabel} sm={3}>
                     Desired Location
                   </Col>
@@ -596,7 +586,9 @@ class addCareerProfile extends Component {
                         placeholder="Select all the location that you used along the way"
                       />
                     </div>
-                    {renderMessage(this.props.getValidationMessages('desiredLocation'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('desiredLocation')
+                    )}
                   </Col>
                 </FormGroup>
 
@@ -617,11 +609,11 @@ class addCareerProfile extends Component {
                         placeholder="Select all the industry that you used along the way"
                       />
                     </div>
-                    {renderMessage(this.props.getValidationMessages('desiredIndustry'))}
+                    {renderMessage(
+                      this.props.getValidationMessages('desiredIndustry')
+                    )}
                   </Col>
-                </FormGroup>             
-                
-               
+                </FormGroup>
               </Col>
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
@@ -638,7 +630,7 @@ class addCareerProfile extends Component {
             <Button
               bsStyle="default"
               className="no-bold no-round"
-              onClick={this.closeCareerProfileModal.bind(this, 'close')}              
+              onClick={this.closeCareerProfileModal.bind(this, 'close')}
             >
               Close
             </Button>
@@ -655,8 +647,7 @@ class addCareerProfile extends Component {
               Photos Gallery
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>            
-          </Modal.Body>
+          <Modal.Body></Modal.Body>
           <Modal.Footer>
             {/* <Button bsStyle="primary no-bold no-round">Save</Button> */}
             <Button bstyle="default no-round" onClick={this.closeImageModal}>
@@ -672,7 +663,7 @@ addCareerProfile = validation(strategy)(addCareerProfile);
 
 const mapStateToProps = state => {
   return {
-  //  user: state.User.userData    
+    //  user: state.User.userData
   };
 };
 

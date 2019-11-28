@@ -23,7 +23,11 @@ import AddEmployment from '../profile/addEmployment';
 import AddProject from '../profile/addProject';
 import AddCareerProfile from '../profile/addCareerProfile';
 import AddPersonalProfile from '../profile/addPersonalProfile';
-import AddAccomplishment from '../profile/addAccomplishment';
+import AddCertification from './addCertification';
+import AddPresentation from '../profile/addPresentation';
+import AddPatent from '../profile/addPatent';
+import AddPublication from '../profile/addPublication';
+import AddOnlineProfile from '../profile/addOnlineProfile';
 import AddSkills from '../profile/addSkills';
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
@@ -48,6 +52,7 @@ import {
   actionUpdateUserInfo,
   actionGetAchievementsData
 } from '../../common/core/redux/actions';
+import addPublication from './addPublication';
 
 const config = {
   bucketName: 'ankurself',
@@ -108,6 +113,7 @@ class EditProfile extends Component {
       this.getProjectsData(userId);
       this.getCareerProfileData(userId);
       this.getUserProfileData(userId);
+      this.getAccomplishmentData(userId);
       this.setProfileData(user);
       this.setState({ userId: userId, user: user });
     }
@@ -269,6 +275,35 @@ class EditProfile extends Component {
       });
   }
 
+  getAccomplishmentData(userId) {
+    theRapidHireApiService('getAccomplishment', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let accomplishmentData = this.state.accomplishmentData;
+          accomplishmentData = response.data.result[0];
+          console.log(response.data);
+
+          let onlineProfile = accomplishmentData.onlineProfile;
+          let presentation = accomplishmentData.presentation;
+          let publication = accomplishmentData.publication;
+          let patent = accomplishmentData.patent;
+          let certification = accomplishmentData.certification;
+
+          this.setState({
+            accomplishmentData: accomplishmentData,
+            onlineProfile,
+            presentation,
+            publication,
+            patent,
+            certification
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   setUserProfileData = data => {
     console.log('data ', data);
     if (data) {
@@ -363,7 +398,7 @@ class EditProfile extends Component {
     }
   };
 
-  showAccomplishmentComponent = (event, status) => {
+  showAccomplishmentComponent = (status, event) => {
     this.setState({
       showAccomplishmentComponent: !this.state.showAccomplishmentComponent,
       accomplishmentName: status
@@ -373,6 +408,14 @@ class EditProfile extends Component {
       this.setState({ careerProfileDetail: null });
       this.getCareerProfileData(this.state.userId);
     }
+  };
+
+  editAccomplishmentComponent = (accomplishmentDetail, status) => {
+    this.setState({
+      accomplishmentDetail: accomplishmentDetail,
+      accomplishmentName: status,
+      showAccomplishmentComponent: !this.state.showAccomplishmentComponent
+    });
   };
 
   editEducationComponent = educationDetail => {
@@ -640,18 +683,26 @@ class EditProfile extends Component {
     return (
       <div className="wrapper">
         <Header {...this.props} />
-        <main>
+        <main className="inner_main">
           {/* <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />  */}
+          <section className="top-banner">
+            <div className="banner_overlay"></div>
+            <div className="container content_inner">
+              <div className="banner-title">
+                <h1 className="m-0">Profile</h1>
+              </div>
+              <Breadcrumb>
+                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Profile</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+          </section>
           <div className="container">
-            <Breadcrumb>
-              <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-              <Breadcrumb.Item active>Profile</Breadcrumb.Item>
-            </Breadcrumb>
             {this.state.imageSource ? (
               <ImageCropper
                 imageSource={this.state.imageSource}
@@ -689,27 +740,26 @@ class EditProfile extends Component {
                     </div>
                     <div className="card_body">
                       <p>
-                        <i className="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-user mr-2 text-success fa-fw mr-3"></i>
                         {this.state.firstName} {this.state.lastName}
                       </p>
                       <p>
-                        <i className="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-briefcase mr-2 text-success fa-fw mr-3"></i>
                         {this.state.profileRole}
                       </p>
                       <p>
-                        <i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-home mr-2 text-success fa-fw mr-3"></i>
                         London, UK
                       </p>
                       <p>
-                        <i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-envelope mr-2 text-success fa-fw mr-3"></i>
                         {this.state.email}
                       </p>
                       <p>
-                        <i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>
+                        <i className="fa fa-phone mr-2 text-success fa-fw mr-3"></i>
                         {this.state.mobileNo}
                       </p>
                       <p>
-                        <i className="fa-fw w3-margin-right w3-large w3-text-teal"></i>
                         {this.state.profileRole ? (
                           <Button
                             bsStyle="primary no-bold no-round mr-1"
@@ -820,23 +870,24 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled mb-0">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.employmentListDeducationListDataata &&
                           this.state.educationListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editEducationComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
                                 <b></b>
-                                <a
-                                  onClick={this.editEducationComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
+                              </div>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar fa-fw mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -892,6 +943,15 @@ class EditProfile extends Component {
                         {this.state.employmentListData &&
                           this.state.employmentListData.map((data, index) => (
                             <li className="">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editEmploymentComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
                               <div>
                                 <b>Designaation :</b>{' '}
                                 <span>{data.designation}</span>
@@ -900,16 +960,8 @@ class EditProfile extends Component {
                                 <b>Organisation :</b>{' '}
                                 <span>{data.organisation}</span>
                               </div>
-                              <a
-                                onClick={this.editEmploymentComponent.bind(
-                                  this,
-                                  data
-                                )}
-                              >
-                                <span className="pe-7s-pen" />
-                              </a>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -960,24 +1012,25 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled mb-0">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.skillsListData &&
                           this.state.skillsListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
-                                <b>
-                                  {data.skillName} / {data.rating}
-                                </b>
-                                <a
-                                  onClick={this.editSkillsComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
-                              <p>Lorem ipsum dolor sit amet.</p>
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editSkillsComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
+                                <b>{data.skillName}</b>
+                              </div>
+                              <div>
+                                <b>Rating :</b> <span>{data.rating}</span>
+                              </div>
                             </li>
                           ))}
                       </ul>
@@ -1013,25 +1066,26 @@ class EditProfile extends Component {
                     </div>
 
                     <div className="card_body">
-                      <ul className="list-unstyled">
+                      <ul className="features_listing list-unstyled mb-0">
                         {this.state.projectListData &&
                           this.state.projectListData.map((data, index) => (
                             <li className="w3-container">
-                              <h5 className="w3-opacity">
+                              <a
+                                className="btn btn-outline-success btn-edit pull-right"
+                                onClick={this.editProjectComponent.bind(
+                                  this,
+                                  data
+                                )}
+                              >
+                                <span className="fa fa-pencil-square-o" />
+                              </a>
+                              <div>
                                 <b>
                                   {data.projectName} / {data.associatedWith}
                                 </b>
-                                <a
-                                  onClick={this.editProjectComponent.bind(
-                                    this,
-                                    data
-                                  )}
-                                >
-                                  <span className="pe-7s-pen" />
-                                </a>
-                              </h5>
+                              </div>
                               <h6 className="w3-text-teal">
-                                <i className="fa fa-calendar fa-fw w3-margin-right"></i>
+                                <i className="fa fa-calendar fa-fw mr-3"></i>
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
@@ -1055,52 +1109,326 @@ class EditProfile extends Component {
                   </div>
 
                   {/* Accomplishment */}
-                  <div
-                    className="w3-container w3-card w3-white"
-                    style={{ 'margin-bottom': '200px' }}
-                  >
-                    <div className="centerButton">
-                      {this.state.careerProfileListData ? null : (
-                        <Button
-                          bsStyle="primary no-bold no-round mr-1"
-                          className="no-bold no-round"
-                          // disabled={isLoading}
-                          onClick={this.showAccomplishmentComponent.bind(
-                            this,
-                            'onlineProfile'
+
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Project</h4>
+                        <div className="pull-right">
+                          {this.state.careerProfileListData ? null : (
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'onlineProfile'
+                              )}
+                            >
+                              {' '}
+                              Add Online
+                            </Button>
                           )}
-                        >
-                          {' '}
-                          Add Online
-                        </Button>
-                      )}
-                      <div className="centerButton">
-                        {this.state.careerProfileListData ? null : (
-                          <Button
-                            bsStyle="primary no-bold no-round mr-1"
-                            className="no-bold no-round"
-                            // disabled={isLoading}
-                            onClick={this.showAccomplishmentComponent.bind(
-                              this,
-                              'certification'
+
+                          <div className="centerButton">
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'certification'
+                                )}
+                              >
+                                {' '}
+                                Add Certification
+                              </Button>
                             )}
-                          >
-                            {' '}
-                            Add Certification
-                          </Button>
-                        )}
-                        {this.state.showAccomplishmentComponent == true ? (
-                          <AddAccomplishment
-                            closeAccomplishmentComponent={
-                              this.showAccomplishmentComponent
-                            }
-                            accomplishmentName={this.state.accomplishmentName}
-                            user={this.state.user}
-                            careerProfileDetail={this.state.careerProfileDetail}
-                          />
-                        ) : (
-                          ''
-                        )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'certification' ? (
+                              <AddCertification
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'patent'
+                                )}
+                              >
+                                {' '}
+                                Add Patent
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'patent' ? (
+                              <AddPatent
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'publication'
+                                )}
+                              >
+                                {' '}
+                                Add Publication
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'publication' ? (
+                              <AddPublication
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'presentation'
+                                )}
+                              >
+                                {' '}
+                                Add Presentation
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'presentation' ? (
+                              <AddPresentation
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'onlineProfile'
+                                )}
+                              >
+                                {' '}
+                                Add Online Profile
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'onlineProfile' ? (
+                              <AddOnlineProfile
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card_body">
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.onlineProfile &&
+                            this.state.onlineProfile.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'onlineProfile'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.publicationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.publication &&
+                            this.state.publication.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'publication'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.publicationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.presentation &&
+                            this.state.presentation.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'presentation'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.presentationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.patent &&
+                            this.state.patent.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'patent'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.patentTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.patentUrl}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.certification &&
+                            this.state.certification.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'certification'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.certificationName}</b>
+                                </div>
+                                <div>
+                                  <b>certificationBody :</b>{' '}
+                                  <span>{data.certificationBody}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
                       </div>
                       <div>
                         <span
@@ -1179,12 +1507,13 @@ class EditProfile extends Component {
                       </span>
                       <span class="edit icon" tabindex="0">
                         <a
+                          className="btn btn-outline-success btn-edit pull-right"
                           onClick={this.editCareerProfileComponent.bind(
                             this,
                             this.state.careerProfileListData
                           )}
                         >
-                          <span className="pe-7s-pen" />
+                          <span className="fa fa-pencil-square-o" />
                         </a>
                       </span>
                     </div>

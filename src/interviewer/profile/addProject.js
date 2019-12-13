@@ -37,13 +37,6 @@ import theRapidHireApiService from '../../common/core/api/apiService';
 //import MediaList from '../mediaList';
 
 let validationMessages = CONSTANTS.validationMessages;
-let regExpressions = CONSTANTS.regExpressions;
-let badgeImgArray = [];
-let badgeImgPreview = [];
-let certificateImgArray = [];
-let certificateImgPreview = [];
-let mediaImgArray = [];
-let mediaImgPreview = [];
 const emptyToDate = '10000000';
 
 class addProject extends Component {
@@ -445,20 +438,6 @@ class addProject extends Component {
 
     return (
       <div>
-        {/* {this.state.imageSource ? (
-          <ImageCropper
-            imageSource={this.state.imageSource}
-            imageName={this.state.imageName}
-            imageType={this.state.imageType}
-            aspectRatio={this.state.action === 1 ? 1 / 1 : 16 / 9}
-            modalSize={'medium'}
-            cropBoxWidth={this.state.action === 1 ? '300' : '700'}
-            cropBoxHeight={this.state.action === 1 ? '300' : '700'}
-            uploadImageToAzure={this.handleMediaChange.bind(this)}
-            labelName={'ADD_MEDIA'}
-          />
-        ) : null} */}
-
         <Modal
           bsSize="large"
           show={this.state.projectModal}

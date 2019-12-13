@@ -23,6 +23,11 @@ import AddEmployment from '../profile/addEmployment';
 import AddProject from '../profile/addProject';
 import AddCareerProfile from '../profile/addCareerProfile';
 import AddPersonalProfile from '../profile/addPersonalProfile';
+import AddCertification from './addCertification';
+import AddPresentation from '../profile/addPresentation';
+import AddPatent from '../profile/addPatent';
+import AddPublication from '../profile/addPublication';
+import AddOnlineProfile from '../profile/addOnlineProfile';
 import AddSkills from '../profile/addSkills';
 //import CompetencyRecommendations from '../profile/competency/recommendations/competencyWiseRecommendations';
 import ImageCropper from '../../common/cropper/imageCropper';
@@ -47,6 +52,7 @@ import {
   actionUpdateUserInfo,
   actionGetAchievementsData
 } from '../../common/core/redux/actions';
+import addPublication from './addPublication';
 
 const config = {
   bucketName: 'ankurself',
@@ -90,7 +96,8 @@ class EditProfile extends Component {
       name: '',
       editTagLine: false,
       profileRoleList: [],
-      userProfile: {}
+      userProfile: {},
+      accomplishmentName: ''
     };
     // this.textInput = React.createRef();
   }
@@ -106,6 +113,7 @@ class EditProfile extends Component {
       this.getProjectsData(userId);
       this.getCareerProfileData(userId);
       this.getUserProfileData(userId);
+      this.getAccomplishmentData(userId);
       this.setProfileData(user);
       this.setState({ userId: userId, user: user });
     }
@@ -267,6 +275,35 @@ class EditProfile extends Component {
       });
   }
 
+  getAccomplishmentData(userId) {
+    theRapidHireApiService('getAccomplishment', { userId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let accomplishmentData = this.state.accomplishmentData;
+          accomplishmentData = response.data.result[0];
+          console.log(response.data);
+
+          let onlineProfile = accomplishmentData.onlineProfile;
+          let presentation = accomplishmentData.presentation;
+          let publication = accomplishmentData.publication;
+          let patent = accomplishmentData.patent;
+          let certification = accomplishmentData.certification;
+
+          this.setState({
+            accomplishmentData: accomplishmentData,
+            onlineProfile,
+            presentation,
+            publication,
+            patent,
+            certification
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   setUserProfileData = data => {
     console.log('data ', data);
     if (data) {
@@ -359,6 +396,26 @@ class EditProfile extends Component {
       this.setState({ careerProfileDetail: null });
       this.getCareerProfileData(this.state.userId);
     }
+  };
+
+  showAccomplishmentComponent = (status, event) => {
+    this.setState({
+      showAccomplishmentComponent: !this.state.showAccomplishmentComponent,
+      accomplishmentName: status
+    });
+
+    if (!this.state.showAccomplishmentComponent) {
+      this.setState({ careerProfileDetail: null });
+      this.getCareerProfileData(this.state.userId);
+    }
+  };
+
+  editAccomplishmentComponent = (accomplishmentDetail, status) => {
+    this.setState({
+      accomplishmentDetail: accomplishmentDetail,
+      accomplishmentName: status,
+      showAccomplishmentComponent: !this.state.showAccomplishmentComponent
+    });
   };
 
   editEducationComponent = educationDetail => {
@@ -1048,6 +1105,361 @@ class EditProfile extends Component {
                             </li>
                           ))}
                       </ul>
+                    </div>
+                  </div>
+
+                  {/* Accomplishment */}
+
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left">Accomplishment</h4>
+                        <div className="pull-right">
+                          {this.state.careerProfileListData ? null : (
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'onlineProfile'
+                              )}
+                            >
+                              {' '}
+                              Add Online
+                            </Button>
+                          )}
+
+                          <div className="centerButton">
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'certification'
+                                )}
+                              >
+                                {' '}
+                                Add Certification
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'certification' ? (
+                              <AddCertification
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'patent'
+                                )}
+                              >
+                                {' '}
+                                Add Patent
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'patent' ? (
+                              <AddPatent
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'publication'
+                                )}
+                              >
+                                {' '}
+                                Add Publication
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'publication' ? (
+                              <AddPublication
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'presentation'
+                                )}
+                              >
+                                {' '}
+                                Add Presentation
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'presentation' ? (
+                              <AddPresentation
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+
+                            {this.state.careerProfileListData ? null : (
+                              <Button
+                                bsStyle="primary no-bold no-round mr-1"
+                                className="no-bold no-round"
+                                // disabled={isLoading}
+                                onClick={this.showAccomplishmentComponent.bind(
+                                  this,
+                                  'onlineProfile'
+                                )}
+                              >
+                                {' '}
+                                Add Online Profile
+                              </Button>
+                            )}
+                            {this.state.showAccomplishmentComponent == true &&
+                            this.state.accomplishmentName == 'onlineProfile' ? (
+                              <AddOnlineProfile
+                                closeAccomplishmentComponent={
+                                  this.showAccomplishmentComponent
+                                }
+                                accomplishmentName={
+                                  this.state.accomplishmentName
+                                }
+                                user={this.state.user}
+                                accomplishmentData={
+                                  this.state.accomplishmentData
+                                }
+                                accomplishmentDetail={
+                                  this.state.accomplishmentDetail
+                                }
+                              />
+                            ) : (
+                              ''
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card_body">
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.onlineProfile &&
+                            this.state.onlineProfile.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'onlineProfile'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.publicationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.publication &&
+                            this.state.publication.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'publication'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.publicationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.presentation &&
+                            this.state.presentation.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'presentation'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.presentationTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.url}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.patent &&
+                            this.state.patent.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'patent'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.patentTitle}</b>
+                                </div>
+                                <div>
+                                  <b>URL :</b> <span>{data.patentUrl}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+
+                        <ul className="features_listing list-unstyled mb-0">
+                          {this.state.certification &&
+                            this.state.certification.map((data, index) => (
+                              <li className="w3-container">
+                                <a
+                                  className="btn btn-outline-success btn-edit pull-right"
+                                  onClick={this.editAccomplishmentComponent.bind(
+                                    this,
+                                    data,
+                                    'certification'
+                                  )}
+                                >
+                                  <span className="fa fa-pencil-square-o" />
+                                </a>
+                                <div>
+                                  <b>{data.certificationName}</b>
+                                </div>
+                                <div>
+                                  <b>certificationBody :</b>{' '}
+                                  <span>{data.certificationBody}</span>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span
+                          style={{
+                            'font-weight': 600,
+                            'font-size': '20px',
+                            color: '#333'
+                          }}
+                        >
+                          <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+                        </span>
+                        <span class="edit icon" tabindex="0">
+                          <a
+                            onClick={this.editCareerProfileComponent.bind(
+                              this,
+                              this.state.careerProfileListData
+                            )}
+                          >
+                            <span className="pe-7s-pen" />
+                          </a>
+                        </span>
+                      </div>{' '}
+                    </div>
+
+                    <div className="w3-container">
+                      <h5 className="w3-opacity">
+                        <b>
+                          {this.state.careerProfileListData &&
+                            this.state.careerProfileListData.desiredLocation}
+                        </b>
+                      </h5>
                     </div>
                   </div>
 

@@ -88,6 +88,7 @@ class EditProfile extends Component {
       employmentListData: [],
       skillsListData: [],
       projectListData: [],
+      countryList: [],
       userData: {},
       showDropdown: false,
       isActive: 'true',
@@ -108,6 +109,7 @@ class EditProfile extends Component {
     if (user) {
       let userId = user.userId;
       this.getEmploymentData(userId);
+      this.getEducationData(userId);
       this.getUserDetails(userId);
       this.getSkillsData(userId);
       this.getProjectsData(userId);
@@ -198,6 +200,21 @@ class EditProfile extends Component {
       });
   }
 
+  getEducationData(userId) {
+    theRapidHireApiService('getEducationById', { userId })
+      .then(response => {
+        console.log(response);
+        if (response.data.status === 'Success') {
+          let educationListData = this.state.educationListData;
+          educationListData = response.data.result;
+          this.setState({ educationListData: educationListData });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   getSkillsData(userId) {
     theRapidHireApiService('getUserSkillsById', { userId })
       .then(response => {
@@ -242,6 +259,15 @@ class EditProfile extends Component {
         console.log(err);
       });
   }
+
+  // setCareerProfileData(data){
+  //   if(data){
+  //      this.setState({
+  //        location: data.
+
+  //      })
+  //     }
+  // }
 
   getProfileData = () => {
     let userId = this.state.userId;
@@ -316,7 +342,7 @@ class EditProfile extends Component {
         mobileNo: data.mobileNo,
         resumeURL: data.resumeURL,
         resumeName: data.resumeName,
-        profileRole: data.profileRole[0].profileRoleId
+        profileRole: data.profileRole[0].profileRole
       });
     }
   };
@@ -328,7 +354,7 @@ class EditProfile extends Component {
     });
     if (!this.state.showEducationComponent) {
       this.setState({ educationDetail: null });
-      //this.getEducationData(this.state.userId);
+      this.getEducationData(this.state.userId);
     }
   };
 
@@ -749,7 +775,7 @@ class EditProfile extends Component {
                       </p>
                       <p>
                         <i className="fa fa-home mr-2 text-success fa-fw mr-3"></i>
-                        London, UK
+                        {this.state.currentLocation}
                       </p>
                       <p>
                         <i className="fa fa-envelope mr-2 text-success fa-fw mr-3"></i>
@@ -860,6 +886,7 @@ class EditProfile extends Component {
                                 this.showEducationComponent
                               }
                               user={this.state.user}
+                              educationDetail={this.state.educationDetail}
                               educationMode={this.state.educationDetail}
                             />
                           ) : (
@@ -871,7 +898,7 @@ class EditProfile extends Component {
 
                     <div className="card_body">
                       <ul className="features_listing list-unstyled mb-0">
-                        {this.state.employmentListDeducationListDataata &&
+                        {this.state.educationListData &&
                           this.state.educationListData.map((data, index) => (
                             <li className="w3-container">
                               <a
@@ -888,22 +915,14 @@ class EditProfile extends Component {
                               </div>
                               <h6 className="w3-text-teal">
                                 <i className="fa fa-calendar fa-fw mr-3"></i>
-                                {moment(parseInt(data.startDate, 10)).format(
-                                  'DD-MMM-YYYY'
-                                ) + ' '}{' '}
-                                to
-                                {data.endDate ? (
-                                  ' ' +
-                                  moment(parseInt(data.endDate, 10)).format(
-                                    'DD-MMM-YYYY'
-                                  )
-                                ) : (
-                                  <span className="w3-tag w3-teal w3-round">
-                                    Present
-                                  </span>
-                                )}
+                                {data.fromYear} to {data.fromYear}
                               </h6>
-                              <p>Lorem ipsum dolor sit amet.</p>
+                              <p>{data.organization.name}</p>
+                              <p>
+                                {data.degree.name}
+                                {', '}
+                                {data.specialization.name}
+                              </p>
                             </li>
                           ))}
                       </ul>
@@ -1081,7 +1100,10 @@ class EditProfile extends Component {
                               </a>
                               <div>
                                 <b>
-                                  {data.projectName} / {data.associatedWith}
+                                  {data.projectName}{' '}
+                                  {data.associatedWith
+                                    ? '/' + data.associatedWith
+                                    : ''}
                                 </b>
                               </div>
                               <h6 className="w3-text-teal">
@@ -1089,7 +1111,7 @@ class EditProfile extends Component {
                                 {moment(parseInt(data.startDate, 10)).format(
                                   'DD-MMM-YYYY'
                                 ) + ' '}{' '}
-                                to
+                                to{' '}
                                 {data.endDate ? (
                                   ' ' +
                                   moment(parseInt(data.endDate, 10)).format(
@@ -1101,7 +1123,7 @@ class EditProfile extends Component {
                                   </span>
                                 )}
                               </h6>
-                              <p>Lorem ipsum dolor sit amet.</p>
+                              <p>{data.projectName}</p>
                             </li>
                           ))}
                       </ul>
@@ -1131,20 +1153,19 @@ class EditProfile extends Component {
                           )}
 
                           <div className="centerButton">
-                            {this.state.careerProfileListData ? null : (
-                              <Button
-                                bsStyle="primary no-bold no-round mr-1"
-                                className="no-bold no-round"
-                                // disabled={isLoading}
-                                onClick={this.showAccomplishmentComponent.bind(
-                                  this,
-                                  'certification'
-                                )}
-                              >
-                                {' '}
-                                Add Certification
-                              </Button>
-                            )}
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'certification'
+                              )}
+                            >
+                              {' '}
+                              Add Certification
+                            </Button>
+
                             {this.state.showAccomplishmentComponent == true &&
                             this.state.accomplishmentName == 'certification' ? (
                               <AddCertification
@@ -1166,20 +1187,19 @@ class EditProfile extends Component {
                               ''
                             )}
 
-                            {this.state.careerProfileListData ? null : (
-                              <Button
-                                bsStyle="primary no-bold no-round mr-1"
-                                className="no-bold no-round"
-                                // disabled={isLoading}
-                                onClick={this.showAccomplishmentComponent.bind(
-                                  this,
-                                  'patent'
-                                )}
-                              >
-                                {' '}
-                                Add Patent
-                              </Button>
-                            )}
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'patent'
+                              )}
+                            >
+                              {' '}
+                              Add Patent
+                            </Button>
+
                             {this.state.showAccomplishmentComponent == true &&
                             this.state.accomplishmentName == 'patent' ? (
                               <AddPatent
@@ -1201,20 +1221,19 @@ class EditProfile extends Component {
                               ''
                             )}
 
-                            {this.state.careerProfileListData ? null : (
-                              <Button
-                                bsStyle="primary no-bold no-round mr-1"
-                                className="no-bold no-round"
-                                // disabled={isLoading}
-                                onClick={this.showAccomplishmentComponent.bind(
-                                  this,
-                                  'publication'
-                                )}
-                              >
-                                {' '}
-                                Add Publication
-                              </Button>
-                            )}
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'publication'
+                              )}
+                            >
+                              {' '}
+                              Add Publication
+                            </Button>
+
                             {this.state.showAccomplishmentComponent == true &&
                             this.state.accomplishmentName == 'publication' ? (
                               <AddPublication
@@ -1236,20 +1255,19 @@ class EditProfile extends Component {
                               ''
                             )}
 
-                            {this.state.careerProfileListData ? null : (
-                              <Button
-                                bsStyle="primary no-bold no-round mr-1"
-                                className="no-bold no-round"
-                                // disabled={isLoading}
-                                onClick={this.showAccomplishmentComponent.bind(
-                                  this,
-                                  'presentation'
-                                )}
-                              >
-                                {' '}
-                                Add Presentation
-                              </Button>
-                            )}
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'presentation'
+                              )}
+                            >
+                              {' '}
+                              Add Presentation
+                            </Button>
+
                             {this.state.showAccomplishmentComponent == true &&
                             this.state.accomplishmentName == 'presentation' ? (
                               <AddPresentation
@@ -1271,20 +1289,19 @@ class EditProfile extends Component {
                               ''
                             )}
 
-                            {this.state.careerProfileListData ? null : (
-                              <Button
-                                bsStyle="primary no-bold no-round mr-1"
-                                className="no-bold no-round"
-                                // disabled={isLoading}
-                                onClick={this.showAccomplishmentComponent.bind(
-                                  this,
-                                  'onlineProfile'
-                                )}
-                              >
-                                {' '}
-                                Add Online Profile
-                              </Button>
-                            )}
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showAccomplishmentComponent.bind(
+                                this,
+                                'onlineProfile'
+                              )}
+                            >
+                              {' '}
+                              Add Online Profile
+                            </Button>
+
                             {this.state.showAccomplishmentComponent == true &&
                             this.state.accomplishmentName == 'onlineProfile' ? (
                               <AddOnlineProfile
@@ -1464,33 +1481,39 @@ class EditProfile extends Component {
                   </div>
 
                   {/* Desired Career Profile */}
-                  <div
-                    className="w3-container w3-card w3-white"
-                    style={{ 'margin-bottom': '200px' }}
-                  >
-                    <div className="centerButton">
-                      {this.state.careerProfileListData ? null : (
-                        <Button
-                          bsStyle="primary no-bold no-round mr-1"
-                          className="no-bold no-round"
-                          // disabled={isLoading}
-                          onClick={this.showCareerProfileComponent.bind(this)}
-                        >
-                          {' '}
-                          Add Career
-                        </Button>
-                      )}
-                      {this.state.showCareerProfileComponent == true ? (
-                        <AddCareerProfile
-                          closeCareerProfileComponent={
-                            this.showCareerProfileComponent
-                          }
-                          user={this.state.user}
-                          careerProfileDetail={this.state.careerProfileDetail}
-                        />
-                      ) : (
-                        ''
-                      )}
+                  <div className="card">
+                    <div className="card_head">
+                      <div className="clearfix">
+                        <h4 className="pull-left"> Desired Career Profile</h4>
+                        <div className="pull-right">
+                          {this.state.careerProfileListData ? null : (
+                            <Button
+                              bsStyle="primary no-bold no-round mr-1"
+                              className="no-bold no-round"
+                              // disabled={isLoading}
+                              onClick={this.showCareerProfileComponent.bind(
+                                this
+                              )}
+                            >
+                              {' '}
+                              Add Career
+                            </Button>
+                          )}
+                          {this.state.showCareerProfileComponent == true ? (
+                            <AddCareerProfile
+                              closeCareerProfileComponent={
+                                this.showCareerProfileComponent
+                              }
+                              user={this.state.user}
+                              careerProfileDetail={
+                                this.state.careerProfileDetail
+                              }
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </div>
                     </div>
 
                     <div>
@@ -1502,7 +1525,6 @@ class EditProfile extends Component {
                         }}
                       >
                         <i className="fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
-                        Desired Career Profile
                       </span>
                       <span class="edit icon" tabindex="0">
                         <a

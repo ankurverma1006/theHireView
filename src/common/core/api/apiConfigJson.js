@@ -221,6 +221,14 @@ export default {
     showErrorMessage: true
   },
 
+  getEducationById: {
+    url: '/ui/education?userId=:userId',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
   addEducation: {
     url: '/ui/education',
     method: 'POST',
@@ -229,13 +237,16 @@ export default {
       organizationId: '',
       userId: '',
       logo: '',
+      degreeId: '',
       degree: '',
-      field: '',
+      specializationId: 0,
+      specialization: '',
       grade: '',
       fromYear: '',
       toYear: '',
       isActive: '',
-      type: ''
+      type: '',
+      description: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -249,11 +260,16 @@ export default {
       organizationId: '',
       userId: '',
       logo: '',
+      degreeId: '',
+      degree: '',
+      specializationId: 0,
+      specialization: '',
       grade: '',
       fromYear: '',
       toYear: '',
       isActive: '',
-      type: ''
+      type: '',
+      description: ''
     },
     showResultMessage: true,
     showErrorMessage: true
@@ -519,7 +535,8 @@ export default {
       profileRole: [],
       experienceInYear: 0,
       experienceInMonth: 0,
-      currentLocation: 0,
+      locationId: 0,
+      currentLocation: null,
       mobileNo: 0
     },
     showResultMessage: true,
@@ -750,6 +767,38 @@ export default {
 
   getPreSignedURL: {
     url: '/ui/azure/upload',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
+  getCountryData: {
+    url: '/ui/country',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
+  getCityData: {
+    url: '/ui/city?countryId=:countryId&stateId=:stateId',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
+  getDegree: {
+    url: '/ui/degree',
+    method: 'GET',
+    data: {},
+    showResultMessage: false,
+    showErrorMessage: false
+  },
+
+  getSpecialization: {
+    url: '/ui/specialization',
     method: 'GET',
     data: {},
     showResultMessage: false,

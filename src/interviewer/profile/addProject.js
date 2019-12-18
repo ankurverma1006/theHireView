@@ -95,7 +95,7 @@ class addProject extends Component {
     }
 
     this.setProjectData(this.props.projectDetail);
-    this.getAssociatedListData(userId);
+    //  this.getAssociatedListData(userId);
   }
 
   getAssociatedListData(userId) {

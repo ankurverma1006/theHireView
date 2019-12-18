@@ -1,0 +1,269 @@
+.header_row{
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    align-items: center;
+    .main-menu{
+        ul{
+            li{
+                display: inline-block;
+                .menu-item{
+                    position: relative;
+                    padding: 10px 15px;
+                    display: block;
+                    font-size: 16px;
+                    color: #444;
+                    font-weight: 500;
+                    &:after{
+                        content: "";
+                        transition: all 0.5s ease-in-out;
+                        left: 0px;
+                        bottom: 0px;
+                        width: 0px;
+                    }
+                    &:before{
+                        content: "";
+                        transition: all 0.5s ease-in-out;
+                        top: 0px;
+                        right: 0px;
+                        width: 0px;
+                    }
+                    &:hover,&.active{
+                        color: $primary-color;
+                        &:after,&:before{
+                            background-color: $primary-color;
+                            position: absolute;
+                            width: 40px;
+                            height: 2px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.home_banner{
+    position: relative;
+    height: 820px;
+    background: url('https://executivecareer.in/wp-content/uploads/revslider/home-6/slider6_1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white-color;
+    .banner_content{
+        position: relative;
+        h2{
+            font-size: calc(2vw + 15px);
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+        h1{
+            font-size:  calc(3.9vw + 16px);
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+        h6{
+            line-height: 28px;
+            font-size: 18px;
+            text-transform: capitalize;
+        }
+    }
+}
+
+.about{
+    padding: 100px 0 70px;
+    .about-card{
+        margin-bottom: 30px;
+        .service_icon{
+            height: 70px;
+            width: 70px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: $primary-color;
+            border-radius: 100%;
+            font-size: 30px;
+        }
+        .content_head{
+            font-size: 20px;
+            font-weight: 700;
+        }
+        p{
+            color: $dark-gray;
+            font-size: 15px;
+        }
+    }
+}
+
+.services{
+    padding: 100px 0 70px;
+    .service_card{
+        padding: 20px;
+        margin-bottom: 30px;
+        .services-icon{
+            height: 80px;
+            width: 80px;
+            font-size: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: $primary-color;
+            border: 2px solid $primary-color;
+            border-radius: 100%;
+            transition: .5s ease;            
+        }
+        .text-content{
+            width: calc(100% - 80px);
+            .content_head{
+                margin-top: 10px;
+                font-weight: 700;
+                font-size: 20px;
+            }
+        }
+        &:hover{
+            .services-icon{
+                background: $primary-bg;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.testimonial{
+    padding: 100px 0;
+    overflow: hidden;
+    .slick-slide{
+        > div{
+            margin: 0 15px;
+        }
+        .card{
+            border-style: solid;
+            border-color: $primary-color;
+            border-width: 0 0 0 5px;
+            padding: 40px 20px 20px;
+            box-shadow: 0 0 15px #ccc;
+            .image{
+                height: 80px;
+                width: 80px;
+                border-radius: 100%;
+                border: 2px solid $primary-color;
+                overflow: hidden;
+            }
+            .slider-content{
+                padding-left: 15px;
+                width: calc(100% - 80px);
+            }
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+    .slick-dots{
+        li{
+            width: 25px;
+            height: 10px;
+            button{
+                margin: 0;
+                padding: 0;
+                &:before{
+                    content: '';
+                    height: 6px;
+                    width: 25px;
+                    background: $primary-color;
+                    opacity: .6;
+                    border-radius: 3px;
+                }
+            }
+            &.slick-active{
+                button{
+                    &:before{
+                        opacity: 1;
+                    }
+                }
+            }
+        }        
+    }
+}
+
+.header-block{
+    margin-bottom: 50px;
+    .sub-heading{
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 12px 15px;
+        color: $primary-color;
+        position: relative;
+        font-size: 16px;
+        font-weight: 600;        
+        &:after{
+            content: "";
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 40px;
+            height: 2px;
+            background: $primary-color;
+        }
+        &:before{
+            content: "";
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 40px;
+            height: 2px;
+            background: $primary-color;
+        }
+    }
+    .heading{
+        margin: 15px 0;
+        font-size: 32px;
+        line-height: 40px;
+        font-weight: 700;
+    }
+}
+
+@media(max-width: 767px){
+    .home_banner{
+        .banner_content{
+            h6{
+                font-size: 14px;
+                line-height: 22px;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+footer{
+    background: #212122;
+    color: #fff;
+    .footer-top{
+        padding: 60px 0 25px;
+        border-bottom: 1px solid #313047;
+        .footer-content{
+            margin-bottom: 15px;
+            ul{
+                li{
+                    align-items: baseline;
+                    a{
+                        color: #fff;
+                    }
+                }
+            }
+            .footer-title{
+                margin-top: 0;
+                font-size: 22px;
+                font-weight: 600;
+                display: inline-block;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+                border-bottom: 2px solid #fff;
+            }
+        }
+    }
+}

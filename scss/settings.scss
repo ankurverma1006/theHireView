@@ -40,17 +40,17 @@
 
 /* // Landing page SCSS */
 
-@import "landing/coming-soon";
+// @import "landing/coming-soon";
 /* // Pages or partial SCSS */
-@import "pages/profile";
-@import "pages/tarun";
-@import "pages/edit-profile";
-@import "pages/chat";
-@import "pages/home";
-@import "pages/nidhi";
-@import "pages/groups";
-@import "pages/video_chat";
-@import "pages/ankur";
+@import "pages/authentication";
+// @import "pages/tarun";
+// @import "pages/edit-profile";
+// @import "pages/chat";
+// @import "pages/home";
+// @import "pages/nidhi";
+// @import "pages/groups";
+// @import "pages/video_chat";
+// @import "pages/ankur";
 
 /* // Plugins SCSS */
 @import "component/plugins/animate";

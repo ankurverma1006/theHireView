@@ -480,191 +480,183 @@ class HRSignup extends Component {
       readOnly = false;
     }
     return (
-      <div className="wrapper">
+      <main>
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-        <div className="main-panel">
-          <div className="banner">
-            <div className="overlay"></div>
-            <div className="banner-content">
-              <div className="login_card">
-                <div className="header">
-                  <div className="formContent forgotPasswordForm bg-transparent">
-                    <div className="centeredBox p-7">
-                      <div
-                        style={{ position: 'relative' }}
-                        className="flex align-center mb-1"
-                      >
-                        <Link to="/login" className="md-icon mr-1">
-                          <span className="icon-back_arrow2" />
-                        </Link>
-                        <legend className="color-blue mb-0">
-                          Back To Login
-                        </legend>
+        <section className="authentication_wrapper d-flex align-items-center">
+          <div className="overlay"></div>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 offset-md-6">
+                <div className="shadow_box p-3 p-md-5">
+                  <Link to="/login" className="text-secondary">
+                    <span className="icon-back_arrow2 mr-2" />
+                    Back To Login
+                  </Link>
+                  <h3 className="h4login text-center">Create New Account</h3>
+                  <Nav
+                    bsStyle="tabs"
+                    className="border-bottom-0 my-4"
+                    activeKey={4}
+                  >
+                    <NavItem
+                      eventKey={2}
+                      onClick={() =>
+                        this.props.history.push({
+                          pathname: '/signup',
+                          state: {
+                            eventKey: 2
+                          }
+                        })
+                      }
+                    >
+                      Interviewer
+                    </NavItem>
+                    <NavItem
+                      eventKey={1}
+                      onClick={() =>
+                        this.props.history.push({
+                          pathname: '/signup',
+                          state: {
+                            eventKey: 1
+                          }
+                        })
+                      }
+                    >
+                      USER
+                    </NavItem>
+                    <NavItem eventKey={4}>HR</NavItem>
+                  </Nav>
+
+                  <form>
+                    <FormGroup
+                      style={{ position: 'relative' }}
+                      className={this.getClasses('company')}
+                    >
+                      <label className="form-label">Add Company</label>
+
+                      <div className="custom-select">
+                        <span className="icon-down_arrow selectIcon" />
+                        <Select
+                          className="form-control"
+                          name="company"
+                          value={this.state.company}
+                          onChange={this.handleCompanyChange}
+                          options={this.state.companyDetail}
+                          placeholder="Select company"
+                        />
                       </div>
-                      <Nav bsStyle="tabs" activeKey={4}>
-                        <NavItem
-                          eventKey={2}
-                          onClick={() =>
-                            this.props.history.push({
-                              pathname: '/signup',
-                              state: {
-                                eventKey: 2
-                              }
-                            })
-                          }
-                        >
-                          Interviewer SIGN UP
-                        </NavItem>
-                        <NavItem
-                          eventKey={1}
-                          onClick={() =>
-                            this.props.history.push({
-                              pathname: '/signup',
-                              state: {
-                                eventKey: 1
-                              }
-                            })
-                          }
-                        >
-                          USER SIGN UP
-                        </NavItem>
-                        <NavItem eventKey={4}>HR SIGN UP</NavItem>
-                      </Nav>
 
-                      <form>
-                        <FormGroup
-                          style={{ position: 'relative' }}
-                          className={this.getClasses('company')}
-                        >
-                          <label className="form-label">Add Company</label>
+                      {renderMessage(
+                        this.props.getValidationMessages('company')
+                      )}
+                    </FormGroup>
 
-                          <div className="custom-select">
-                            <span className="icon-down_arrow selectIcon" />
-                            <Select
-                              className="form-control"
-                              name="company"
-                              value={this.state.company}
-                              onChange={this.handleCompanyChange}
-                              options={this.state.companyDetail}
-                              placeholder="Select company"
-                            />
-                          </div>
+                    {this.state.otherCompanyName === true ? (
+                      <FormGroup
+                        style={{ position: 'relative' }}
+                        className={this.getClasses('companyName')}
+                      >
+                        <label className="form-label">Company Name</label>
 
-                          {renderMessage(
-                            this.props.getValidationMessages('company')
-                          )}
-                        </FormGroup>
+                        <FormControl
+                          type="text"
+                          placeholder="Company Name"
+                          name="companyName"
+                          value={this.state.companyName}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                          maxLength="35"
+                        />
 
-                        {this.state.otherCompanyName === true ? (
-                          <FormGroup
-                            style={{ position: 'relative' }}
-                            className={this.getClasses('companyName')}
-                          >
-                            <label className="form-label">Company Name</label>
+                        {renderMessage(
+                          this.props.getValidationMessages('companyName')
+                        )}
+                      </FormGroup>
+                    ) : null}
 
-                            <FormControl
-                              type="text"
-                              placeholder="Company Name"
-                              name="companyName"
-                              value={this.state.companyName}
-                              onChange={this.handleChange}
-                              autoComplete="off"
-                              maxLength="35"
-                            />
+                    <FormGroup
+                      style={{ position: 'relative' }}
+                      className={this.getClasses('firstName')}
+                    >
+                      <label className="form-label">First Name</label>
 
-                            {renderMessage(
-                              this.props.getValidationMessages('companyName')
-                            )}
-                          </FormGroup>
-                        ) : null}
+                      <FormControl
+                        type="text"
+                        placeholder="First Name"
+                        name="firstName"
+                        value={this.state.firstName}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="35"
+                      />
 
-                        <FormGroup
-                          style={{ position: 'relative' }}
-                          className={this.getClasses('firstName')}
-                        >
-                          <label className="form-label">First Name</label>
+                      {renderMessage(
+                        this.props.getValidationMessages('firstName')
+                      )}
+                    </FormGroup>
 
-                          <FormControl
-                            type="text"
-                            placeholder="First Name"
-                            name="firstName"
-                            value={this.state.firstName}
-                            onChange={this.handleChange}
-                            autoComplete="off"
-                            maxLength="35"
-                          />
+                    <FormGroup
+                      style={{ position: 'relative' }}
+                      className={this.getClasses('lastName')}
+                    >
+                      <label className="form-label">Last Name</label>
 
-                          {renderMessage(
-                            this.props.getValidationMessages('firstName')
-                          )}
-                        </FormGroup>
+                      <FormControl
+                        type="text"
+                        placeholder="Last Name"
+                        name="lastName"
+                        value={this.state.lastName}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        maxLength="35"
+                      />
 
-                        <FormGroup
-                          style={{ position: 'relative' }}
-                          className={this.getClasses('lastName')}
-                        >
-                          <label className="form-label">Last Name</label>
+                      {renderMessage(
+                        this.props.getValidationMessages('lastName')
+                      )}
+                    </FormGroup>
 
-                          <FormControl
-                            type="text"
-                            placeholder="Last Name"
-                            name="lastName"
-                            value={this.state.lastName}
-                            onChange={this.handleChange}
-                            autoComplete="off"
-                            maxLength="35"
-                          />
+                    <FormGroup
+                      style={{ position: 'relative' }}
+                      className={this.getClasses('email')}
+                    >
+                      <label className="form-label">Email</label>
 
-                          {renderMessage(
-                            this.props.getValidationMessages('lastName')
-                          )}
-                        </FormGroup>
+                      <FormControl
+                        type="Email"
+                        placeholder="Email"
+                        name="email"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        onKeyPress={this.submitData}
+                      />
 
-                        <FormGroup
-                          style={{ position: 'relative' }}
-                          className={this.getClasses('email')}
-                        >
-                          <label className="form-label">Email</label>
+                      {renderMessage(this.props.getValidationMessages('email'))}
+                    </FormGroup>
 
-                          <FormControl
-                            type="Email"
-                            placeholder="Email"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            autoComplete="off"
-                            onKeyPress={this.submitData}
-                          />
-
-                          {renderMessage(
-                            this.props.getValidationMessages('email')
-                          )}
-                        </FormGroup>
-
-                        <FormGroup>
-                          <Button
-                            bsStyle="primary"
-                            className="centeredBtn btn-lg"
-                            disabled={isLoading}
-                            onClick={!isLoading ? this.validateData : null}
-                          >
-                            {isLoading ? 'In Progress...' : 'Sign Up'}
-                          </Button>
-                        </FormGroup>
-                      </form>
-                    </div>{' '}
-                  </div>
+                    <FormGroup>
+                      <Button
+                        bsStyle="success"
+                        className="btn-block btn-lg"
+                        disabled={isLoading}
+                        onClick={!isLoading ? this.validateData : null}
+                      >
+                        {isLoading ? 'In Progress...' : 'Sign Up'}
+                      </Button>
+                    </FormGroup>
+                  </form>
                 </div>
               </div>
             </div>
-          </div>{' '}
-        </div>
-      </div>
+          </div>
+        </section>
+      </main>
     );
   }
 }

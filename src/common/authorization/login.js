@@ -214,128 +214,118 @@ class Login extends Component {
   render() {
     const { isLoading } = this.state;
     return (
-      <div className="wrapper">
+      <main>
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-        <div className="main-panel">
-          <div className="banner">
-            <div className="overlay"></div>
-            <div className="banner-content">
-              <div className="container">
-                <p className="">
-                  <strong>
-                    Reset your password by filling in your email address. You
-                    will then receive an email with new password.
-                  </strong>
-                </p>{' '}
-              </div>
-              <div className="login_card">
-                <div className="header forgotPasswordForm bg-transparent">
-                  <h4 className="h4login">
-                    {' '}
-                    <legend className="color-blue mb-0">Login</legend>
-                  </h4>
-                </div>
-                <div className="content">
+        <section className="authentication_wrapper d-flex align-items-center">
+          <div className="overlay"></div>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 offset-md-6">
+                <div className="shadow_box p-3 p-md-5">
+                  <h3 className="h4login text-center">Quick Login</h3>
                   <form className="form-horizontal">
                     <div className="form-group">
-                      <label className="col-md-3 control-label">Email</label>
-                      <div className="col-md-9">
-                        <FormGroup className={this.getClasses('email')}>
-                          {/* <InputGroup.Addon>
-                        <span className="icon-email" />
-                      </InputGroup.Addon> */}
-                          <FormControl
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            autoComplete="off"
-                          />
-                          {renderMessage(
-                            this.props.getValidationMessages('email')
-                          )}
-                        </FormGroup>
-                      </div>
+                      <label className="form-label">Email</label>
+                      <FormGroup className={this.getClasses('email')}>
+                        {/* <InputGroup.Addon>
+                                    <span className="icon-email" />
+                                    </InputGroup.Addon> */}
+                        <FormControl
+                          type="email"
+                          placeholder="Email"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                        />
+                        {renderMessage(
+                          this.props.getValidationMessages('email')
+                        )}
+                      </FormGroup>
                     </div>
                     <div className="form-group">
-                      <label className="col-md-3 control-label">Password</label>
-                      <div className="col-md-9">
-                        <FormGroup className={this.getClasses('password')}>
-                          {/* <InputGroup.Addon>
-                        <span className="icon-password" />
-                      </InputGroup.Addon> */}
-                          <FormControl
-                            type="password"
-                            placeholder="Password"
-                            name="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            autoComplete="off"
-                            onKeyPress={this.submitData}
-                          />
+                      <label className="form-label">Password</label>
+                      <FormGroup className={this.getClasses('password')}>
+                        {/* <InputGroup.Addon>
+                                    <span className="icon-password" />
+                                    </InputGroup.Addon> */}
+                        <FormControl
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          value={this.state.password}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                          onKeyPress={this.submitData}
+                        />
 
-                          {renderMessage(
-                            this.props.getValidationMessages('password')
-                          )}
-                        </FormGroup>
-                      </div>
+                        {renderMessage(
+                          this.props.getValidationMessages('password')
+                        )}
+                      </FormGroup>
                     </div>
-                    <div className="form-group">
-                      <label className="col-md-3"></label>
-                      <div className="col-md-9">
-                        <Link to="/forgot" className="forgotPass">
-                          Forgot Password?
-                        </Link>
-                      </div>
+                    <div className="form-group text-right">
+                      <Link to="/forgot" className="forgotPass">
+                        Forgot Password?
+                      </Link>
                     </div>
 
                     <div className="form-group">
-                      <label className="col-md-3"></label>
-                      <div className="col-md-9">
-                        <FormGroup>
-                          <Button
-                            bsStyle="primary"
-                            className="centeredBtn btn-lg"
-                            disabled={isLoading}
-                            onClick={!isLoading ? this.validateData : null}
-                          >
-                            {isLoading ? 'Checking Credentials...' : 'Sign In'}
-                          </Button>
-                        </FormGroup>
-                        <Link
-                          style={{
-                            position: 'absolute',
-                            right: '20px',
-                            bottom: '107px'
-                          }}
-                          to={{
-                            pathname: '/signup',
-                            state: {
-                              eventKey: 2
-                            }
-                          }}
+                      <FormGroup>
+                        <Button
+                          bsStyle="success"
+                          className="btn-lg btn-block mt-0"
+                          disabled={isLoading}
+                          onClick={!isLoading ? this.validateData : null}
                         >
-                          {' '}
-                          Register
-                        </Link>
-                        {/* <a style={{position :'absolute',right:'65px',bottom: '10px'}} href="https://theRapidHiremediastorage.blob.core.windows.net/theRapidHire-media-production/sv_1/PrivacyPolicy.html" target="_blank">
-              Terms and Condition
-            </a> */}
-                      </div>
+                          {isLoading ? 'Checking Credentials...' : 'Sign In'}
+                        </Button>
+                      </FormGroup>
+
+                      {/* <a style={{position :'absolute',right:'65px',bottom: '10px'}} href="https://theRapidHiremediastorage.blob.core.windows.net/theRapidHire-media-production/sv_1/PrivacyPolicy.html" target="_blank">
+                                        Terms and Condition
+                                    </a> */}
                     </div>
+                    <p className="text-center">
+                      Don't have an account?
+                      <Link
+                        to={{
+                          pathname: '/signup',
+                          state: {
+                            eventKey: 2
+                          }
+                        }}
+                        className="text-success"
+                      >
+                        {' '}
+                        Register
+                      </Link>
+                    </p>
                   </form>
-                </div>
-              </div>{' '}
+                  <hr />
+                  <div className="row">
+                    <div className="col-md-6">
+                      <Link to="" className="btn btn-primary btn-block btn-lg">
+                        Facebook
+                      </Link>
+                    </div>
+                    <div className="col-md-6">
+                      <Link to="" className="btn btn-danger btn-block btn-lg">
+                        Google
+                      </Link>
+                    </div>
+                  </div>
+                </div>{' '}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 }

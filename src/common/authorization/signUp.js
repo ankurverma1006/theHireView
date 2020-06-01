@@ -238,153 +238,143 @@ class Signup extends Component {
       this.signup(response, 'facebook');
     };
     return (
-      <div className="wrapper">
+      <main>
         <ToastContainer
           autoClose={5000}
           className="custom-toaster-main-cls"
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
-        <div className="main-panel">
-          <div className="banner">
-            <div className="overlay"></div>
-            <div className="banner-content">
-              <div className="">
-                <div className="login_card">
-                  <div className="header">
-                    <FacebookLogin
+        <section className="authentication_wrapper d-flex align-items-center">
+          <div className="overlay"></div>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 offset-md-6">
+                <div className="shadow_box p-3 p-md-5">
+                  <Link to="/login" className="text-secondary">
+                    <span className="icon-back_arrow2 mr-2" />
+                    Back To Login
+                  </Link>
+                  <h3 className="h4login text-center">Create New Account</h3>
+                  {/* <FacebookLogin
                       appId="1928279157274431"
                       autoLoad={false}
                       fields="name,email,picture"
                       callback={responseFacebook}
-                    />
-                    <br />
-                    <br />
-                    <div className="formContent forgotPasswordForm bg-transparent">
-                      <div className="centeredBox p-6">
-                        <div
+                    /> */}
+                  <div className="">
+                    <div className="">
+                      <Nav
+                        bsStyle="tabs"
+                        className="border-bottom-0 my-4"
+                        activeKey={this.state.eventKey == 2 ? 2 : 3}
+                      >
+                        <NavItem
+                          eventKey={2}
+                          onClick={this.handleSelect.bind(this, '2')}
+                        >
+                          Interviewer
+                        </NavItem>
+
+                        <NavItem
+                          eventKey={3}
+                          onClick={this.handleSelect.bind(this, '3')}
+                        >
+                          User
+                        </NavItem>
+                        <NavItem
+                          eventKey={4}
+                          onClick={() => this.props.history.push('/hrsignup')}
+                        >
+                          HR
+                        </NavItem>
+                      </Nav>
+                      <form>
+                        <FormGroup
                           style={{ position: 'relative' }}
-                          className="flex align-center mb-1"
+                          className={this.getClasses('email')}
                         >
-                          <Link to="/login" className="md-icon mr-1">
-                            <span className="icon-back_arrow2" />
-                          </Link>
-                          <legend className="color-blue mb-0">
-                            Back To Login
-                          </legend>
-                        </div>
+                          <label className="form-label">First Name</label>
 
-                        <Nav
-                          bsStyle="tabs"
-                          activeKey={this.state.eventKey == 2 ? 2 : 3}
+                          {/* <InputGroup.Addon>
+                              <span className="icon-username" />
+                            </InputGroup.Addon> */}
+                          <FormControl
+                            type="text"
+                            placeholder="First Name"
+                            name="firstName"
+                            value={this.state.firstName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            maxLength="35"
+                          />
+
+                          {renderMessage(
+                            this.props.getValidationMessages('firstName')
+                          )}
+                        </FormGroup>
+
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('lastName')}
                         >
-                          <NavItem
-                            eventKey={2}
-                            onClick={this.handleSelect.bind(this, '2')}
-                          >
-                            Interviewer SIGN UP
-                          </NavItem>
+                          <label className="form-label">Last Name</label>
+                          {/* <InputGroup>
+                            <InputGroup.Addon>
+                              <span className="icon-username" />
+                            </InputGroup.Addon> */}
+                          <FormControl
+                            type="text"
+                            placeholder="Last Name"
+                            name="lastName"
+                            value={this.state.lastName}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            maxLength="35"
+                          />
+                          {renderMessage(
+                            this.props.getValidationMessages('lastName')
+                          )}
+                        </FormGroup>
 
-                          <NavItem
-                            eventKey={3}
-                            onClick={this.handleSelect.bind(this, '3')}
-                          >
-                            User SIGN UP
-                          </NavItem>
-                          <NavItem
-                            eventKey={4}
-                            onClick={() => this.props.history.push('/hrsignup')}
-                          >
-                            HR SIGN UP
-                          </NavItem>
-                        </Nav>
-                        <form>
-                          <FormGroup
-                            style={{ position: 'relative' }}
-                            className={this.getClasses('email')}
-                          >
-                            <label className="form-label">First Name</label>
+                        <FormGroup
+                          style={{ position: 'relative' }}
+                          className={this.getClasses('email')}
+                        >
+                          <label className="form-label">Email</label>
+                          <FormControl
+                            type="Email"
+                            placeholder="Email"
+                            name="email"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            onKeyPress={this.submitData}
+                          />
+                          {renderMessage(
+                            this.props.getValidationMessages('email')
+                          )}
+                        </FormGroup>
 
-                            {/* <InputGroup.Addon>
-                    <span className="icon-username" />
-                  </InputGroup.Addon> */}
-                            <FormControl
-                              type="text"
-                              placeholder="First Name"
-                              name="firstName"
-                              value={this.state.firstName}
-                              onChange={this.handleChange}
-                              autoComplete="off"
-                              maxLength="35"
-                            />
-
-                            {renderMessage(
-                              this.props.getValidationMessages('firstName')
-                            )}
-                          </FormGroup>
-
-                          <FormGroup
-                            style={{ position: 'relative' }}
-                            className={this.getClasses('lastName')}
+                        <FormGroup style={{ position: 'relative' }}>
+                          <Button
+                            bsStyle="success"
+                            className="btn-block btn-lg"
+                            disabled={isLoading}
+                            onClick={!isLoading ? this.validateData : null}
                           >
-                            <label className="form-label">Last Name</label>
-                            {/* <InputGroup>
-                  <InputGroup.Addon>
-                    <span className="icon-username" />
-                  </InputGroup.Addon> */}
-                            <FormControl
-                              type="text"
-                              placeholder="Last Name"
-                              name="lastName"
-                              value={this.state.lastName}
-                              onChange={this.handleChange}
-                              autoComplete="off"
-                              maxLength="35"
-                            />
-                            {renderMessage(
-                              this.props.getValidationMessages('lastName')
-                            )}
-                          </FormGroup>
-
-                          <FormGroup
-                            style={{ position: 'relative' }}
-                            className={this.getClasses('email')}
-                          >
-                            <label className="form-label">Email</label>
-                            <FormControl
-                              type="Email"
-                              placeholder="Email"
-                              name="email"
-                              value={this.state.email}
-                              onChange={this.handleChange}
-                              autoComplete="off"
-                              onKeyPress={this.submitData}
-                            />
-                            {renderMessage(
-                              this.props.getValidationMessages('email')
-                            )}
-                          </FormGroup>
-
-                          <FormGroup style={{ position: 'relative' }}>
-                            <Button
-                              bsStyle="primary"
-                              className="centeredBtn btn-lg"
-                              disabled={isLoading}
-                              onClick={!isLoading ? this.validateData : null}
-                            >
-                              {isLoading ? 'In Progress...' : 'Sign Up'}
-                            </Button>
-                          </FormGroup>
-                        </form>
-                      </div>
-                    </div>{' '}
+                            {isLoading ? 'In Progress...' : 'Sign Up'}
+                          </Button>
+                        </FormGroup>
+                      </form>
+                    </div>
                   </div>{' '}
-                </div>
-              </div>{' '}
+                </div>{' '}
+              </div>
             </div>{' '}
-          </div>
-        </div>
-      </div>
+          </div>{' '}
+        </section>
+      </main>
     );
   }
 }

@@ -8,12 +8,12 @@ label {
   background-color: $white;
 }
 
-.form-horizontal {
-  padding: $padding-y 3 * $padding-x;
-  @media (max-width: $breakpoint-mobile) {
-    padding: 0;
-  }
-}
+// .form-horizontal {
+//   padding: $padding-y 3 * $padding-x;
+//   @media (max-width: $breakpoint-mobile) {
+//     padding: 0;
+//   }
+// }
 
 .form-control {
   background-color: $input-bg;
@@ -192,25 +192,6 @@ label {
   position: relative;
   display: flex;
   align-items: center;
-  &:after {
-    //content: '';
-    //color: #d2d2d2;
-    //margin-left: 10px;
-    //position: absolute;
-    //z-index: 100;
-    //right: -10px;
-    //height: 50%;
-    //width: 0px;
-    //border-right: 1px solid #ced8e2;
-    //&:nth-last-child(1)
-    //{
-    //  &:after{
-    //    content: '';
-    //    border:0;
-    //    visibility: hidden;
-    //  }
-    //}
-  }
 
   .selectIcon {
     position: absolute;
@@ -318,21 +299,6 @@ textarea {
   }
 }
 
-//.noBg--form-control--wrapper
-//{
-//  margin-bottom: 0;
-//  .form-control
-//  {
-//    background-color: transparent;
-//    border:0;
-//  }
-//  textarea
-//  {
-//    min-height:80px;
-//
-//  }
-//}
-
 .centeredRightLabel {
   display: flex;
   align-items: center;
@@ -379,10 +345,6 @@ select {
 
 .editableFormControl {
   width: 100%;
-  .form-control {
-    //background-color: transparent;
-    //border: 0;
-  }
 }
 
 .custom-form--control {

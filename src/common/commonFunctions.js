@@ -166,12 +166,12 @@ export function getAPIURL() {
       break;
 
     default:
-      returnUrl.APIURL = 'therapidhire.herokuapp.com'; // 'localhost'       // //'192.168.2.4';
+      returnUrl.APIURL = 'localhost'; //'therapidhire.herokuapp.com';  //'192.168.2.4';
       returnUrl.azureContainer = 'theRapidHire-media-development';
       returnUrl.azureThumbContainer =
         'theRapidHire-media-development-thumbnails';
-      returnUrl.httpServer = 'https://';
-      //     returnUrl.APIPort = '3002';
+      returnUrl.httpServer = 'http://';
+      returnUrl.APIPort = '3002';
       break;
   }
   return returnUrl;

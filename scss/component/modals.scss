@@ -1,13 +1,5 @@
-.modal
-{
-  @include centeredBox();
-  margin: 0 auto;
-  display: flex !important;
-  
-  .modal-dialog
-  {
-    margin:0;
-  }
+.modal.in{
+  opacity: 1;
   .modal-content
   {
     display: flex;
@@ -50,10 +42,6 @@
       overflow-x: hidden;
       overflow-y: auto;
       color:$gray;
-      a
-      {
-        //color: $activeBlue;
-      }
 
       &.height--425
       {
@@ -80,7 +68,6 @@
       @include centeredBox();
       position: relative;
       font-family: 'icomoon' !important;
-      speak: none;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -126,13 +113,6 @@
       }
     }
   }
-}
-
-.modal-lg {
-  //@media(min-width: $breakpoint-tablet)
-  //{
-  //  width: 675px;
-  //}
 }
 
 .modal-md {

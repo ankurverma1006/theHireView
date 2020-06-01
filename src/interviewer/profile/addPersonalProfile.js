@@ -75,6 +75,14 @@ class addPersonalProfile extends Component {
       lwdDay: moment().format('D'),
       designation: '',
       organisation: '',
+      country: '',
+      state: '',
+      city: '',
+      cities: '',
+      profileRole: '',
+      year: '',
+      month: '',
+      location: '',
       personalProfileModal: true,
       projectId: '',
       associateList: [],
@@ -88,14 +96,16 @@ class addPersonalProfile extends Component {
         profileRole: 'required',
         year: 'required',
         month: 'required',
-        location: 'required',
+        country: 'required',
         mobileNo: 'required'
       },
       {
         'required.profileRole': validationMessages.profileRole.required,
         'required.year': validationMessages.year.required,
         'required.month': validationMessages.month.required,
-        'required.location': validationMessages.location.required,
+        'required.country': validationMessages.country.required,
+        'required.state': validationMessages.state.required,
+        'required.city': validationMessages.city.required,
         'required.mobileNo': validationMessages.mobileNo.required
       }
     );
@@ -118,6 +128,22 @@ class addPersonalProfile extends Component {
     console.log('this.props.employmentDetail ', this.props.userProfile);
     this.setProjectData(this.props.userProfile);
     this.getProfileRoleList();
+    this.getCountryData();
+  }
+
+  getCountryData() {
+    theRapidHireApiService('getCountryData')
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let countryList = this.state.countryList;
+          console.log(response.data.result);
+          countryList = response.data.result;
+          this.setState({ countryList: countryList });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   // getAssociatedListData(userId){
@@ -158,14 +184,16 @@ class addPersonalProfile extends Component {
         userId: data.userId,
         userProfileId: data.userProfileId,
         skills: data.skills,
-        year: data.experienceInYear,
-        month: data.experienceInMonth,
-        location: data.currentLocation,
+        year: data.experienceInYear ? data.experienceInYear : '',
+        month: data.experienceInMonth ? data.experienceInMonth : '',
+        location: data.currentLocation ? data.currentLocation : '',
         mobileNo: data.mobileNo,
         profileRole:
           data.profileRole &&
           data.profileRole[0] &&
           data.profileRole[0].profileRoleId
+            ? data.profileRole[0].profileRoleId
+            : ''
       });
     }
   };
@@ -196,6 +224,55 @@ class addPersonalProfile extends Component {
     });
   };
 
+  handleCountry = event => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+
+    this.getState(value);
+  };
+
+  getState(value) {
+    let country = this.state.countryList;
+    let index = country.findIndex(todo => todo.countryId == value);
+    if (index !== -1) {
+      let stateList = country[index].state;
+      this.setState({ stateList: stateList });
+    }
+  }
+
+  handleState = event => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+
+    this.getCities(value);
+  };
+
+  getCities(value) {
+    let countryId = parseInt(this.state.country);
+    let stateId = parseInt(value);
+
+    theRapidHireApiService('getCityData', { countryId, stateId })
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let cities = this.state.cities;
+          console.log(response.data.result);
+          cities = response.data.result;
+          this.setState({ cities: cities });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   handleSubmit() {
     let profileRoleId = this.state.profileRole;
     let profileRole = [];
@@ -208,7 +285,15 @@ class addPersonalProfile extends Component {
 
     let experienceInYear = this.state.year;
     let experienceInMonth = this.state.month;
-    let currentLocation = this.state.location;
+    let locationId = this.state.location;
+    let currentLocation = '';
+    let cities = this.state.cities;
+    let cityIndex = cities.findIndex(todo => todo.cityId == locationId);
+
+    if (cityIndex !== -1) {
+      currentLocation = cities[index].cityName;
+    }
+
     let mobileNo = this.state.mobileNo;
     let skills = this.state.skills;
     let userId = this.props.user.userId;
@@ -220,6 +305,7 @@ class addPersonalProfile extends Component {
       profileRole,
       experienceInYear,
       experienceInMonth,
+      locationId,
       currentLocation,
       mobileNo,
       skills,
@@ -313,14 +399,14 @@ class addPersonalProfile extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle text-center">
+            <Modal.Title className="subtitle">
               {!this.state.userProfileId || this.state.userProfileId === ''
                 ? 'Add Profile'
                 : 'Edit Profile'}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form horizontal className="lightBgForm">
+            <Form horizontal className="lightBgForm clearfix">
               <Col sm={10}>
                 <FormGroup className="addDateInput">
                   <Col componentClass={ControlLabel} sm={3}>
@@ -426,24 +512,101 @@ class addPersonalProfile extends Component {
                 <div>
                   <FormGroup className="addDateInput">
                     <Col componentClass={ControlLabel} sm={3}>
-                      Current Location
+                      Current Location - country
                     </Col>
                     <Col sm={9}>
                       <div className="dob">
                         <div className="form-group">
                           <FormControl
                             componentClass="select"
-                            placeholder="location"
+                            placeholder="country"
+                            name="country"
+                            value={this.state.country}
+                            onChange={this.handleCountry}
+                            autoComplete="off"
+                            maxLength="1000"
+                          >
+                            <option value="" disabled>
+                              country
+                            </option>
+                            {this.state.countryList &&
+                              this.state.countryList.map((ass, i) => (
+                                <option value={ass.countryId}>
+                                  {ass.country}
+                                </option>
+                              ))}
+                          </FormControl>
+                          {renderMessage(
+                            this.props.getValidationMessages('associatedWith')
+                          )}
+                        </div>
+                      </div>
+                      {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                    </Col>
+                  </FormGroup>
+                </div>
+
+                <div>
+                  <FormGroup className="addDateInput">
+                    <Col componentClass={ControlLabel} sm={3}>
+                      state
+                    </Col>
+                    <Col sm={9}>
+                      <div className="dob">
+                        <div className="form-group">
+                          <FormControl
+                            componentClass="select"
+                            placeholder="state"
+                            name="state"
+                            value={this.state.state}
+                            onChange={this.handleState}
+                            autoComplete="off"
+                            maxLength="1000"
+                          >
+                            <option value="" disabled>
+                              state
+                            </option>
+                            {this.state.stateList &&
+                              this.state.stateList.map((ass, i) => (
+                                <option value={ass.id}>{ass.name}</option>
+                              ))}
+                          </FormControl>
+                          {renderMessage(
+                            this.props.getValidationMessages('associatedWith')
+                          )}
+                        </div>
+                      </div>
+                      {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                    </Col>
+                  </FormGroup>
+                </div>
+
+                <div>
+                  <FormGroup className="addDateInput">
+                    <Col componentClass={ControlLabel} sm={3}>
+                      city
+                    </Col>
+                    <Col sm={9}>
+                      <div className="dob">
+                        <div className="form-group">
+                          <FormControl
+                            componentClass="select"
+                            placeholder="city"
                             name="location"
                             value={this.state.location}
                             onChange={this.handleChange}
                             autoComplete="off"
                             maxLength="1000"
                           >
-                            <option value="">location</option>
-                            {locationList.map((ass, i) => (
-                              <option value={ass.locationId}>{ass.name}</option>
-                            ))}
+                            <option value="" disabled>
+                              city
+                            </option>
+                            {this.state.cities &&
+                              this.state.cities.map((ass, i) => (
+                                <option value={ass.cityId}>
+                                  {ass.cityName}
+                                </option>
+                              ))}
                           </FormControl>
                           {renderMessage(
                             this.props.getValidationMessages('associatedWith')
@@ -482,16 +645,14 @@ class addPersonalProfile extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              bsStyle="primary"
-              className="no-bold no-round"
+              bsStyle="success"
               disabled={this.state.isLoading}
               onClick={!this.state.isLoading ? this.validateData : null}
             >
               {this.state.isLoading ? 'In Progress...' : 'Save'}
             </Button>
             <Button
-              bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary"
               onClick={this.closePersonalProfileModal.bind(this, 'close')}
             >
               Close

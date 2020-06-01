@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import Header from '../header/header';
 
-import { Modal, DropdownButton, MenuItem } from 'react-bootstrap';
+import {
+  Modal,
+  DropdownButton,
+  MenuItem,
+  Breadcrumb,
+  Row,
+  Col,
+  Panel
+} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ToastContainer } from 'react-toastify';
@@ -304,25 +312,97 @@ class Dashboard extends Component {
           transition={ZoomInAndOut}
         />
         <Header {...this.props} />
-        <div className="main-panel">
+        <main className="inner_main">
+          <section className="top-banner">
+            <div className="banner_overlay"></div>
+            <div className="container content_inner">
+              <div className="banner-title">
+                <h1 className="m-0">Dashboard</h1>
+              </div>
+              <Breadcrumb>
+                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Dashboard</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+          </section>
+          <section className="detail_content">
+            <div className="container">
+              <Row>
+                <Col sm={6}></Col>
+                <Col sm={6}>
+                  <Panel bsStyle="primary">
+                    <Panel.Heading>
+                      <Panel.Title componentClass="h3">
+                        Weekly report
+                      </Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body>
+                      <div className="panel_row">
+                        <div className="row_head mb-2">
+                          <b>Time Slots</b>
+                        </div>
+                        <Row>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                        </Row>
+                      </div>
+                      <div className="panel_row">
+                        <div className="row_head mb-2">
+                          <b>Interviews</b>
+                        </div>
+                        <Row>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                        </Row>
+                      </div>
+                      <div className="panel_row">
+                        <div className="row_head mb-2">
+                          <b>One Way Assessments</b>
+                        </div>
+                        <Row>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                          <Col sm={4}>
+                            <div className="analytics_number">123</div>
+                            <div className="analytics_name">lorem</div>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Panel.Body>
+                  </Panel>
+                </Col>
+              </Row>
+            </div>
+          </section>
           <div className="w3-content main-panel1">
             <div className="container main">
               <p>shivam</p>
-              {/* <div className="button--wrapper mb-1 text-center flex flex-1 justify-center dashBtnCenter">
-              <button
-                className="btn btn-with-border with-icon smallBtn mr-1"
-                onClick={this.viewSampleProfile}
-              >
-                View Sample Profile
-              </button>             
-              <button
-                className="btn btn-with-border with-icon smallBtn"
-                onClick={this.addStudentModel}
-              >
-                <span className="icon-plus" />
-                add student
-              </button>
-            </div> */}
               {this.state.bookedSlotData &&
                 this.state.bookedSlotData.map(function(data, index) {
                   return (
@@ -446,7 +526,7 @@ class Dashboard extends Component {
             />
           ) : null} */}
           </div>
-        </div>
+        </main>
       </div>
 
       // </div></div>

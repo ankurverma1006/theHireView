@@ -11,6 +11,7 @@ import {
   FormControl
 } from 'react-bootstrap';
 
+//import 'react-datepicker/dist/react-datepicker.css';
 import validation from 'react-validation-mixin';
 import strategy from 'react-validatorjs-strategy';
 import classnames from 'classnames';
@@ -60,6 +61,10 @@ class addEducation extends Component {
       isToGrade: '',
       isToYear: '',
       imageSource: '',
+      degreeList: [],
+      specializationList: [],
+      degree: '',
+      specialization: '',
       educationFromYear: '',
       educationToYear: ''
     };
@@ -70,17 +75,13 @@ class addEducation extends Component {
     this.validatorTypes = strategy.createSchema(
       {
         instituteName: 'required',
-        city: 'required',
-        fromGrade: 'required',
-        toGrade: 'required',
+
         fromYear: 'required',
         toYear: 'required'
       },
       {
         'required.instituteName': validationMessages.instituteName.required,
-        'required.city': validationMessages.city.required,
-        'required.fromGrade': validationMessages.fromGrade.required,
-        'required.toGrade': validationMessages.toGrade.required,
+
         'required.fromYear': validationMessages.fromYear.required,
         'required.toYear': validationMessages.toYear.required
       }
@@ -89,6 +90,38 @@ class addEducation extends Component {
 
   componentWillMount() {
     // this.listOragnization();
+    this.getDegree();
+    this.getSpecialization();
+  }
+
+  getDegree() {
+    theRapidHireApiService('getDegree')
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let degreeList = this.state.degreeList;
+          console.log(response.data.result);
+          degreeList = response.data.result;
+          this.setState({ degreeList: degreeList });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  getSpecialization() {
+    theRapidHireApiService('getSpecialization')
+      .then(response => {
+        if (response.data.status === 'Success') {
+          let specializationList = this.state.specializationList;
+          console.log(response.data.result);
+          specializationList = response.data.result;
+          this.setState({ specializationList: specializationList });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   componentDidMount() {
@@ -102,20 +135,23 @@ class addEducation extends Component {
 
     if (this.props.educationDetail) {
       let data = this.props.educationDetail;
-      let logo = data.logo !== '' ? getThumbImage('medium', data.logo) : '';
+      // let logo = data.logo !== '' ? getThumbImage('medium', data.logo) : '';
       this.setState({
         educationId: data.educationId,
-        instituteName: data.institute,
-        city: data.city,
-        fromGrade: data.fromGrade,
-        toGrade: data.toGrade,
-        educationFromYear: data.fromYear,
-        educationToYear: data.toYear,
+        instituteName: data.organization.name,
+        //     city: data.city,
+        // fromGrade: data.fromGrade,
+        //    toGrade: data.toGrade,
+        // educationFromYear: data.fromYear,
+        // educationToYear: data.toYear,
+        grade: data.grade,
+        degree: data.degreeId,
+        specialization: data.specializationId,
         fromYear: data.fromYear,
         toYear: data.toYear,
         organizationId: data.organizationId,
-        oragnizationPreview: logo,
-        oragnizationLogo: data.logo,
+        ///    oragnizationPreview: logo,
+        //    oragnizationLogo: data.logo,
         //grade: data.grade,
         //fieldOfStudy: data.fieldOfStudy,
         description: data.description
@@ -211,17 +247,6 @@ class addEducation extends Component {
     }
   };
 
-  handleToGrade = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    console.log('handleToGrade');
-    this.handleCompare(this.state.fromGrade, event.target.value, 1);
-  };
-
-  handleFromGrade = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    this.handleCompare(event.target.value, this.state.toGrade, 1);
-  };
-
   handleToYear = event => {
     let toYear = this.state.educationToYear;
     let DOB =
@@ -281,25 +306,76 @@ class addEducation extends Component {
 
   validateData = () => {
     let self = this;
+    console.log('add education -- ');
+
     this.props.validate(function(error) {
       if (!error) {
         self.setState({ isLoading: true });
-
+        // if (self.state.oragnizationFile !== '') {
+        //   self.uploadOragnizationLogo();
+        // } else {
         self.handleSubmit();
+        //   }
       }
     });
   };
 
+  uploadImageToAzure(file) {
+    if (file) {
+      this.setState({
+        oragnizationPreview: this.state.imageSource,
+        oragnizationFile: file
+      });
+    }
+  }
+
+  uploadOragnizationLogo() {
+    let AzureStorage = window.AzureStorage;
+    let sasToken = this.state.sasToken;
+    let userId = this.state.userId;
+    let fileData = this.state.oragnizationFile;
+    let fileName = generateTimestamp(fileData.name);
+    let uploadPath = `sv_${userId}/${CONSTANTS.oragnizationAlbum}/${fileName}`;
+    let self = this;
+
+    const blobService = AzureStorage.Blob.createBlobServiceWithSas(
+      CONSTANTS.azureBlobURI,
+      sasToken
+    );
+
+    blobService.createBlockBlobFromBrowserFile(
+      CONSTANTS.azureContainer,
+      uploadPath,
+      fileData,
+      (error, result) => {
+        if (result) {
+          self.setState(
+            {
+              oragnizationLogo: uploadPath
+            },
+            () => {
+              self.handleSubmit();
+            }
+          );
+        }
+        if (error) {
+          console.log('error ', error);
+        }
+      }
+    );
+  }
+
   handleSubmit() {
+    console.log('handle submit-- ');
+
     let organizationId = this.state.organizationId;
     let educationId = this.state.educationId;
     let userId = this.state.userId;
-    let institute = this.state.instituteName;
-    let city = this.state.city;
-    let fromGrade = this.state.fromGrade;
-    let toGrade = this.state.toGrade;
+    let grade = this.state.grade;
     let fromYear = this.state.fromYear;
     let toYear = this.state.toYear;
+    let degreeId = this.state.degree;
+    let specializationId = this.state.specialization;
     // let fieldOfStudy = this.state.fieldOfStudy;
     //let grade = this.state.grade;
     // let fromDate =
@@ -311,7 +387,7 @@ class addEducation extends Component {
     //     ? moment(this.state.endDate).format('DD-MMM-YYYY')
     //     : '';
     let description = this.state.description;
-    let isActive = this.state.isActive;
+    let isActive = true;
     let type = CONSTANTS.typeSchool;
     let logo = this.state.oragnizationLogo;
 
@@ -320,18 +396,21 @@ class addEducation extends Component {
       organizationId,
       userId,
       logo,
-      institute,
-      city,
-      fromGrade,
-      toGrade,
+      degreeId,
+      specializationId,
+      grade,
+      // degree,
+      // field,
       fromYear,
       toYear,
-      description,
       isActive,
+      description,
       type
     };
 
     let self = this;
+    console.log('this.state.educationId ', this.state.educationId);
+
     if (this.state.educationId === '') {
       theRapidHireApiService('addEducation', data)
         .then(response => {
@@ -547,29 +626,6 @@ class addEducation extends Component {
     return gradeList;
   }
 
-  // handleFromClick = () => {
-  //   let fromYear = this.state.educationFromYear;
-  //   let DOB =
-  //     this.props.user && this.props.user.dob
-  //       ? moment(this.props.user.dob).format('YYYY')
-  //       : '';
-
-  //   if (DOB == 0 || DOB === null) {
-  //     let current_year = moment().format('YYYY') - 30;
-  //     DOB = current_year;
-  //   }
-  //   if (fromYear && this.props.educationMode === 2) {
-  //     var x = document.getElementById('mySelect');
-  //     var selectedValue = x.value;
-  //     if (
-  //       selectedValue == fromYear &&
-  //       parseInt(DOB, 10) > parseInt(fromYear, 10)
-  //     ) {
-  //       x.remove(x.selectedIndex);
-  //     }
-  //   }
-  // };
-
   render() {
     const { isLoading } = this.state;
     return (
@@ -605,7 +661,7 @@ class addEducation extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form horizontal className="lightBgForm">
+          <Form horizontal className="lightBgForm clearfix">
             <Col sm={9}>
               <FormGroup
                 controlId="formHorizontalEmail"
@@ -631,14 +687,6 @@ class addEducation extends Component {
                     searchText={this.state.searchText}
                     defaultInputValue={this.state.instituteName}
                   />
-                  {/* <FormControl
-                    type="text"
-                    placeholder="Golden Leaf School"
-                    name="instituteName"
-                    value={this.state.instituteName}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  /> */}
                   {renderMessage(
                     this.props.getValidationMessages('instituteName')
                   )}
@@ -646,40 +694,97 @@ class addEducation extends Component {
               </FormGroup>
               <FormGroup
                 controlId="formHorizontalPassword"
-                className={this.getClasses('city')}
+                className={this.getClasses('grade')}
               >
                 <Col componentClass={ControlLabel} sm={3}>
-                  City
+                  Grade
                 </Col>
                 <Col sm={9}>
                   <FormControl
                     type="text"
-                    placeholder="Ex: New york"
-                    name="city"
-                    value={this.state.city}
+                    placeholder="Ex: A"
+                    name="grade"
+                    value={this.state.grade}
                     onChange={this.handleChange}
                     autoComplete="off"
                   />
-                  {renderMessage(this.props.getValidationMessages('city'))}
+                  {renderMessage(this.props.getValidationMessages('grade'))}
                 </Col>
               </FormGroup>
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  Field of study
-                </Col>
-                <Col sm={9}>
-                  <FormControl
-                    type="text"
-                    placeholder="Enter field of study"
-                    name="fieldOfStudy"
-                    value={this.state.fieldOfStudy}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </Col>
-              </FormGroup> */}
 
-              <FormGroup controlId="formHorizontalPassword">
+              <div>
+                <FormGroup className="addDateInput">
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Degree
+                  </Col>
+                  <Col sm={9}>
+                    <div className="dob">
+                      <div className="form-group">
+                        <FormControl
+                          componentClass="select"
+                          placeholder="degree"
+                          name="degree"
+                          value={this.state.degree}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                          maxLength="1000"
+                        >
+                          <option value="" disabled>
+                            degree
+                          </option>
+                          {this.state.degreeList &&
+                            this.state.degreeList.map((ass, i) => (
+                              <option value={ass.degreeId}>{ass.name}</option>
+                            ))}
+                        </FormControl>
+                        {renderMessage(
+                          this.props.getValidationMessages('degree')
+                        )}
+                      </div>
+                    </div>
+                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                  </Col>
+                </FormGroup>
+              </div>
+
+              <div>
+                <FormGroup className="addDateInput">
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Field
+                  </Col>
+                  <Col sm={9}>
+                    <div className="dob">
+                      <div className="form-group">
+                        <FormControl
+                          componentClass="select"
+                          placeholder="specialization"
+                          name="specialization"
+                          value={this.state.specialization}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                          maxLength="1000"
+                        >
+                          <option value="" disabled>
+                            field
+                          </option>
+                          {this.state.specializationList &&
+                            this.state.specializationList.map((ass, i) => (
+                              <option value={ass.specializationId}>
+                                {ass.name}
+                              </option>
+                            ))}
+                        </FormControl>
+                        {renderMessage(
+                          this.props.getValidationMessages('field')
+                        )}
+                      </div>
+                    </div>
+                    {/* {renderMessage(this.props.getValidationMessages('endDate'))} */}
+                  </Col>
+                </FormGroup>
+              </div>
+
+              {/* <FormGroup controlId="formHorizontalPassword">
                 <Col componentClass={ControlLabel} sm={3}>
                   Grade
                 </Col>
@@ -731,7 +836,7 @@ class addEducation extends Component {
                     </Col>
                   </Row>
                 </Col>
-              </FormGroup>
+              </FormGroup> */}
 
               <FormGroup controlId="formHorizontalPassword">
                 <Col componentClass={ControlLabel} sm={3}>
@@ -746,7 +851,7 @@ class addEducation extends Component {
                           <FormControl
                             id="fromYearSelect"
                             componentClass="select"
-                            placeholder="Year"
+                            placeholder="From"
                             onChange={this.handleFromYear}
                             onClick={this.handleFromClick}
                             //onSelect={this.handleFromYear}
@@ -768,7 +873,7 @@ class addEducation extends Component {
                           <FormControl
                             id="toYearSelect"
                             componentClass="select"
-                            placeholder=" Year"
+                            placeholder="To"
                             onChange={this.handleToYear}
                             name="toYear"
                             value={this.state.toYear}
@@ -790,68 +895,6 @@ class addEducation extends Component {
                 </Col>
               </FormGroup>
 
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  Grade
-                </Col>
-                <Col sm={9}>
-                  <FormControl
-                    type="text"
-                    placeholder="Enter grade"
-                    name="grade"
-                    value={this.state.grade}
-                    onChange={this.handleChange}
-                    autoComplete="off"
-                  />
-                </Col>
-              </FormGroup> */}
-
-              {/* <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={3}>
-                  From to Date
-                </Col>
-                <Col sm={9} className={this.getClasses('startDate')}>
-                  <div className="flex row ">
-                    <Col sm={6}>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.startDate}
-                        selectsStart
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeStart}
-                        readOnly={true}
-                        placeholderText="Date"
-                        showYearDropdown
-                        dateFormat="DD-MMM-YYYY"
-                        isClearable={false}
-                      />
-                      {renderMessage(
-                        this.props.getValidationMessages('startDate')
-                      )}
-                    </Col>
-                    <Col sm={6} className={this.getClasses('endDate')}>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.endDate}
-                        selectsEnd
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleChangeEnd}
-                        readOnly={true}
-                        placeholderText="Date"
-                        showYearDropdown
-                        dateFormat="DD-MMM-YYYY"
-                        isClearable={false}
-                      />
-                      {renderMessage(
-                        this.props.getValidationMessages('endDate')
-                      )}
-                    </Col>
-                  </div>
-                </Col>
-              </FormGroup> */}
-
               <FormGroup controlId="formHorizontalPassword">
                 <Col componentClass={ControlLabel} sm={3}>
                   Description
@@ -870,7 +913,7 @@ class addEducation extends Component {
               </FormGroup>
             </Col>
             <Col sm={3}>
-              <div className="box flex flex-column flex-center">
+              <div className="modal-file-upload-box d-flex align-items-center justify-content-center">
                 <input
                   type="file"
                   onChange={this.handleImageChange.bind(this)}
@@ -884,7 +927,7 @@ class addEducation extends Component {
                   ) : (
                     <img src={this.state.oragnizationPreview} alt="" />
                   )}
-                  <div className="hover-section">
+                  <div className="hover-section d-flex align-items-center justify-content-center">
                     <input
                       type="file"
                       onChange={this.handleImageChange.bind(this)}
@@ -906,7 +949,6 @@ class addEducation extends Component {
               {this.state.educationId !== '' ? (
                 <Button
                   bsStyle="danger"
-                  className="no-bold no-round btn btn-danger"
                   onClick={this.deleteEducation.bind(
                     this,
                     this.state.educationId
@@ -921,7 +963,6 @@ class addEducation extends Component {
             <div className="right flex align-center">
               <Button
                 bsStyle="primary"
-                className="no-bold no-round"
                 disabled={isLoading}
                 onClick={!isLoading ? this.validateData : null}
               >
@@ -929,8 +970,7 @@ class addEducation extends Component {
               </Button>
 
               <Button
-                bsStyle="default"
-                className="no-bold no-round"
+                className="btn btn-secondary"
                 onClick={this.closeEducationModal}
               >
                 Close

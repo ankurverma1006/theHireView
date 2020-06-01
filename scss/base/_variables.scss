@@ -2,10 +2,13 @@
 //
 //## For each of Bootstrap's buttons, define text, background and border color.
 
+$main-bg:                    #f7f9fc;
 $none:                       0   !default;
 $border-thin:                1px !default;
 $border-thick:               2px !default;
+$border-color:               #E5E5E5;
 
+$form-control-focus:         #66afe9;
 $white-color:                #FFFFFF !default;
 $white-bg:                   #FFFFFF !default;
 
@@ -16,7 +19,7 @@ $black-bg:                   rgba(30,30,30,.97) !default;
 $black-color:                #333333 !default;
 $black-hr:                   #444444 !default;
 
-$light-gray:                 #E3E3E3 !default;
+$light-gray:                 #ced4da !default;
 $medium-gray:                #DDDDDD !default;
 $medium-dark-gray:           #AAAAAA !default;
 $dark-gray:                  #9A9A9A !default;
@@ -27,12 +30,15 @@ $default-color:              #888888 !default;
 $default-bg:                 #888888 !default;
 $default-states-color:       #777777 !default;
 
-$primary-color:              #6D71EF !default;
-$primary-bg:                 #6D71EF !default;
+$primary-color:              #904799 !default;
+$primary-bg:                 #904799 !default;
 $primary-states-color:       #1D62F0 !default;
 
-$success-color:              #87CB16 !default;
-$success-bg:                 #87CB16 !default;
+$secondary-color:            #444444;
+$secondary-bg:            #444444;
+
+$success-color:              #06b590 !default;
+$success-bg:                 #06b590 !default;
 $success-states-color:       #049F0C !default;
 
 $info-color:                 #1DC7EA !default;
@@ -47,6 +53,10 @@ $warning-states-color:       #ED8D00 !default;
 $danger-color:               #FF4A55 !default;
 $danger-bg:                  #FF4A55 !default;
 $danger-states-color:        #EE2D20 !default;
+
+$btn-shadow:                 0em 0.15em 0.65em 0em rgba(0,0,0,0.25);
+
+$btn-hover-color:            #202020;
 
 
 

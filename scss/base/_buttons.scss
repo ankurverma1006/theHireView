@@ -8,7 +8,6 @@
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    background-color: $transparent-bg;
     color: $btn-states-color;
     border-color: $btn-states-color;
   }
@@ -25,26 +24,6 @@
     &.active {
       background-color: $transparent-bg;
           border-color: $btn-color;
-    }
-  }
-
-
-  &.btn-fill {
-    color: $white-color;
-    background-color: $btn-color;
-    @include opacity(1);
-
-    &:hover,
-    &:focus,
-    &:active,
-    &.active,
-    .open > &.dropdown-toggle{
-        background-color: $btn-states-color;
-        color: $white-color;
-    }
-
-    .caret{
-        border-top-color: $white-color;
     }
   }
 
@@ -69,19 +48,20 @@
 }
 
 .btn{
+  color: $white-color !important;
   border-width: $border-thin;
-  background-color: $transparent-bg;
   font-weight: $font-weight-normal;
-
-  @include opacity(.8);
+  box-shadow: $btn-shadow;
+  border-radius: 0;
   padding: $padding-base-vertical $padding-base-horizontal;
-
-  @include btn-styles($default-color, $default-states-color);
-
+  transition: 0.5s ease-in-out;
+  margin-top: 0 !important;
   &:hover,
   &:focus{
       @include opacity(1);
-      outline: 0 !important;
+      background: $white-color;
+      color: $btn-hover-color !important;
+      transition: 0.5s ease-in-out;
   }
   &:active,
   &.active,
@@ -91,18 +71,47 @@
   }
 
   &.btn-icon{
-      padding: $padding-base-vertical;
+      padding: $padding-base-vertical; 
   }
 
 }
 
 // Apply the mixin to the buttons
 //.btn-default { @include btn-styles($default-color, $default-states-color); }
-.btn-primary { @include btn-styles($primary-color, $primary-states-color); }
-.btn-success { @include btn-styles($success-color, $success-states-color); }
-.btn-info    { @include btn-styles($info-color, $info-states-color); }
-.btn-warning { @include btn-styles($warning-color, $warning-states-color); }
-.btn-danger  { @include btn-styles($danger-color, $danger-states-color); }
+.btn-primary {
+  background-color: $primary-bg;
+  border-color: $primary-color;
+}
+.btn-secondary{
+  background-color: $secondary-bg;
+  border-color: $secondary-bg;
+}
+.btn-success {
+  background-color: $success-bg;
+  border-color: $success-bg;
+}
+.btn-outline-success{
+  color: $success-color !important;
+  border: 1px solid $success-color;
+  &:hover{
+    background: $success-bg;
+    color: $white-color !important;
+  }
+}
+.btn.btn-edit{
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.btn-info    {
+  background-color: $info-bg;
+}
+.btn-warning {
+  background-color: $warning-bg;
+}
+.btn-danger  {
+  background-color: $danger-bg;
+  border-color: $danger-bg;
+}
 .btn-neutral {
   @include btn-styles($white-color, $white-color);
 

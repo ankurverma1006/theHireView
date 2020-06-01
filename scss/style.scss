@@ -2,12 +2,11 @@ $pe-7s-font-path: "~pe7-icon/dist/fonts" !default;
 @import 'base/new_variables';
 @import 'base/variables';
 @import 'base/mixins';
-
+@import 'base/navbar';
 //@import "~pe7-icon/dist/scss/pe-icon-7-stroke.scss";
 @import 'base/chartist';
 //@import "~chartist/dist/scss/chartist.scss";
-@import 'base/sidebar';
-
+// @import 'base/sidebar';
 @import 'base/card';
 @import 'base/todos';
 @import 'base/checkbox-radio-switch'; 

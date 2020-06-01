@@ -615,7 +615,7 @@ class addEducation extends Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form horizontal className="lightBgForm">
+          <Form horizontal className="lightBgForm clearfix">
             <Col sm={9}>
               <FormGroup
                 controlId="formHorizontalEmail"
@@ -662,7 +662,61 @@ class addEducation extends Component {
                     onChange={this.handleChange}
                     autoComplete="off"
                   />
-                  {renderMessage(this.props.getValidationMessages('grade'))}
+                  {renderMessage(this.props.getValidationMessages('city'))}
+                </Col>
+              </FormGroup>
+
+              <FormGroup controlId="formHorizontalPassword">
+                <Col componentClass={ControlLabel} sm={3}>
+                  Grade
+                </Col>
+                <Col sm={9}>
+                  <Row className="flex row customDatePicker">
+                    <Col sm={6} className={this.getClasses('fromGrade')}>
+                      <div className="line-between-form-controls">
+                        <div className="custom-select">
+                          <span className="icon-down_arrow selectIcon" />
+                          <FormControl
+                            componentClass="select"
+                            placeholder="Grade"
+                            onChange={this.handleFromGrade}
+                            name="fromGrade"
+                            value={this.state.fromGrade}
+                          >
+                            {this.renderGradeDropdown()}
+                          </FormControl>
+                        </div>
+                      </div>
+                      {renderMessage(
+                        this.props.getValidationMessages('fromGrade')
+                      )}
+                    </Col>
+
+                    <Col sm={6} className={this.getClasses('toGrade')}>
+                      <div className="line-between-form-controls">
+                        <div className="custom-select">
+                          <span className="icon-down_arrow selectIcon" />
+                          <FormControl
+                            componentClass="select"
+                            placeholder="Grade"
+                            onChange={this.handleToGrade}
+                            name="toGrade"
+                            value={this.state.toGrade}
+                          >
+                            {this.renderGradeDropdown()}
+                          </FormControl>
+                        </div>
+                      </div>
+                      {renderMessage(
+                        this.props.getValidationMessages('toGrade')
+                      )}
+                    </Col>
+                    <Col sm={12}>
+                      {renderMessage(
+                        this.props.getValidationMessages('isToGrade')
+                      )}
+                    </Col>
+                  </Row>
                 </Col>
               </FormGroup>
 
@@ -741,7 +795,7 @@ class addEducation extends Component {
               </FormGroup>
             </Col>
             <Col sm={3}>
-              <div className="box flex flex-column flex-center">
+              <div className="modal-file-upload-box d-flex align-items-center justify-content-center">
                 <input
                   type="file"
                   onChange={this.handleImageChange.bind(this)}
@@ -755,7 +809,7 @@ class addEducation extends Component {
                   ) : (
                     <img src={this.state.oragnizationPreview} alt="" />
                   )}
-                  <div className="hover-section">
+                  <div className="hover-section d-flex align-items-center justify-content-center">
                     <input
                       type="file"
                       onChange={this.handleImageChange.bind(this)}
@@ -777,7 +831,6 @@ class addEducation extends Component {
               {this.state.educationId !== '' ? (
                 <Button
                   bsStyle="danger"
-                  className="no-bold no-round btn btn-danger"
                   onClick={this.deleteEducation.bind(
                     this,
                     this.state.educationId
@@ -792,7 +845,6 @@ class addEducation extends Component {
             <div className="right flex align-center">
               <Button
                 bsStyle="primary"
-                className="no-bold no-round"
                 disabled={isLoading}
                 onClick={!isLoading ? this.validateData : null}
               >
@@ -800,8 +852,7 @@ class addEducation extends Component {
               </Button>
 
               <Button
-                bsStyle="default"
-                className="no-bold no-round"
+                className="btn btn-secondary"
                 onClick={this.closeEducationModal}
               >
                 Close

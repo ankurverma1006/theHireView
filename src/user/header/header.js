@@ -80,84 +80,39 @@ class Header extends Component {
   render() {
     let _this = this;
     return (
-      <header>
-        <div className="header-area">
-          <div className="container-fluid">
-            <div className="row top-head">
-              <div className="col-md-6 col-sm-4">
-                <div className="logo">
-                  <a href="#">
-                    <img src="assets/img/logo.png" />
-                  </a>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-8">
-                <div style={{ color: 'aliceblue' }} className="text-right">
-                  {/* <span><Link to="/admin/candidate">Admin</Link> <a className="yellow" href="#">Job Seaker</a></span><span><a href="#">Employer</a></span> */}
-                  <div class="container-fluid">
-                    <div class="separator"></div>
-                    {this.props.user && this.props.user.roleId == 4 ? (
-                      <Navbar.Form pullLeft>
-                        <FormGroup>
-                          <span className="input-group-addon">
-                            {' '}
-                            <Link to="/admin/candidate">Admin</Link>
-                          </span>
-                        </FormGroup>
-                      </Navbar.Form>
-                    ) : null}
+      <Navbar className="mb-0">
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="#brand">
+              <h3 className="m-0">RapidHire</h3>
+            </a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
 
-                    <ul class="nav navbar-nav navbar-right">
-                      <li role="presentation" class="">
-                        {' '}
-                        <Link to="/user/profile">Profile </Link>
-                      </li>
-                      {_this.state.userProfile ? (
-                        <li role="presentation" class="">
-                          <Link to="/user/dashboard">Dashboard </Link>
-                        </li>
-                      ) : null}
-
-                      {_this.state.userProfile ? (
-                        <li role="presentation" class="">
-                          <Link to="/user/timeSlots">Time Slot </Link>
-                        </li>
-                      ) : null}
-                      <li role="presentation" class="">
-                        <a role="button" onClick={this.logout} href="#">
-                          Log out
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* 
-                <Navbar fluid={true}>
-    
-
-       
-        <div className="separator"></div>
-        {this.props.user && this.props.user.roleId == 4 ? <Navbar.Form pullLeft>
-          <FormGroup>
-            <span className="input-group-addon"> <Link to="/admin/candidate">Admin</Link></span>
-           
-          </FormGroup> 
-        </Navbar.Form> :null}
-        <Nav pullRight>
-        <NavItem> <Link to="/user/profile">Profile </Link></NavItem>
-        {_this.state.userProfile ?    <NavItem> <Link to="/user/dashboard">Dashboard </Link></NavItem>:null}
-       {_this.state.userProfile ? 
-        <NavItem> <Link to="/user/timeSlots">Time Slot </Link></NavItem>:null}     
-           <NavItem onClick={this.logout}>Log out</NavItem>
-        </Nav>
-     
-    </Navbar> */}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+        <Navbar.Collapse>
+          <Nav className="navbar-right">
+            <NavItem href="/user/profile">Profile </NavItem>
+            {_this.state.userProfile ? (
+              <NavItem href="/user/dashboard">Dashboard </NavItem>
+            ) : null}
+            {_this.state.userProfile ? (
+              <NavItem href="/user/timeSlots">TimeSlots </NavItem>
+            ) : null}
+            <NavItem onClick={this.logout}>Log out</NavItem>
+          </Nav>
+        </Navbar.Collapse>
+        {this.props.user && this.props.user.roleId == 4 ? (
+          <Navbar.Form pullLeft>
+            <FormGroup>
+              <span className="input-group-addon">
+                {' '}
+                <Link to="/admin/candidate">Admin</Link>
+              </span>
+            </FormGroup>
+          </Navbar.Form>
+        ) : null}
+      </Navbar>
     );
   }
 }

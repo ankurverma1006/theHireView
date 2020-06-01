@@ -957,7 +957,7 @@ class personalInfo extends Component {
                       <div className="flex">
                         <Radio
                           name="usCitizenOrPR"
-                          className="radio-primary"
+                          className="radio_primary"
                           value="yes"
                           checked={
                             this.state.usCitizenOrPR === 'yes' ? true : false
@@ -969,7 +969,7 @@ class personalInfo extends Component {
                         </Radio>{' '}
                         <Radio
                           name="usCitizenOrPR"
-                          className="radio-primary"
+                          className="radio_primary"
                           value="no"
                           checked={
                             this.state.usCitizenOrPR === 'no' ? true : false

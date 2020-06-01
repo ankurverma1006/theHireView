@@ -6,6 +6,7 @@ import strategy from 'react-validatorjs-strategy';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Slider from 'react-slick';
 //import { Field, reduxForm } from 'redux-form';
 //import renderField from 'components/FormInputs/renderField';
 import {
@@ -213,6 +214,23 @@ class Login extends Component {
 
   render() {
     const { isLoading } = this.state;
+    const testimonial = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 2,
+      slidesToScroll: 1,
+      autoplay: false,
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
     return (
       <main>
         <ToastContainer
@@ -221,14 +239,365 @@ class Login extends Component {
           toastClassName="custom-toaster-bg"
           transition={ZoomInAndOut}
         />
+
+        {/* Home page start */}
+
+        <header>
+          <div className="container">
+            <div className="row header_row">
+              <div className="col-cell"></div>
+              <div className="col-cell">
+                <div className="main-menu">
+                  <ul className="list-unstyled mb-0">
+                    <li>
+                      <Link to="javascript:;" className="menu-item active">
+                        Home
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="javascript:;" className="menu-item">
+                        About Us
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="javascript:;" className="menu-item">
+                        Services
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="javascript:;" className="menu-item">
+                        Contact
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="col-cell"></div>
+            </div>
+          </div>
+        </header>
+
+        <section className="home_banner">
+          <div className="container banner_content text-center">
+            <h2 className="m-0">Providing Exceptional</h2>
+            <h1 className="m-0">Recruitment Services</h1>
+            <h6>
+              WE Consultants are the pioneer of organised recruitment services
+              in India. <br />
+              Over the years, we have acted as preferred talent acquisition
+              partner to multinationals and leading Indian.
+            </h6>
+          </div>
+        </section>
+
+        <section className="about">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div className="card about-card py-4">
+                  <div className="card_body text-center">
+                    <div className="service_icon mb-4">
+                      <i
+                        class="fa fa-paper-plane-o fa-fw"
+                        aria-hidden="true"
+                      ></i>
+                    </div>
+                    <h4 className="mt-0 content_head">Aerospace & Defense</h4>
+                    <p className="mb-0">
+                      The Aerospace and Defense sector in India is closely
+                      regulated by government
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div className="card about-card py-4">
+                  <div className="card_body text-center">
+                    <div className="service_icon mb-4">
+                      <i class="fa fa-thumbs-o-up fa-fw" aria-hidden="true"></i>
+                    </div>
+                    <h4 className="mt-0 content_head">Development</h4>
+                    <p className="mb-0">
+                      The Developmental sector is a major contributor towards
+                      the creation of infrastructure
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div className="card about-card py-4">
+                  <div className="card_body text-center">
+                    <div className="service_icon mb-4">
+                      <i class="fa fa-newspaper-o fa-fw" aria-hidden="true"></i>
+                    </div>
+                    <h4 className="mt-0 content_head">Industrial</h4>
+                    <p className="mb-0">
+                      The Industrial sector in India is poised for a phase of
+                      remarkable growth because
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div className="card about-card py-4">
+                  <div className="card_body text-center">
+                    <div className="service_icon mb-4">
+                      <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                    </div>
+                    <h4 className="mt-0 content_head">Education</h4>
+                    <p className="mb-0">
+                      India currently has one of the largest higher Education
+                      systems in the world and
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="services">
+          <div className="container">
+            <div className="header-block text-center">
+              <div className="sub-heading">OUR SERVICES</div>
+              <h2 className="heading">Best Service Ever</h2>
+              <p>
+                We offer a wide range of customized, high-quality,
+                research-based talent consulting services. We are uniquely
+                well-positioned to help address your talent needs by leveraging
+                our know-how, relationships and service capabilities built over
+                five decades.
+              </p>
+            </div>
+            <div className="row">
+              <div className="col-lg-6 col-sm-6 col-xs-12">
+                <div className="card service_card d-flex">
+                  <div className="services-icon">
+                    <i className="fa-fw fa fa-bar-chart"></i>
+                  </div>
+                  <div className="text-content pl-3">
+                    <h4 className="content_head">Career Transition Services</h4>
+                    <p className="mb-0">
+                      Exclusive and Retained, our Executive Search Practice is
+                      primarily focused on Board and CXO level leadership
+                      hiring. Our goal is to deliver value to build adaptive
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6 col-sm-6 col-xs-12">
+                <div className="card service_card d-flex">
+                  <div className="services-icon">
+                    <i className="fa-fw fa fa-bullhorn"></i>
+                  </div>
+                  <div className="text-content pl-3">
+                    <h4 className="content_head">Executive Search</h4>
+                    <p className="mb-0">
+                      Exclusive and Retained, our Executive Search Practice is
+                      primarily focused on Board and CXO level leadership
+                      hiring. Our goal is to deliver value to each client we
+                      serve
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6 col-sm-6 col-xs-12">
+                <div className="card service_card d-flex">
+                  <div className="services-icon">
+                    <i className="fa-fw fa fa-cubes"></i>
+                  </div>
+                  <div className="text-content pl-3">
+                    <h4 className="content_head">Global Sourcing</h4>
+                    <p className="mb-0">
+                      Global Sourcing is a specialist service that has been
+                      developed to address the needs of global businesses
+                      looking at employing Indian & Expatriate talent at
+                      leadership / senior
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6 col-sm-6 col-xs-12">
+                <div className="card service_card d-flex">
+                  <div className="services-icon">
+                    <i className="fa-fw fa fa-life-ring"></i>
+                  </div>
+                  <div className="text-content pl-3">
+                    <h4 className="content_head">Interim Management</h4>
+                    <p className="mb-0">
+                      Interim Management is the provision of senior executives
+                      to manage change or transition on a short term basis. The
+                      concept is prevalent in mature economies and is upcoming
+                      in India.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="testimonial">
+          <div className="container">
+            <div className="header-block text-center">
+              <div className="sub-heading">TESTIMONIALS</div>
+              <h2 className="heading">Our Happy Client Review</h2>
+            </div>
+            <Slider {...testimonial}>
+              <div className="card d-flex align-items-center">
+                <div className="image">
+                  <img
+                    src="https://executivecareer.in/wp-content/uploads/2018/11/tastimonials_3.jpg"
+                    className="img-responsive"
+                  />
+                </div>
+                <div className="slider-content">
+                  <p>
+                    Your team has been a valuable recruitment partner for our
+                    organization. Their understanding of our business needs and
+                    organizational culture goes beyond just matching skills to
+                    job descriptions
+                  </p>
+                  <strong>Shivam Gour</strong>
+                </div>
+              </div>
+              <div className="card d-flex align-items-center">
+                <div className="image">
+                  <img
+                    src="https://executivecareer.in/wp-content/uploads/2018/11/tastimonials_1.jpg"
+                    className="img-responsive"
+                  />
+                </div>
+                <div className="slider-content">
+                  <p>
+                    Your team has been a valuable recruitment partner for our
+                    organization. Their understanding of our business needs and
+                    organizational culture goes beyond just matching skills to
+                    job descriptions
+                  </p>
+                  <strong>Shivam Gour</strong>
+                </div>
+              </div>
+              <div className="card d-flex align-items-center">
+                <div className="image">
+                  <img
+                    src="https://executivecareer.in/wp-content/uploads/2018/11/tastimonials_2.jpg"
+                    className="img-responsive"
+                  />
+                </div>
+                <div className="slider-content">
+                  <p>
+                    Your team has been a valuable recruitment partner for our
+                    organization. Their understanding of our business needs and
+                    organizational culture goes beyond just matching skills to
+                    job descriptions
+                  </p>
+                  <strong>Shivam Gour</strong>
+                </div>
+              </div>
+              <div className="card d-flex align-items-center">
+                <div className="image">
+                  <img
+                    src="https://executivecareer.in/wp-content/uploads/2018/11/tastimonials_3.jpg"
+                    className="img-responsive"
+                  />
+                </div>
+                <div className="slider-content">
+                  <p>
+                    Your team has been a valuable recruitment partner for our
+                    organization. Their understanding of our business needs and
+                    organizational culture goes beyond just matching skills to
+                    job descriptions
+                  </p>
+                  <strong>Shivam Gour</strong>
+                </div>
+              </div>
+            </Slider>
+          </div>
+        </section>
+
+        <footer>
+          <div className="container">
+            <div className="footer-top">
+              <div className="row">
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div className="footer-content">
+                    <ul className="list-unstyled footer-address mb-0">
+                      <li className="d-flex py-2">
+                        <i className="fa-fw fa fa-globe"></i>
+                        <div className="pl-3">
+                          Level 3, Cyber City, Gurugram, Haryana
+                        </div>
+                      </li>
+                      <li className="d-flex py-2">
+                        <i className="fa-fw fa fa-envelope"></i>
+                        <div className="pl-3">
+                          <a href="javascript:;">jobs@executivecareer.in</a>
+                        </div>
+                      </li>
+                      <li className="d-flex py-2">
+                        <i className="fa-fw fa fa-clock-o"></i>
+                        <div className="pl-3">10:00 - 17:00</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div className="footer-content">
+                    <h3 className="footer-title">Company</h3>
+                    <ul className="list-unstyled mb-0">
+                      <li className="py-2">
+                        <a href="javascript:;">Home</a>
+                      </li>
+                      <li className="py-2">
+                        <a href="javascript:;">About Us</a>
+                      </li>
+                      <li className="py-2">
+                        <a href="javascript:;">Services</a>
+                      </li>
+                      <li className="py-2">
+                        <a href="javascript:;">Contact</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div className="footer-content">
+                    <h3 className="footer-title">Opening Hours</h3>
+                    <ul className="list-unstyled mb-0">
+                      <li className="py-2">Mon – Fri : 10.00 – 18.00</li>
+                      <li className="py-2">Sat – Sun : Closed</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                  <div className="footer-content">
+                    <h3 className="footer-title">Subscribe Now</h3>
+                    <p className="py-2 mb-0">
+                      If You Have Any Questions, You Can Contact With Us So That
+                      We Can Give You A Satisfying Answer. Subscribe To Our
+                      Newsletter To Get Our Latest Products.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="px-3 py-4 text-center">
+              © 2019 All Rights Reserved
+            </div>
+          </div>
+        </footer>
+
+        {/* Home page end */}
+
         <section className="authentication_wrapper d-flex align-items-center">
           <div className="overlay"></div>
           <div className="container">
             <div className="row">
-              <div className="col-md-6 offset-md-6">
-                <div className="shadow_box p-3 p-md-5">
+              <div className="col-sm-6 col-sm-offset-6">
+                <div className="shadow_box p-5">
                   <h3 className="h4login text-center">Quick Login</h3>
-                  <form className="form-horizontal">
+                  <form>
                     <div className="form-group">
                       <label className="form-label">Email</label>
                       <FormGroup className={this.getClasses('email')}>

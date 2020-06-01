@@ -249,8 +249,8 @@ class Signup extends Component {
           <div className="overlay"></div>
           <div className="container">
             <div className="row">
-              <div className="col-md-6 offset-md-6">
-                <div className="shadow_box p-3 p-md-5">
+              <div className="col-sm-6 col-sm-offset-6">
+                <div className="shadow_box p-5">
                   <Link to="/login" className="text-secondary">
                     <span className="icon-back_arrow2 mr-2" />
                     Back To Login
@@ -266,7 +266,7 @@ class Signup extends Component {
                     <div className="">
                       <Nav
                         bsStyle="tabs"
-                        className="border-bottom-0 my-4"
+                        className="border-bottom-0 my-4 d-flex"
                         activeKey={this.state.eventKey == 2 ? 2 : 3}
                       >
                         <NavItem

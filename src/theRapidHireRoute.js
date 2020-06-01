@@ -19,9 +19,7 @@ import UserEditProfile from './user/profile/editProfile';
 import TimeSlotUser from './user/profile/timeSlots';
 import SlotArrangement from './user/profile/slotArrangement';
 import UserVideoChat from './user/videoChat/videoChat';
-
 import Video from './video/video';
-
 import App from './videoChat/js/app';
 
 /******************** Interviewer Routing ****************************/
@@ -83,7 +81,6 @@ class theRapidHireRoute extends Component {
         <Route exact path="/hrsignup" component={HRSignup} />
         <Route exact path="/forgot" component={ForgotPassword} />
         <Route exact path="/changepassword" component={ChangePassword} />
-
         <Route exact path="/user/dashboard" component={UserDashboard} />
         <Route exact path="/user/profile" component={UserEditProfile} />
         <Route exact path="/interviewer/timeSlots" component={TimeSlot} />

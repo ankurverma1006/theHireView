@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../header/header';
 import {
+  Breadcrumb,
   Button,
   Media,
   Row,
@@ -221,51 +222,65 @@ class TimeSlots extends Component {
           transition={ZoomInAndOut}
         />
         <Header {...this.props} />
-        <div className="main-panel">
-          <div className="w3-content main-panel1">
-            {this.state.userProfile ? (
-              <ScheduleComponent
-                width="100%"
-                height="800px"
-                ref={schedule => (this.scheduleObj = schedule)}
-                popupOpen={this.onPopupOpen.bind(this)}
-                showQuickInfo={false}
-                //  eventRendered={this.onEventRendered.bind(this)} selectedDate={new Date(2018, 3, 1)}
-                onChange={this.handleChange.bind(this)}
-                eventSettings={{ dataSource: this.state.timeData }}
-                renderCell={this.onRenderCell.bind(this)}
-                cssClass="schedule-cell-dimension"
-              >
-                <ViewsDirective>
-                  <ViewDirective
-                    option="Day"
-                    startHour="09:30"
-                    endHour="18:00"
-                  />
-                  <ViewDirective option="Week" />
-                  <ViewDirective option="Agenda" />
-                </ViewsDirective>
-                <ResourcesDirective>
-                  <ResourceDirective
-                    field="slotId"
-                    title="Slot"
-                    name="Slot"
-                    allowMultiple={false}
-                    textField="text"
-                    dataSource={self.state.timeData}
-                    idField="id"
-                    colorField="Color"
-                  ></ResourceDirective>
-                </ResourcesDirective>
-                <Inject services={[Week, Agenda]} />
-              </ScheduleComponent>
-            ) : (
-              <div className="container main">
-                Kindly complete profile first
+        <main className="inner_main">
+          <section className="top-banner">
+            <div className="banner_overlay"></div>
+            <div className="container content_inner">
+              <div className="banner-title">
+                <h1 className="m-0">Timeslot</h1>
               </div>
-            )}
+              <Breadcrumb>
+                <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                <Breadcrumb.Item active>Timeslot</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+          </section>
+          <div className="container">
+            <div className="w3-content main-panel1">
+              {this.state.userProfile ? (
+                <ScheduleComponent
+                  width="100%"
+                  height="800px"
+                  ref={schedule => (this.scheduleObj = schedule)}
+                  popupOpen={this.onPopupOpen.bind(this)}
+                  showQuickInfo={false}
+                  //  eventRendered={this.onEventRendered.bind(this)} selectedDate={new Date(2018, 3, 1)}
+                  onChange={this.handleChange.bind(this)}
+                  eventSettings={{ dataSource: this.state.timeData }}
+                  renderCell={this.onRenderCell.bind(this)}
+                  cssClass="schedule-cell-dimension"
+                >
+                  <ViewsDirective>
+                    <ViewDirective
+                      option="Day"
+                      startHour="09:30"
+                      endHour="18:00"
+                    />
+                    <ViewDirective option="Week" />
+                    <ViewDirective option="Agenda" />
+                  </ViewsDirective>
+                  <ResourcesDirective>
+                    <ResourceDirective
+                      field="slotId"
+                      title="Slot"
+                      name="Slot"
+                      allowMultiple={false}
+                      textField="text"
+                      dataSource={self.state.timeData}
+                      idField="id"
+                      colorField="Color"
+                    ></ResourceDirective>
+                  </ResourcesDirective>
+                  <Inject services={[Week, Agenda]} />
+                </ScheduleComponent>
+              ) : (
+                <div className="container main">
+                  Kindly complete profile first
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }

@@ -719,14 +719,14 @@ class EditProfile extends Component {
                             )}
                           >
                             <span className="icon-share2" />
-                            Add Information
+                            Add Information 
                           </Button>
                         ) : (
                           <Button
                             onClick={this.showPersonalProfileComponent.bind(
                               this
                             )}
-                            className="btn btn-white with-icon"
+                            className="btn with-icon btn-success"
                           >
                             <span className="icon-share2" />
                             Add Information
@@ -754,11 +754,12 @@ class EditProfile extends Component {
                     <div className="w3-container w3-card w3-white w3-margin-bottom">
                       <div className="centerButton">
                         <Link
+                        className="heading-color"
                           target="_blank"
-                          style={{ color: 'blue' }}
+                          // style={{ color: 'blue' }}
                           to="/video"
                         >
-                          Add Video Introduction{' '}
+                          <h4 className="breadcrumb m-0">Add Video Introduction </h4>{' '}
                         </Link>
                       </div>
                       <div className="w3-container">
@@ -783,6 +784,7 @@ class EditProfile extends Component {
                             onChange={this.uploadFiles.bind(this)}
                           />
                           <i className="fa fa-cloud-upload"></i>
+                          <p> Upload Resume</p>
                         </div>
                         <div>
                           <a>{this.state.resumeName}</a>

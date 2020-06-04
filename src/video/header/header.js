@@ -37,7 +37,7 @@ class Header extends Component {
   
   render() {
     return (
-    <Navbar fluid={true}>
+    <Navbar fluid={true} className="hidden">
       <Navbar.Header>
         <button type="button" className="navbar-toggle" data-toggle="collapse">
           <span className="sr-only">Toggle navigation</span>
@@ -49,7 +49,7 @@ class Header extends Component {
 
       <Navbar.Collapse>
 
-        <Nav>
+        {/* <Nav>
           <NavItem><i className="fa fa-dashboard"></i></NavItem>
           <NavDropdown title={<i className="fa fa-globe" />} id="basic-nav-dropdown">
             <MenuItem>Action</MenuItem>
@@ -76,7 +76,7 @@ class Header extends Component {
             <MenuItem>Separated link</MenuItem>
           </NavDropdown>
           <NavItem onClick={this.logout}>Log out</NavItem>
-        </Nav>
+        </Nav> */}
       </Navbar.Collapse>
     </Navbar>
   );

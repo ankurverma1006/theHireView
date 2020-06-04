@@ -85,3 +85,91 @@ html, body {
     margin-bottom: 0;
   }
 }
+// style amit kumar mishra 2-6-2020
+.heading-color {
+    color: #000000d1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+}
+.custom-left{
+  text-align:center;
+}
+.black-color{
+  color:#333333;
+  font-size:20px;
+  text-align:center;
+}
+.upload_file .upload_icon .fa-cloud-upload{
+  font-size: 67px;
+  top: 63%;
+}
+.home_banner{
+  height:auto;
+  position:relative;
+  .home_bg{
+  img{
+    width:100%;
+  }
+}
+}
+.shadow_box.p-5.custom-form-home {
+    position: absolute;
+    right: 30px;
+    width: 33%;
+    box-shadow: 1px 1px 4px 2px #00000029;
+}
+header {
+    box-shadow: -2px 2px 3px 0px #00000029;
+    background: #fff;
+    margin-bottom: -15px;
+    position: relative;
+    z-index: 99999999999;
+}
+video.video-fluid.z-depth-1 {
+  width: 100%;
+  border-radius: 10px;
+}
+.quction {
+  height: 161px;
+  overflow-x: auto;
+  line-height: 1.9;
+  .form-group {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .quction-select {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    right: 5px;
+    top: -9px;
+    width: 100%;
+  }
+  
+  button.closeName {
+    font-size: 33px;
+    border: transparent;
+    padding: 0;
+    color: #ff4a55;
+    background: transparent;
+    line-height: 1;
+    padding-left: 17px;
+  }
+  
+  .radio_primary.radio {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .multipal-quction {
+    position: relative;
+    padding-top: 20px;
+  }
+}
+.quction-select lable {
+  margin: 0;
+  padding: 0;
+}
+

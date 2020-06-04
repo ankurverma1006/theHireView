@@ -272,13 +272,32 @@ class Login extends Component {
                   </ul>
                 </div>
               </div>
-              <div className="col-cell"></div>
+              <div className="col-cell">
+              <div className="main-menu">
+                  <ul className="list-unstyled mb-0">
+                    <li>
+                      <Link to="javascript:;" className="menu-item">
+                        Rigester
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="javascript:;" className="menu-item">
+                       Login
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              
+               </div>
             </div>
           </div>
         </header>
 
         <section className="home_banner">
-          <div className="container banner_content text-center">
+        <div className="home_bg">
+        <img src="assets/images/bg2.jpg"></img>
+        </div>
+          {/* <div className="container banner_content text-center">
             <h2 className="m-0">Providing Exceptional</h2>
             <h1 className="m-0">Recruitment Services</h1>
             <h6>
@@ -287,9 +306,104 @@ class Login extends Component {
               Over the years, we have acted as preferred talent acquisition
               partner to multinationals and leading Indian.
             </h6>
-          </div>
-        </section>
+          </div> */}
+           <div className="shadow_box p-5 custom-form-home">
+                  <h3 className="h4login text-center black-color">Quick Login</h3>
+                  <form>
+                    <div className="form-group">
+                      <label className="form-label">Email</label>
+                      <FormGroup className={this.getClasses('email')}>
+                        {/* <InputGroup.Addon>
+                                    <span className="icon-email" />
+                                    </InputGroup.Addon> */}
+                        <FormControl
+                          type="email"
+                          placeholder="Email"
+                          name="email"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                        />
+                        {renderMessage(
+                          this.props.getValidationMessages('email')
+                        )}
+                      </FormGroup>
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Password</label>
+                      <FormGroup className={this.getClasses('password')}>
+                        {/* <InputGroup.Addon>
+                                    <span className="icon-password" />
+                                    </InputGroup.Addon> */}
+                        <FormControl
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          value={this.state.password}
+                          onChange={this.handleChange}
+                          autoComplete="off"
+                          onKeyPress={this.submitData}
+                        />
 
+                        {renderMessage(
+                          this.props.getValidationMessages('password')
+                        )}
+                      </FormGroup>
+                    </div>
+                    <div className="form-group text-right">
+                      <Link to="/forgot" className="forgotPass">
+                        Forgot Password?
+                      </Link>
+                    </div>
+
+                    <div className="form-group">
+                      <FormGroup>
+                        <Button
+                          bsStyle="success"
+                          className="btn-lg btn-block mt-0"
+                          disabled={isLoading}
+                          onClick={!isLoading ? this.validateData : null}
+                        >
+                          {isLoading ? 'Checking Credentials...' : 'Sign In'}
+                        </Button>
+                      </FormGroup>
+
+                      {/* <a style={{position :'absolute',right:'65px',bottom: '10px'}} href="https://theRapidHiremediastorage.blob.core.windows.net/theRapidHire-media-production/sv_1/PrivacyPolicy.html" target="_blank">
+                                        Terms and Condition
+                                    </a> */}
+                    </div>
+                    <p className="text-center black-color">
+                      Don't have an account?
+                      <Link
+                        to={{
+                          pathname: '/signup',
+                          state: {
+                            eventKey: 2
+                          }
+                        }}
+                        className="text-success"
+                      >
+                        {' '}
+                        Register
+                      </Link>
+                    </p>
+                  </form>
+                  <hr />
+                  <div className="row">
+                    <div className="col-md-6">
+                      <Link to="" className="btn btn-primary btn-block btn-lg">
+                        Facebook
+                      </Link>
+                    </div>
+                    <div className="col-md-6">
+                      <Link to="" className="btn btn-danger btn-block btn-lg">
+                        Google
+                      </Link>
+                    </div>
+                  </div>
+           </div>
+        </section>
+       
         <section className="about">
           <div className="container">
             <div className="row">

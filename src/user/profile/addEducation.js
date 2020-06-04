@@ -842,7 +842,7 @@ class addEducation extends Component {
                 ''
               )}
             </div>
-            <div className="right flex align-center">
+            <div className="right flex align-center custom-left">
               <Button
                 bsStyle="primary"
                 disabled={isLoading}

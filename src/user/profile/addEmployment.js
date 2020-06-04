@@ -635,13 +635,13 @@ class addEmployment extends Component {
             transition={ZoomInAndOut}
           />
           <Modal.Header closeButton>
-            <Modal.Title className="subtitle ">
+            <Modal.Title className="subtitle text-center">
               {!this.state.EmploymentId || this.state.EmploymentId === ''
                 ? 'Add Employment'
                 : 'Edit Employment'}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="clearfix">
             <Form horizontal className="lightBgForm">
               <Col sm={10}>
                 <FormGroup
@@ -1204,16 +1204,8 @@ class addEmployment extends Component {
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              bsStyle="default"
-              className="no-bold no-round"
-              onClick={this.deleteEmployment.bind(this)}
-            >
-              Delete
-            </Button>
-
-            <Button
+          <Modal.Footer className="custom-left">
+          <Button
               bsStyle="primary"
               className="no-bold no-round"
               disabled={this.state.isLoading}
@@ -1223,11 +1215,21 @@ class addEmployment extends Component {
             </Button>
             <Button
               bsStyle="default"
-              className="no-bold no-round"
+              className="no-bold no-round btn-secondary"
               onClick={this.closeEmploymentModal.bind(this, 'close')}
             >
               Close
             </Button>
+            <Button
+              bsStyle="default"
+              className="no-bold no-round btn-danger"
+              onClick={this.deleteEmployment.bind(this)}
+            >
+              Delete
+            </Button>
+
+            
+            
           </Modal.Footer>
         </Modal>
 

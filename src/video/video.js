@@ -6,6 +6,12 @@ import {
   Row,
   Col,
   FormControl,
+  Container,
+  Form,
+  FormGroup,
+  ControlLabel,
+  Radio,
+
   InputGroup
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -437,17 +443,27 @@ class Video extends Component {
     return (
       <div className="wrapper">
         <Header {...this.props} />
-        <div className="main-panel">
+
+
+        
+
+
+        <div className="main-panel mt-4">
           <div className="w3-content main-panel1">
+          <div class="container">
             <div className="row">
-              <div className="col-md-12">
-                <div className="card">
-                  <div className="header">
-                    <div className="content">
-                      <div className="panel-group" id="accordion">
-                        <button onClick={this.startRecording.bind(this)}>
-                          Start Record
-                        </button>
+              <div className="col-md-6">
+                <div className="video-info-btn">
+                <button type="button" class="btn btn-primary"><i className="fa fa-chevron-left mr-2" aria-hidden="true"></i>Back</button>
+                <button onClick={this.startRecording.bind(this)} className="no-bold no-round btn btn-primary no-bold no-round ml-3">
+                        <i className="fa fa-video-camera mr-2" aria-hidden="true"></i>Start Record 
+                </button>
+                <button type="button" class="btn btn-danger ml-3">  <i className="fa fa-video-camera mr-2" aria-hidden="true"></i>Stop Record</button>
+                </div>
+                
+              </div>
+              <div className="panel-group clearfix" id="accordion">
+                        
                         {this.state.uploading ? <div>Uploading...</div> : null}
 
                         {this.state.showVideo ? (
@@ -460,14 +476,96 @@ class Video extends Component {
            <button type="button" class="btn kc resume hide" id="resume_q1" disabled="disabled" onclick={this.resumeRecording.bind(this.id)}>Resume</button>
            <button type="button" class="btn kc stop" id="stop_q1" disabled="disabled" onclick={this.stopRecording.bind(this.id)}>Stop</button> */}
                       </div>
+                      <div className="col-lg-6 col-md-6 col-sm-12">
+                          <div className="record-video"> 
+                                    <video className="video-fluid z-depth-1" autoplay loop controls muted>
+                                    <source src="https://mdbootstrap.com/img/video/Sail-Away.mp4" type="video/mp4" />
+                                  </video>
+                          </div>
+                      </div>
+
+                      <div className="col-lg-6 col-md-6 col-sm-12">
+                      <div className="answer-video"> 
+                      <div className="card">
+                    <div className="card_head">
+                      <h4>Interview Questionsn</h4>
+                    </div>
+                    <div className="card_body pt-1 quction">
+                      <div className="">
+
+                        <div className="multipal-quction">
+                        <div className="quction-select">
+                       
+                     
+                              <FormGroup> 
+                                  <Radio
+                                    name="currentCompany"
+                                    className="radio_primary"
+                                    
+                                  >
+                                  
+                                    <div className="check" />
+                                    Submit
+                                  </Radio>{' '}
+                                
+                           
+                            
+                                 </FormGroup>
+
+                           <button type="button" class="closeName" data-dismiss="modal">&times;</button>
+                       </div>
+                      <strong className="mb-2"> Q: 1 What is the Difference between JDK and JRE?</strong><br></br>
+                      
+                      
+
+                     
+                        <span className="bg-warnin btn-behance"> <strong>Answer: </strong> When asked typical Java Interview Questions most startup Java developers get confused with JDK and JRE. And eventually, they settle for ‘anything would do man, as long as my program runs!!’ Not quite right if you aspire to make a living and career out of Programming.
+                        The “JDK” is the Java Development Kit. I.e., the JDK is bundle of software that you can use to develop Java based software.</span>
+                       </div>
+                       <div className="multipal-quction">
+                        <div className="quction-select">
+                       
+                     
+                              <FormGroup> 
+                                  <Radio
+                                    name="currentCompany"
+                                    className="radio_primary"  
+                                  >
+                                    <div className="check" />
+                                    Submit
+                                  </Radio>{' '}
+                                 </FormGroup>
+
+                           <button type="button" class="closeName" data-dismiss="modal">&times;</button>
+                       </div>
+                      <strong className="mb-2"> Q: 1 What is the Difference between JDK and JRE?</strong><br></br>
+                      
+                      
+
+                     
+                        <span className="bg-warnin btn-behance"> <strong>Answer: </strong> When asked typical Java Interview Questions most startup Java developers get confused with JDK and JRE. And eventually, they settle for ‘anything would do man, as long as my program runs!!’ Not quite right if you aspire to make a living and career out of Programming.
+                        The “JDK” is the Java Development Kit. I.e., the JDK is bundle of software that you can use to develop Java based software.</span>
+                       </div>
+
+                      </div>
+                      
+                      
+                    </div>
+                    <div className="card_footer"> 
+                        <a className="btn btn-danger"> Delete Quction </a>
                     </div>
                   </div>
-                </div>
-              </div>
+                        </div>
+                      </div>
+    
             </div>
           </div>
         </div>
+        </div>
       </div>
+      
+    
+     
     );
   }
 }

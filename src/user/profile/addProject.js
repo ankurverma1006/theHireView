@@ -488,7 +488,7 @@ class addProject extends Component {
                 : 'Edit Project'}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="clearfix">
             <Form horizontal className="lightBgForm">
               <Col sm={10}>
                 <FormGroup
@@ -693,7 +693,7 @@ class addProject extends Component {
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className="custom-left">
             <Button
               bsStyle="primary"
               className="no-bold no-round"
@@ -704,7 +704,7 @@ class addProject extends Component {
             </Button>
             <Button
               bsStyle="default"
-              className="no-bold no-round"
+              className="no-bold no-round btn-secondary"
               onClick={this.closeProjectModal.bind(this, 'close')}              
             >
               Close

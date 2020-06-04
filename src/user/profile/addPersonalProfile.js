@@ -333,7 +333,7 @@ class addPersonalProfile extends Component {
                 : 'Edit Profile'}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="clearfix">
             <Form horizontal className="lightBgForm">
               <Col sm={10}>
               <FormGroup className="addDateInput"> 
@@ -489,7 +489,7 @@ class addPersonalProfile extends Component {
               <div className="flex align-center justify-content-between fullWidth" />
             </Form>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className="custom-left">
             <Button
               bsStyle="primary"
               className="no-bold no-round"
@@ -500,7 +500,7 @@ class addPersonalProfile extends Component {
             </Button>
             <Button
               bsStyle="default"
-              className="no-bold no-round"
+              className="no-bold no-round btn-secondary"
               onClick={this.closePersonalProfileModal.bind(this, 'close')}              
             >
               Close

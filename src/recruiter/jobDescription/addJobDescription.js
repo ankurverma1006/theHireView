@@ -481,10 +481,10 @@ class AddJobDescription extends Component {
       />
       <Modal.Header closeButton>
         <Modal.Title className="subtitle text-center">
-          Add Job Description           
+          Add Job Description    
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="clearfix">
       <Form horizontal className="lightBgForm">
               <Col sm={10}> 
 
@@ -678,7 +678,7 @@ class AddJobDescription extends Component {
                
               </Col>      </Form>      
               </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className="right flex align-center custom-left">
        
             <Button
               bsStyle="primary"
@@ -690,7 +690,7 @@ class AddJobDescription extends Component {
             </Button>
             <Button
               bsStyle="default"
-              className="no-bold no-round"
+              className="btn btn-secondary btn btn-default"
               onClick={this.closeJobDescriptionModal.bind(this, 'close')}              
             >
               Close

@@ -173,3 +173,19 @@ video.video-fluid.z-depth-1 {
   padding: 0;
 }
 
+
+.subtitle {
+  color: #3f82da;
+  font-weight: 500;
+}
+.modal-header{
+  .subtitle{
+    color: #3f82da;
+    font-weight: 500;
+  }
+}
+.close {
+  color: red;
+  opacity: 1;
+  font-size: 30px;
+}

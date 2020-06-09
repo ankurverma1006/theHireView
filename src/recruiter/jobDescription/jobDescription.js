@@ -252,18 +252,7 @@ class JobDescription extends Component {
         <div className="main-panel">   
           <div className="w3-content main-panel1">         
 
-                   <div style={{"margin-bottom": "10px",position: "absolute", right: "250px","padding-top": "10px"}}>
-                    <a  onClick={this.showJobDescriptionComponent.bind(
-                            this                            
-                          )} 
-                          className={                           
-                              'btn btn-primary with-icon smallBtn mr-1 '                            
-                          }
-                          style={{ cursor: 'pointer' }}>
-                          {' '}
-                          <span className="icon-plus" /> Add Job Description
-                        </a>
-                   </div>  
+                  
                           {this.state.showJobDescriptionComponent ==
                               true ? (
                                 <AddJobDescription
@@ -279,10 +268,22 @@ class JobDescription extends Component {
                                 '')}
                    
                
-
-<div className="card">
+        <div className="container">
+      <div className="card">
+      <div className="text-right">
+                    <a  onClick={this.showJobDescriptionComponent.bind(
+                            this                            
+                          )} 
+                          className={                           
+                              'btn btn-primary with-icon smallBtn mr-1 mt-3 '                            
+                          }
+                          style={{ cursor: 'pointer' }}>
+                          {' '}
+                          <span className="icon-plus" /> Add Job Description 
+                        </a>
+                   </div>  
         <div className="header">
-          <h4 className="title">Job Description List</h4>
+          <h4 className="title pl-2">Job Description List</h4>
           <p className="category"></p>
         </div>
         <div className="content table-responsive table-full-width">
@@ -304,7 +305,7 @@ class JobDescription extends Component {
                   <td className="text-right">{data.noOfPosition}</td>
                   <td className="text-right">{data.maxExperience}</td>
                   <td className="text-right">
-                  <Button onClick={this.tagUserForJob.bind(this,data)}>
+                  <Button onClick={this.tagUserForJob.bind(this,data)} className="btn-primary">
                           {this.props.user.roleId==4 ? "Go For Map" : "View Student"}
                    </Button>
                   </td>
@@ -314,6 +315,7 @@ class JobDescription extends Component {
           </table>
 
         </div>
+      </div>
       </div>
         </div>
       </div>  </div>

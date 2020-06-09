@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, FormGroup, Button, FormControl } from 'react-bootstrap';
 
 import { bindActionCreators } from 'redux';
 import { ToastContainer } from 'react-toastify';
@@ -36,7 +36,7 @@ class Header extends Component {
   
   render() {
     return (
-    <Navbar fluid={true}>
+    <Navbar>
       {/* <Navbar.Header>
         <button type="button" className="navbar-toggle" data-toggle="collapse">
           <span className="sr-only">Toggle navigation</span>
@@ -73,7 +73,10 @@ class Header extends Component {
             <MenuItem divider />
             <MenuItem>Separated link</MenuItem>
           </NavDropdown> */}
-          <NavItem onClick={this.logout}>Log out</NavItem>
+          <Button onClick={this.logout} className="btn-primary btn btn-default">
+          <i className="fa fa-sign-out mr-2" aria-hidden="true"></i>  Log Out
+          </Button>
+          {/* <NavItem onClick={this.logout} className="btn-primary btn btn-default p-0 m-0"> <i className="fa fa-sign-out mr-2" aria-hidden="true"></i>Log out</NavItem> */}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
